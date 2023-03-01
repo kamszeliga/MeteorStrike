@@ -42,7 +42,7 @@ namespace MeteorStrike.Models
         public virtual Project? Project { get; set; }
 
         //Sender
-        public virtual BTUser? Send { get; set; }
+        public virtual BTUser? Sender { get; set; }
 
         //Recipient
         public virtual BTUser? Recipient { get; set; }

@@ -12,7 +12,7 @@ namespace MeteorStrike.Models
         public DateTime InviteDate { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime JoinDate { get; set; }
+        public DateTime? JoinDate { get; set; }
 
         [Required]
         public string? InviteeEmail { get; set; }

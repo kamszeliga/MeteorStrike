@@ -21,7 +21,7 @@ namespace MeteorStrike.Models
         public virtual Ticket? Ticket { get; set; }
 
         //User
-        public virtual BTUser? User { get; set; }
+        public virtual BTUser? BTUser { get; set; }
 
     }
 }
