@@ -14,6 +14,8 @@ namespace MeteorStrike.Models
         [DataType(DataType.Date)]
         public DateTime? JoinDate { get; set; }
 
+        public Guid CompanyToken { get; set; }  
+
         [Required]
         public string? InviteeEmail { get; set; }
 

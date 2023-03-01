@@ -27,8 +27,10 @@ namespace MeteorStrike.Models
 
         public int TicketId { get; set; }
 
+        [Required]
         public string? SenderId { get; set; }
 
+        [Required]
         public string? RecipientId { get; set; }
 
         //Navigation Properties

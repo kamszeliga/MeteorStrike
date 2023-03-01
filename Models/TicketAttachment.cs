@@ -21,10 +21,10 @@ namespace MeteorStrike.Models
         public string? BTUserId { get; set; }
 
         [NotMapped]
-        public virtual IFormFile? ImageFormFile { get; set; }
+        public virtual IFormFile? FormFile { get; set; }
 
-        public byte[]? ImageFileData { get; set; }
-        public string? ImageFileType { get; set; }
+        public byte[]? FileData { get; set; }
+        public string? FileType { get; set; }
 
         //Navigation Properties
         //Ticket

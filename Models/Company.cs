@@ -33,7 +33,7 @@ namespace MeteorStrike.Models
         public virtual ICollection<Project> Projects { get; set; } = new HashSet<Project>();
 
         //Members
-        public virtual ICollection<BTUser> BTUsers { get; set; } = new HashSet<BTUser>();
+        public virtual ICollection<BTUser> Members { get; set; } = new HashSet<BTUser>();
 
         //Invites
         public virtual ICollection<Invite> Invites { get; set; } = new HashSet<Invite>();
