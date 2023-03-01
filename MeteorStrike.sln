@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeteorStrike", "MeteorStrike.csproj", "{C25585DA-71EB-494E-BDA0-9A8F8ABAAFED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C25585DA-71EB-494E-BDA0-9A8F8ABAAFED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C25585DA-71EB-494E-BDA0-9A8F8ABAAFED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C25585DA-71EB-494E-BDA0-9A8F8ABAAFED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C25585DA-71EB-494E-BDA0-9A8F8ABAAFED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AC0DE0CA-5C32-4FEE-B6F2-07FEB10CCF79}
+	EndGlobalSection
+EndGlobal
