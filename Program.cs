@@ -1,6 +1,8 @@
 using DailyRoarBlog.Data;
 using MeteorStrike.Data;
 using MeteorStrike.Models;
+using MeteorStrike.Services;
+using MeteorStrike.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Common;
@@ -19,7 +21,12 @@ builder.Services.AddIdentity<BTUser, IdentityRole>(options => options.SignIn.Req
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddControllersWithViews();
+// Custom Services
+builder.Services.AddScoped<IBTFileService, BTFileService>();
+
+
+
+builder.Services.AddMvc();
 
 var app = builder.Build();
 

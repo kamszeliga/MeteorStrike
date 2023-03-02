@@ -18,12 +18,13 @@ namespace MeteorStrike.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
-        //private readonly IBTFileService _fileService;
+        private readonly IBTFileService _fileService;
 
-        public ProjectsController(ApplicationDbContext context, UserManager<BTUser> userManager)
+        public ProjectsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTFileService fileService)
         {
             _context = context;
             _userManager = userManager;
+            _fileService = fileService;
         }
 
         // GET: Projects
@@ -65,7 +66,7 @@ namespace MeteorStrike.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Created,StartDate,EndDate,ProjectPriorityId,ImageFormFile,Archived,CompanyId")] Project project)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Created,StartDate,EndDate,ProjectPriorityId,ImageFileData,ImageFileType,ImageFormFile,Archived,CompanyId")] Project project)
         {
             ModelState.Remove("CompanyId");
 
@@ -82,11 +83,11 @@ namespace MeteorStrike.Controllers
                 //EndDate
                 project.EndDate = DataUtility.GetPostGresDate(project.EndDate);
 
-                //if (project.ImageFormFile != null)
-                //{
-                //    project.ImageFileData = await _fileService.ConvertFileToByteArrayAsync(project.ImageFormFile);
-                //    project.ImageFileType = project.ImageFormFile.ContentType;
-                //}
+                if (project.ImageFormFile != null)
+                {
+                    project.ImageFileData = await _fileService.ConvertFileToByteArrayAsync(project.ImageFormFile);
+                    project.ImageFileType = project.ImageFormFile.ContentType;
+                }
 
                 _context.Add(project);
                 await _context.SaveChangesAsync();
@@ -112,7 +113,7 @@ namespace MeteorStrike.Controllers
                 return NotFound();
             }
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
+            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name", project.ProjectPriorityId);
             return View(project);
         }
 
@@ -121,7 +122,7 @@ namespace MeteorStrike.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created,StartDate,EndDate,ProjectPriorityId,ImageFileData,ImageFileType,Archived,CompanyId")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created,StartDate,EndDate,ProjectPriorityId,ImageFileData,ImageFileType,ImageFormFile,Archived,CompanyId")] Project project)
         {
             if (id != project.Id)
             {
@@ -132,6 +133,21 @@ namespace MeteorStrike.Controllers
             {
                 try
                 {
+                    //Created Date
+                    project.Created = DataUtility.GetPostGresDate(project.Created);
+
+                    //Start Date
+                    project.StartDate = DataUtility.GetPostGresDate(project.StartDate);
+
+                    //EndDate
+                    project.EndDate = DataUtility.GetPostGresDate(project.EndDate);
+
+                    if (project.ImageFormFile != null)
+                    {
+                        project.ImageFileData = await _fileService.ConvertFileToByteArrayAsync(project.ImageFormFile);
+                        project.ImageFileType = project.ImageFormFile.ContentType;
+                    }
+
                     _context.Update(project);
                     await _context.SaveChangesAsync();
                 }
@@ -149,7 +165,7 @@ namespace MeteorStrike.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
+            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name", project.ProjectPriorityId);
             return View(project);
         }
 
@@ -185,7 +201,7 @@ namespace MeteorStrike.Controllers
             var project = await _context.Projects.FindAsync(id);
             if (project != null)
             {
-                _context.Projects.Remove(project);
+               project.Archived = true;
             }
             
             await _context.SaveChangesAsync();
