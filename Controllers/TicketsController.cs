@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MeteorStrike.Data;
 using MeteorStrike.Models;
+using Microsoft.AspNetCore.Identity;
+using DailyRoarBlog.Data;
 
 namespace MeteorStrike.Controllers
 {
     public class TicketsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<BTUser> _userManager;
 
-        public TicketsController(ApplicationDbContext context)
+        public TicketsController(ApplicationDbContext context, UserManager<BTUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Tickets
@@ -51,14 +55,17 @@ namespace MeteorStrike.Controllers
         }
 
         // GET: Tickets/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Description");
-            ViewData["SubmitterUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Id");
-            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Id");
-            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Id");
+            BTUser? btUser = await _userManager.GetUserAsync(User);
+
+            IEnumerable<Project> projects = _context.Projects.Where(p => p.CompanyId == btUser!.CompanyId);
+
+            //ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["ProjectId"] = new SelectList(projects, "Id", "Name");
+            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Name");
+            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Name");
+            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name");
             return View();
         }
 
@@ -69,18 +76,29 @@ namespace MeteorStrike.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,Created,Updated,Archived,ArchivedByProject,ProjectId,TicketTypeId,TicketStatusId,TicketPriorityId,DeveloperUserId,SubmitterUserId")] Ticket ticket)
         {
+            ModelState.Remove("SubmitterUserId");
+
             if (ModelState.IsValid)
             {
+                BTUser? btUser = await _userManager.GetUserAsync(User);
+
+                ticket.SubmitterUserId = btUser!.Id;
+
+                //Created Date
+                ticket.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
+
+                ticket.TicketStatusId = 1;
+
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.DeveloperUserId);
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Description", ticket.ProjectId);
-            ViewData["SubmitterUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.SubmitterUserId);
             ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Id", ticket.TicketPriorityId);
             ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Id", ticket.TicketStatusId);
             ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Id", ticket.TicketTypeId);
+
             return View(ticket);
         }
 

@@ -8,16 +8,22 @@ using Microsoft.EntityFrameworkCore;
 using MeteorStrike.Data;
 using MeteorStrike.Models;
 using DailyRoarBlog.Data;
+using Microsoft.AspNetCore.Identity;
+using MeteorStrike.Services;
+using MeteorStrike.Services.Interfaces;
 
 namespace MeteorStrike.Controllers
 {
     public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<BTUser> _userManager;
+        //private readonly IBTFileService _fileService;
 
-        public ProjectsController(ApplicationDbContext context)
+        public ProjectsController(ApplicationDbContext context, UserManager<BTUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Projects
@@ -50,8 +56,7 @@ namespace MeteorStrike.Controllers
         // GET: Projects/Create
         public IActionResult Create()
         {
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id");
+            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name");
             return View();
         }
 
@@ -60,20 +65,36 @@ namespace MeteorStrike.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Created,StartDate,EndDate,ProjectPriorityId,ImageFileData,ImageFileType,Archived,CompanyId")] Project project)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Created,StartDate,EndDate,ProjectPriorityId,ImageFormFile,Archived,CompanyId")] Project project)
         {
+            ModelState.Remove("CompanyId");
+
             if (ModelState.IsValid)
-            {
+            {   //Get CompanyId
+                BTUser? btUser = await _userManager.GetUserAsync(User);
+
+                project.CompanyId = btUser!.CompanyId;
+
+                //Created Date
+                project.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
+                //Start Date
+                project.StartDate = DataUtility.GetPostGresDate(project.StartDate);
+                //EndDate
+                project.EndDate = DataUtility.GetPostGresDate(project.EndDate);
+
+                //if (project.ImageFormFile != null)
+                //{
+                //    project.ImageFileData = await _fileService.ConvertFileToByteArrayAsync(project.ImageFormFile);
+                //    project.ImageFileType = project.ImageFormFile.ContentType;
+                //}
+
                 _context.Add(project);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            // Format dates
-            project.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
-
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", project.CompanyId);
             ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
+
             return View(project);
         }
 

@@ -70,16 +70,16 @@ namespace DailyRoarBlog.Data
             await dbContextSvc.Database.MigrateAsync();
 
             await SeedRolesAsync(roleManagerSvc);
-
             await SeedDefaultCompaniesAsync(dbContextSvc);
-
             await SeedDefaultUsersAsync(userManagerSvc);
-
             await SeedDemoUsersAsync(userManagerSvc);
-
             await SeedDefaultTicketTypesAsync(dbContextSvc);
-
             await SeedDefaultTicketStatusesAsync(dbContextSvc);
+            await SeedDefaultTicketPrioritiesAsync(dbContextSvc);
+            await SeedDefaultProjectPrioritiesAsync(dbContextSvc);
+            await SeedDefaultProjectsAsync(dbContextSvc);
+            await SeedDefaultTicketsAsync(dbContextSvc, userManagerSvc);
+            await SeedDefaultNotificationTypesAsync(dbContextSvc);
 
         }
 
