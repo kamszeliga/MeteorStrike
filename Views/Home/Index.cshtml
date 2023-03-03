@@ -3,845 +3,58 @@
 }
 
                 <!-- ============================================================== -->
-                <!-- Card Group  -->
-                <!-- ============================================================== -->
-                <div class="card-group">
-                    <div class="card p-2 p-lg-3">
-                        <div class="p-lg-3 p-2">
-                            <div class="d-flex align-items-center">
-                                <button class="btn btn-circle btn-danger text-white btn-lg" href="javascript:void(0)">
-                                <i class="ti-clipboard"></i>
-                            </button>
-                                <div class="ms-4" style="width: 38%;">
-                                    <h4 class="fw-normal">Total Projects</h4>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="40"></div>
-                                    </div>
-                                </div>
-                                <div class="ms-auto">
-                                    <h2 class="display-7 mb-0">23</h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card p-2 p-lg-3">
-                        <div class="p-lg-3 p-2">
-                            <div class="d-flex align-items-center">
-                                <button class="btn btn-circle btn-cyan text-white btn-lg" href="javascript:void(0)">
-                                <i class="ti-wallet"></i>
-                            </button>
-                                <div class="ms-4" style="width: 38%;">
-                                    <h4 class="fw-normal">Total Earnings</h4>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-cyan" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="40"></div>
-                                    </div>
-                                </div>
-                                <div class="ms-auto">
-                                    <h2 class="display-7 mb-0">76</h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card p-2 p-lg-3">
-                        <div class="p-lg-3 p-2">
-                            <div class="d-flex align-items-center">
-                                <button class="btn btn-circle btn-warning text-white btn-lg" href="javascript:void(0)">
-                                <i class="fas fa-dollar-sign"></i>
-                            </button>
-                                <div class="ms-4" style="width: 38%;">
-                                    <h4 class="fw-normal">Total Earnings</h4>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="40"></div>
-                                    </div>
-                                </div>
-                                <div class="ms-auto">
-                                    <h2 class="display-7 mb-0">83</h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- ============================================================== -->
-                <!-- Products yearly sales, Weather Cards Section  -->
+                <!-- First Cards Row  -->
                 <!-- ============================================================== -->
                 <div class="row">
-                    <div class="d-flex align-items-stretch col-lg-8">
-                        <div class="card w-100">
-                            <div class="card-body">
-                                <div class="d-md-flex align-items-center">
-                                    <h5 class="card-title">Products Yearly Sales</h5>
-                                    <ul class="list-inline dl mb-0 ms-auto">
-                                        <li class="list-inline-item text-danger"><i class="fa fa-circle"></i> Mac</li>
-                                        <li class="list-inline-item text-info"><i class="fa fa-circle"></i> Windows</li>
-                                    </ul>
-                                </div>
-
-                                <div id="products-yearly-sales"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-stretch col-lg-4">
-                        <div class="card w-100">
-                            <div class="bg-danger d-flex justify-content-center">
-                                <div id="week-sales" class="mx-auto" style="height: 304px"></div>
-                            </div>
-                            <div class="p-4">
-                                <div class="d-flex align-items-center">
-                                    <div>
-                                        <h4 class="font-weight-medium card-title">Week Sales</h4>
-                                        <h5 class="card-subtitle mb-0">Ios app - 160 sales</h5>
-                                    </div>
-                                    <div class="ms-auto">
-                                        <button class="btn btn-circle btn-info text-white btn-lg" href="javascript:void(0)">
-                                            <i class="ti-shopping-cart"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- ============================================================== -->
-                <!-- Manage Table & Walet Cards Section  -->
-                <!-- ============================================================== -->
-                <div class="row">
-                    <div class="col-lg-8 d-flex align-items-stretch">
-                        <div class="card w-100">
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs manage-tabs" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-bs-toggle="tab" href="#users" role="tab">
-                                        <span class="hidden-sm-up">
-                                            <h4><i data-feather="users" class="feather-sm"></i></h4>
-                                        </span>
-                                        <span class="d-none d-md-block">Select Users</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#permissions" role="tab">
-                                        <span class="hidden-sm-up">
-                                            <h4><i data-feather="lock" class="feather-sm"></i></h4>
-                                        </span>
-                                        <span class="d-none d-md-block">Set Permissions</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#messages" role="tab">
-                                        <span class="hidden-sm-up">
-                                            <h4><i data-feather="file-text" class="feather-sm"></i></h4>
-                                        </span>
-                                        <span class="d-none d-md-block">Message Users</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#save" role="tab">
-                                        <span class="hidden-sm-up">
-                                            <h4><i data-feather="check-circle" class="feather-sm"></i></h4>
-                                        </span>
-                                        <span class="d-none d-md-block">Save and Finish</span>
-                                    </a>
-                                </li>
-                            </ul>
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="users" role="tabpanel">
-                                    <div class="row py-4 px-5 no-gutters mt-3">
-                                        <div class="col-sm-12 col-md-6 d-flex justify-content-start">
-                                            <h3 class="card-title mb-0">Select Users to Manage</h3>
-                                        </div>
-                                        <div class="col-sm-12 col-md-6 justify-content-end d-flex">
-                                            <div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-secondary">
-                                                    <i data-feather="user-plus" class="feather-sm"></i>
-                                                    <span class="ms-2 fw-normal fs-4">Add User</span>
-                                                </button>
-                                                <button type="button" class="btn btn-secondary">
-                                                    <i data-feather="edit-2" class="feather-sm"></i>
-                                                    <span class="ms-2 fw-normal">Edit User</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="bg-light">
-                                        <div class="table-responsive border-top manage-table px-4 py-3">
-                                            <table class="table no-wrap">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col" class="border-0"></th>
-                                                        <th scope="col" class="border-0"></th>
-                                                        <th scope="col" class="border-0">Name</th>
-                                                        <th scope="col" class="border-0">Position</th>
-                                                        <th scope="col" class="border-0">Joined</th>
-                                                        <th scope="col" class="border-0">Location</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="advanced-table active">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c1" checked="">
-                                                                <label class="form-check-label" for="c1">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/1.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Andrew Simons</td>
-                                                        <td>Modulator</td>
-                                                        <td>6 May 2021</td>
-                                                        <td>Gujrat, India</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="6" class="sml-pd"></td>
-                                                    </tr>
-                                                    <tr class="advanced-table">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c2">
-                                                                <label class="form-check-label" for="c2">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/2.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Hanna Gover</td>
-                                                        <td>Admin </td>
-                                                        <td>13 Jan 2005</td>
-                                                        <td>Texas, United states</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="6" class="sml-pd"></td>
-                                                    </tr>
-                                                    <tr class="advanced-table">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c3">
-                                                                <label class="form-check-label" for="c3">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/3.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Joshi Nirav</td>
-                                                        <td>Admin</td>
-                                                        <td>21 Mar 2001</td>
-                                                        <td>Bhavnagar, India</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="6" class="sml-pd"></td>
-                                                    </tr>
-                                                    <tr class="advanced-table">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c4">
-                                                                <label class="form-check-label" for="c4">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/4.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Joshi Sunil</td>
-                                                        <td>Admin</td>
-                                                        <td>21 Mar 2004</td>
-                                                        <td>Gujarat, India</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center p-4 mt-2">
-                                        <h3 class="card-title mb-0">1 members selected</h3>
-                                        <div class="ms-auto">
-                                            <button class="btn btn-danger text-white btn-rounded py-2 px-3">Next <i class="ti-arrow-right ms-2"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="permissions" role="tabpanel">
-                                    <div class="row py-4 px-5 no-gutters mt-3">
-                                        <div class="col-sm-12 col-md-6 d-flex justify-content-start">
-                                            <h3 class="card-title mb-0">Set User Permission</h3>
-                                        </div>
-                                        <div class="col-sm-12 col-md-6 justify-content-end d-flex">
-                                            <div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-secondary">
-                                                    <i data-feather="user-plus" class="feather-sm"></i>
-                                                    <span class="ms-2 fw-normal fs-4">Add User</span>
-                                                </button>
-                                                <button type="button" class="btn btn-secondary">
-                                                    <i data-feather="edit-2" class="feather-sm"></i>
-                                                    <span class="ms-2 fw-normal">Edit User</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="bg-light">
-                                        <div class="table-responsive border-top manage-table px-4 py-3">
-                                            <table class="table no-wrap">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col" class="border-0"></th>
-                                                        <th scope="col" class="border-0"></th>
-                                                        <th scope="col" class="border-0">Name</th>
-                                                        <th scope="col" class="border-0">Position</th>
-                                                        <th scope="col" class="border-0">Joined</th>
-                                                        <th scope="col" class="border-0">Location</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="advanced-table">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c5">
-                                                                <label class="form-check-label" for="c5">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/1.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Andrew Simons</td>
-                                                        <td>Modulator</td>
-                                                        <td>6 May 2021</td>
-                                                        <td>Gujrat, India</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="6" class="sml-pd"></td>
-                                                    </tr>
-                                                    <tr class="advanced-table active">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c6" checked="">
-                                                                <label class="form-check-label" for="c6">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/2.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Hanna Gover</td>
-                                                        <td>Admin </td>
-                                                        <td>13 Jan 2005</td>
-                                                        <td>Texas, United states</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="6" class="sml-pd"></td>
-                                                    </tr>
-                                                    <tr class="advanced-table">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c7">
-                                                                <label class="form-check-label" for="c7">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/3.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Joshi Nirav</td>
-                                                        <td>Admin</td>
-                                                        <td>21 Mar 2001</td>
-                                                        <td>Bhavnagar, India</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="6" class="sml-pd"></td>
-                                                    </tr>
-                                                    <tr class="advanced-table">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c8">
-                                                                <label class="form-check-label" for="c8">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/4.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Joshi Sunil</td>
-                                                        <td>Admin</td>
-                                                        <td>21 Mar 2004</td>
-                                                        <td>Gujarat, India</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center p-4 mt-2">
-                                        <h3 class="card-title mb-0">1 members selected</h3>
-                                        <div class="ms-auto">
-                                            <button class="btn btn-danger text-white btn-rounded py-2 px-3">Next <i class="ti-arrow-right ms-2"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="messages" role="tabpanel">
-                                    <div class="row py-4 px-5 no-gutters mt-3">
-                                        <div class="col-sm-12 col-md-6 d-flex justify-content-start">
-                                            <h3 class="card-title mb-0">Manage Users</h3>
-                                        </div>
-                                        <div class="col-sm-12 col-md-6 justify-content-end d-flex">
-                                            <div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-secondary">
-                                                    <i data-feather="user-plus" class="feather-sm"></i>
-                                                    <span class="ms-2 fw-normal fs-4">Add User</span>
-                                                </button>
-                                                <button type="button" class="btn btn-secondary">
-                                                    <i data-feather="edit-2" class="feather-sm"></i>
-                                                    <span class="ms-2 fw-normal">Edit User</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="bg-light">
-                                        <div class="table-responsive border-top manage-table px-4 py-3">
-                                            <table class="table no-wrap">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col" class="border-0"></th>
-                                                        <th scope="col" class="border-0"></th>
-                                                        <th scope="col" class="border-0">Name</th>
-                                                        <th scope="col" class="border-0">Position</th>
-                                                        <th scope="col" class="border-0">Joined</th>
-                                                        <th scope="col" class="border-0">Location</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="advanced-table">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c9">
-                                                                <label class="form-check-label" for="c9">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/1.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Andrew Simons</td>
-                                                        <td>Modulator</td>
-                                                        <td>6 May 2021</td>
-                                                        <td>Gujrat, India</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="6" class="sml-pd"></td>
-                                                    </tr>
-                                                    <tr class="advanced-table">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c10">
-                                                                <label class="form-check-label" for="c10">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/2.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Hanna Gover</td>
-                                                        <td>Admin </td>
-                                                        <td>13 Jan 2005</td>
-                                                        <td>Texas, United states</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="6" class="sml-pd"></td>
-                                                    </tr>
-                                                    <tr class="advanced-table active">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c11" checked="">
-                                                                <label class="form-check-label" for="c11">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/3.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Joshi Nirav</td>
-                                                        <td>Admin</td>
-                                                        <td>21 Mar 2001</td>
-                                                        <td>Bhavnagar, India</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="6" class="sml-pd"></td>
-                                                    </tr>
-                                                    <tr class="advanced-table">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c12">
-                                                                <label class="form-check-label" for="c12">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/4.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Joshi Sunil</td>
-                                                        <td>Admin</td>
-                                                        <td>21 Mar 2004</td>
-                                                        <td>Gujarat, India</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center p-4 mt-2">
-                                        <h3 class="card-title mb-0">1 members selected</h3>
-                                        <div class="ms-auto">
-                                            <button class="btn btn-danger text-white btn-rounded py-2 px-3">Next <i class="ti-arrow-right ms-2"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="save" role="tabpanel">
-                                    <div class="row py-4 px-5 no-gutters mt-3">
-                                        <div class="col-sm-12 col-md-6 d-flex justify-content-start">
-                                            <h3 class="card-title mb-0">Save & Finish</h3>
-                                        </div>
-                                        <div class="col-sm-12 col-md-6 justify-content-end d-flex">
-                                            <div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-secondary">
-                                                    <i data-feather="user-plus" class="feather-sm"></i>
-                                                    <span class="ms-2 fw-normal fs-4">Add User</span>
-                                                </button>
-                                                <button type="button" class="btn btn-secondary">
-                                                    <i data-feather="edit-2" class="feather-sm"></i>
-                                                    <span class="ms-2 fw-normal">Edit User</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="bg-light">
-                                        <div class="table-responsive border-top manage-table px-4 py-3">
-                                            <table class="table no-wrap">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col" class="border-0"></th>
-                                                        <th scope="col" class="border-0"></th>
-                                                        <th scope="col" class="border-0">Name</th>
-                                                        <th scope="col" class="border-0">Position</th>
-                                                        <th scope="col" class="border-0">Joined</th>
-                                                        <th scope="col" class="border-0">Location</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="advanced-table">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c13">
-                                                                <label class="form-check-label" for="c13">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/1.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Andrew Simons</td>
-                                                        <td>Modulator</td>
-                                                        <td>6 May 2021</td>
-                                                        <td>Gujrat, India</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="6" class="sml-pd"></td>
-                                                    </tr>
-                                                    <tr class="advanced-table">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c14">
-                                                                <label class="form-check-label" for="c14">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/2.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Hanna Gover</td>
-                                                        <td>Admin </td>
-                                                        <td>13 Jan 2005</td>
-                                                        <td>Texas, United states</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="6" class="sml-pd"></td>
-                                                    </tr>
-                                                    <tr class="advanced-table">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c15">
-                                                                <label class="form-check-label" for="c15">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/3.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Joshi Nirav</td>
-                                                        <td>Admin</td>
-                                                        <td>21 Mar 2001</td>
-                                                        <td>Bhavnagar, India</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="6" class="sml-pd"></td>
-                                                    </tr>
-                                                    <tr class="advanced-table active">
-                                                        <td class="ps-3">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="c16" checked="">
-                                                                <label class="form-check-label" for="c16">&nbsp;</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <img src="../assets/images/users/4.jpg" class="rounded-circle" width="30">
-                                                        </td>
-                                                        <td>Joshi Sunil</td>
-                                                        <td>Admin</td>
-                                                        <td>21 Mar 2004</td>
-                                                        <td>Gujarat, India</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center p-4 mt-2">
-                                        <h3 class="card-title mb-0">1 members selected</h3>
-                                        <div class="ms-auto">
-                                            <button class="btn btn-danger text-white btn-rounded py-2 px-3">Next <i class="ti-arrow-right ms-2"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 d-flex align-items-stretch">
-                        <div class="card w-100">
-                            <div class="card-body">
-                                <div class="d-flex mt-3">
-                                    <button class="btn btn-circle btn-success text-white btn-lg" href="javascript:void(0)">
-                                        <i class="ti-plus"></i>
-                                    </button>
-                                    <div class="ms-3">
-                                        <h2 class="display-6">$456.90</h2>
-                                        <h5 class="fw-light">Your wallet Balance</h5>
-                                    </div>
-                                </div>
-                                <div id="wallet-balance" class="mt-3"></div>
-                            </div>
-                            <ul class="list-style-none">
-                                <li class="py-2 px-4 border-top">
-                                    <div class="d-flex align-items-center">
-                                        <i class="ti-wallet font-24 text-info"></i>
-                                        <a href="#" class="ms-3 fs-4">Withdrow money</a>
-                                    </div>
-                                </li>
-                                <li class="py-2 px-4 border-top">
-                                    <div class="d-flex align-items-center">
-                                        <i class="ti-bag font-24 text-info"></i>
-                                        <a href="#" class="ms-3 fs-4">Shop Now</a>
-                                    </div>
-                                </li>
-                                <li class="py-2 px-4 border-top">
-                                    <div class="d-flex align-items-center">
-                                        <i class="ti-briefcase font-24 text-info"></i>
-                                        <a href="#" class="ms-3 fs-4">Add funds</a>
-                                    </div>
-                                </li>
-                                <li class="py-2 px-4 border-top">
-                                    <div class="d-flex align-items-center">
-                                        <i class="ti-wallet font-24 text-info"></i>
-                                        <a href="#" class="ms-3 fs-4">Shop Now</a>
-                                    </div>
-                                </li>
-                                <li class="py-2 px-4 border-top">
-                                    <div class="d-flex align-items-center">
-                                        <i class="ti-wallet font-24 text-info"></i>
-                                        <a href="#" class="ms-3 fs-4">Withdrow money</a>
-                                    </div>
-                                </li>
-                                <li class="py-2 px-4 border-top">
-                                    <div class="d-flex align-items-center">
-                                        <i class="ti-bag font-24 text-info"></i>
-                                        <a href="#" class="ms-3 fs-4">Shop Now</a>
-                                    </div>
-                                </li>
-                                <li class="py-2 px-4 border-top">
-                                    <div class="d-flex align-items-center">
-                                        <i class="ti-wallet font-24 text-info"></i>
-                                        <a href="#" class="ms-3 fs-4">Withdrow money</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- ============================================================== -->
-                <!-- User Table & Profile Cards Section  -->
-                <!-- ============================================================== -->
-                <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6 col-lg-3">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title mb-0">Manage Users</h5>
+                                <h5 class="card-title">New Clients</h5>
+                                <div class="d-flex align-items-center mb-2 mt-4">
+                                    <h2 class="mb-0 display-5"><i class="icon-people text-info"></i></h2>
+                                    <div class="ms-auto">
+                                        <h2 class="mb-0 display-6"><span class="fw-normal">23</span></h2>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="table-responsive">
-                                <table class="table no-wrap user-table mb-0">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th scope="col" class="border-0 fs-4 font-weight-medium ps-4">#</th>
-                                            <th scope="col" class="border-0 fs-4 font-weight-medium">Name</th>
-                                            <th scope="col" class="border-0 fs-4 font-weight-medium">Occupation</th>
-                                            <th scope="col" class="border-0 fs-4 font-weight-medium">Email</th>
-                                            <th scope="col" class="border-0 fs-4 font-weight-medium">Category</th>
-                                            <th scope="col" class="border-0 fs-4 font-weight-medium">Manage</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="ps-4">1</td>
-                                            <td>
-                                                <h5 class="font-weight-medium mb-0">Daniel Kristeen</h5>
-                                                <span class="text-muted">Texas, Unitedd states</span>
-                                            </td>
-                                            <td>
-                                                <span>Visual Designer</span><br>
-                                                <span>Past : teacher</span>
-                                            </td>
-                                            <td>
-                                                <span>daniel@website.com</span><br>
-                                                <span>999 - 444 - 555</span>
-                                            </td>
-                                            <td>
-                                                <select class="form-select category-select" id="exampleFormControlSelect1">
-                                          <option>Modulator</option>
-                                          <option>Admin</option>
-                                          <option>User</option>
-                                          <option>Subscriber</option>
-                                        </select>
-                                            </td>
-                                            <td>
-                                                <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-4">2</td>
-                                            <td>
-                                                <h5 class="font-weight-medium mb-0">Emma Smith</h5>
-                                                <span class="text-muted">Texas, Unitedd states</span>
-                                            </td>
-                                            <td>
-                                                <span>Visual Designer</span><br>
-                                                <span>Past : teacher</span>
-                                            </td>
-                                            <td>
-                                                <span>daniel@website.com</span><br>
-                                                <span>999 - 444 - 555</span>
-                                            </td>
-                                            <td>
-                                                <select class="form-select category-select" id="exampleFormControlSelect1">
-                                          <option>Modulator</option>
-                                          <option>Admin</option>
-                                          <option>User</option>
-                                          <option>Subscriber</option>
-                                        </select>
-                                            </td>
-                                            <td>
-                                                <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-4">3</td>
-                                            <td>
-                                                <h5 class="font-weight-medium mb-0">Olivia Johnson</h5>
-                                                <span class="text-muted">Texas, Unitedd states</span>
-                                            </td>
-                                            <td>
-                                                <span>Visual Designer</span><br>
-                                                <span>Past : teacher</span>
-                                            </td>
-                                            <td>
-                                                <span>daniel@website.com</span><br>
-                                                <span>999 - 444 - 555</span>
-                                            </td>
-                                            <td>
-                                                <select class="form-select category-select" id="exampleFormControlSelect1">
-                                          <option>Modulator</option>
-                                          <option>Admin</option>
-                                          <option>User</option>
-                                          <option>Subscriber</option>
-                                        </select>
-                                            </td>
-                                            <td>
-                                                <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-4">4</td>
-                                            <td>
-                                                <h5 class="font-weight-medium mb-0">Isabella Williams</h5>
-                                                <span class="text-muted">Texas, Unitedd states</span>
-                                            </td>
-                                            <td>
-                                                <span>Visual Designer</span><br>
-                                                <span>Past : teacher</span>
-                                            </td>
-                                            <td>
-                                                <span>daniel@website.com</span><br>
-                                                <span>999 - 444 - 555</span>
-                                            </td>
-                                            <td>
-                                                <select class="form-select category-select" id="exampleFormControlSelect1">
-                                          <option>Modulator</option>
-                                          <option>Admin</option>
-                                          <option>User</option>
-                                          <option>Subscriber</option>
-                                        </select>
-                                            </td>
-                                            <td>
-                                                <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-4">5</td>
-                                            <td>
-                                                <h5 class="font-weight-medium mb-0">Sophia Jones</h5>
-                                                <span class="text-muted">Texas, Unitedd states</span>
-                                            </td>
-                                            <td>
-                                                <span>Visual Designer</span><br>
-                                                <span>Past : teacher</span>
-                                            </td>
-                                            <td>
-                                                <span>daniel@website.com</span><br>
-                                                <span>999 - 444 - 555</span>
-                                            </td>
-                                            <td>
-                                                <select class="form-select category-select" id="exampleFormControlSelect1">
-                                          <option>Modulator</option>
-                                          <option>Admin</option>
-                                          <option>User</option>
-                                          <option>Subscriber</option>
-                                        </select>
-                                            </td>
-                                            <td>
-                                                <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-4">6</td>
-                                            <td>
-                                                <h5 class="font-weight-medium mb-0">Charlotte Brown</h5>
-                                                <span class="text-muted">Texas, Unitedd states</span>
-                                            </td>
-                                            <td>
-                                                <span>Visual Designer</span><br>
-                                                <span>Past : teacher</span>
-                                            </td>
-                                            <td>
-                                                <span>daniel@website.com</span><br>
-                                                <span>999 - 444 - 555</span>
-                                            </td>
-                                            <td>
-                                                <select class="form-select category-select" id="exampleFormControlSelect1">
-                                          <option>Modulator</option>
-                                          <option>Admin</option>
-                                          <option>User</option>
-                                          <option>Subscriber</option>
-                                        </select>
-                                            </td>
-                                            <td>
-                                                <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">New Projects</h5>
+                                <div class="d-flex align-items-center mb-2 mt-4">
+                                    <h2 class="mb-0 display-5"><i class="icon-folder text-primary"></i></h2>
+                                    <div class="ms-auto">
+                                        <h2 class="mb-0 display-6"><span class="fw-normal">169</span></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Open Projects</h5>
+                                <div class="d-flex align-items-center mb-2 mt-4">
+                                    <h2 class="mb-0 display-5"><i class="icon-folder-alt text-danger"></i></h2>
+                                    <div class="ms-auto">
+                                        <h2 class="mb-0 display-6"><span class="fw-normal">311</span></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">New Tickets</h5>
+                                <div class="d-flex align-items-center mb-2 mt-4">
+                                    <h2 class="mb-0 display-5"><i class="ti-bookmark text-success"></i></h2>
+                                    <div class="ms-auto">
+                                        <h2 class="mb-0 display-6"><span class="fw-normal">117</span></h2>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -983,54 +196,246 @@
                     </div>
                 </div>
                 <!-- ============================================================== -->
-                <!-- Social Cards  -->
+                <!-- Manage User  -->
                 <!-- ============================================================== -->
                 <div class="row">
-                    <div class="col-md-6 col-lg-4">
+                    <div class="col-md-12">
                         <div class="card">
-                            <img class="card-img-top" src="../assets/images/big/img1.jpg" alt="Card image cap">
                             <div class="card-body">
-                                <div class="d-flex align-items-center mb-3">
-                                    <span class="text-muted"><i data-feather="calendar" class="feather-sm text-info"></i> May 16</span>
-                                    <div class="ms-auto">
-                                        <a href="javascript:void(0)" class="text-muted"><i data-feather="heart" class="feather-sm text-danger"></i> 30</a>
-                                    </div>
-                                </div>
-                                <h4 class="mt-3">Top 20 Models are on the ramp</h4>
-                                <p class="mt-3 text-muted">Titudin venenatis ipsum ac feugiat. Vestibulum ullamcorper quam.</p>
-                                <button class="btn btn-light-primary text-primary btn-rounded waves-effect waves-light mt-2">Read more</button>
+                                <h5 class="card-title mb-0">Manage Users</h5>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card">
-                            <img class="card-img-top" src="../assets/images/big/img2.jpg" alt="Card image cap">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center mb-3">
-                                    <span class="text-muted"><i data-feather="calendar" class="feather-sm text-info"></i> May 16</span>
-                                    <div class="ms-auto">
-                                        <a href="javascript:void(0)" class="text-muted"><i data-feather="heart" class="feather-sm text-danger"></i> 30</a>
-                                    </div>
-                                </div>
-                                <h4 class="mt-3">Top 20 Models are on the ramp</h4>
-                                <p class="mt-3 text-muted">Titudin venenatis ipsum ac feugiat. Vestibulum ullamcorper quam.</p>
-                                <button class="btn btn-light-primary text-primary btn-rounded waves-effect waves-light mt-2">Read more</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card">
-                            <img class="card-img-top" src="../assets/images/big/img3.jpg" alt="Card image cap">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center mb-3">
-                                    <span class="text-muted"><i data-feather="calendar" class="feather-sm text-info"></i> May 16</span>
-                                    <div class="ms-auto">
-                                        <a href="javascript:void(0)" class="text-muted"><i data-feather="heart" class="feather-sm text-danger"></i> 30</a>
-                                    </div>
-                                </div>
-                                <h4 class="mt-3">Top 20 Models are on the ramp</h4>
-                                <p class="mt-3 text-muted">Titudin venenatis ipsum ac feugiat. Vestibulum ullamcorper quam.</p>
-                                <button class="btn btn-light-primary text-primary btn-rounded waves-effect waves-light mt-2">Read more</button>
+                            <div class="table-responsive">
+                                <table class="table no-wrap user-table mb-0">
+                                  <thead class="table-light">
+                                    <tr>
+                                      <th scope="col" class="border-0 font-weight-medium ps-4">#</th>
+                                      <th scope="col" class="border-0 font-weight-medium">Name</th>
+                                      <th scope="col" class="border-0 font-weight-medium">Occupation</th>
+                                      <th scope="col" class="border-0 font-weight-medium">Email</th>
+                                      <th scope="col" class="border-0 font-weight-medium">Added</th>
+                                      <th scope="col" class="border-0 font-weight-medium">Category</th>
+                                      <th scope="col" class="border-0 font-weight-medium">Manage</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="ps-4">1</td>
+                                      <td>
+                                        <div class="d-flex align-items-start">
+                                            <img src="../assets/images/users/1.jpg" class="rounded-circle" width="35">
+                                            <div class="ms-2">
+                                              <h5 class="font-weight-medium mb-0">Daniel Kristeen</h5>
+                                              <span class="text-muted">Texas, Unitedd states</span>
+                                            </div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                          <span>Visual Designer</span><br>
+                                          <span>Past : teacher</span>
+                                      </td>
+                                      <td>
+                                          <span>daniel@website.com</span><br>
+                                          <span>999 - 444 - 555</span>
+                                      </td>
+                                      <td>
+                                          <span>15 Mar 1988</span><br>
+                                          <span>10: 55 AM</span>
+                                      </td>
+                                      <td>
+                                        <select class="form-select category-select" id="exampleFormControlSelect1">
+                                          <option>Modulator</option>
+                                          <option>Admin</option>
+                                          <option>User</option>
+                                          <option>Subscriber</option>
+                                        </select>
+                                      </td>
+                                      <td>
+                                        <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
+                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td class="ps-4">2</td>
+                                      <td>
+                                        <div class="d-flex align-items-start">
+                                            <img src="../assets/images/users/2.jpg" class="rounded-circle" width="35">
+                                            <div class="ms-2">
+                                              <h5 class="font-weight-medium mb-0">Emma Smith</h5>
+                                              <span class="text-muted">Texas, Unitedd states</span>
+                                            </div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                          <span>Visual Designer</span><br>
+                                          <span>Past : teacher</span>
+                                      </td>
+                                      <td>
+                                          <span>daniel@website.com</span><br>
+                                          <span>999 - 444 - 555</span>
+                                      </td>
+                                      <td>
+                                          <span>15 Mar 1855</span><br>
+                                          <span>10: 00 AM</span>
+                                      </td>
+                                      <td>
+                                        <select class="form-select category-select" id="exampleFormControlSelect1">
+                                          <option>Modulator</option>
+                                          <option>Admin</option>
+                                          <option>User</option>
+                                          <option>Subscriber</option>
+                                        </select>
+                                      </td>
+                                      <td>
+                                        <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
+                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td class="ps-4">3</td>
+                                      <td>
+                                        <div class="d-flex align-items-start">
+                                            <img src="../assets/images/users/3.jpg" class="rounded-circle" width="35">
+                                            <div class="ms-2">
+                                              <h5 class="font-weight-medium mb-0">Olivia Johnson</h5>
+                                              <span class="text-muted">Texas, Unitedd states</span>
+                                            </div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                          <span>Visual Designer</span><br>
+                                          <span>Past : teacher</span>
+                                      </td>
+                                      <td>
+                                          <span>daniel@website.com</span><br>
+                                          <span>999 - 444 - 555</span>
+                                      </td>
+                                      <td>
+                                          <span>17 Aug 1988</span><br>
+                                          <span>12: 55 AM</span>
+                                      </td>
+                                      <td>
+                                        <select class="form-select category-select" id="exampleFormControlSelect1">
+                                          <option>Modulator</option>
+                                          <option>Admin</option>
+                                          <option>User</option>
+                                          <option>Subscriber</option>
+                                        </select>
+                                      </td>
+                                      <td>
+                                        <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
+                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td class="ps-4">4</td>
+                                      <td>
+                                        <div class="d-flex align-items-start">
+                                            <img src="../assets/images/users/4.jpg" class="rounded-circle" width="35">
+                                            <div class="ms-2">
+                                              <h5 class="font-weight-medium mb-0">Isabella Williams</h5>
+                                              <span class="text-muted">Texas, Unitedd states</span>
+                                            </div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                          <span>Visual Designer</span><br>
+                                          <span>Past : teacher</span>
+                                      </td>
+                                      <td>
+                                          <span>daniel@website.com</span><br>
+                                          <span>999 - 444 - 555</span>
+                                      </td>
+                                      <td>
+                                          <span>26 Mar 1999</span><br>
+                                          <span>10: 55 AM</span>
+                                      </td>
+                                      <td>
+                                        <select class="form-select category-select" id="exampleFormControlSelect1">
+                                          <option>Modulator</option>
+                                          <option>Admin</option>
+                                          <option>User</option>
+                                          <option>Subscriber</option>
+                                        </select>
+                                      </td>
+                                      <td>
+                                        <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
+                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td class="ps-4">5</td>
+                                      <td>
+                                        <div class="d-flex align-items-start">
+                                            <img src="../assets/images/users/5.jpg" class="rounded-circle" width="35">
+                                            <div class="ms-2">
+                                              <h5 class="font-weight-medium mb-0">Sophia Jones</h5>
+                                              <span class="text-muted">Texas, Unitedd states</span>
+                                            </div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                          <span>Visual Designer</span><br>
+                                          <span>Past : teacher</span>
+                                      </td>
+                                      <td>
+                                          <span>daniel@website.com</span><br>
+                                          <span>999 - 444 - 555</span>
+                                      </td>
+                                      <td>
+                                          <span>16 Aug 2001</span><br>
+                                          <span>10: 55 AM</span>
+                                      </td>
+                                      <td>
+                                        <select class="form-select category-select" id="exampleFormControlSelect1">
+                                          <option>Modulator</option>
+                                          <option>Admin</option>
+                                          <option>User</option>
+                                          <option>Subscriber</option>
+                                        </select>
+                                      </td>
+                                      <td>
+                                        <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
+                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td class="ps-4">6</td>
+                                      <td>
+                                        <div class="d-flex align-items-start">
+                                            <img src="../assets/images/users/6.jpg" class="rounded-circle" width="35">
+                                            <div class="ms-2">
+                                                  <h5 class="font-weight-medium mb-0">Charlotte Brown</h5>
+                                                  <span class="text-muted">Texas, Unitedd states</span>
+                                            </div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                          <span>Visual Designer</span><br>
+                                          <span>Past : teacher</span>
+                                      </td>
+                                      <td>
+                                          <span>daniel@website.com</span><br>
+                                          <span>999 - 444 - 555</span>
+                                      </td>
+                                      <td>
+                                          <span>15 Mar 1988</span><br>
+                                          <span>10: 55 AM</span>
+                                      </td>
+                                      <td>
+                                        <select class="form-select category-select" id="exampleFormControlSelect1">
+                                          <option>Modulator</option>
+                                          <option>Admin</option>
+                                          <option>User</option>
+                                          <option>Subscriber</option>
+                                        </select>
+                                      </td>
+                                      <td>
+                                        <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
+                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
