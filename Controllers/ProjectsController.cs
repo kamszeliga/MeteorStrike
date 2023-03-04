@@ -11,9 +11,12 @@ using DailyRoarBlog.Data;
 using Microsoft.AspNetCore.Identity;
 using MeteorStrike.Services;
 using MeteorStrike.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MeteorStrike.Controllers
 {
+    [Authorize]
+
     public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext _context;

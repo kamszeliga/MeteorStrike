@@ -9,9 +9,12 @@ using MeteorStrike.Data;
 using MeteorStrike.Models;
 using Microsoft.AspNetCore.Identity;
 using DailyRoarBlog.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MeteorStrike.Controllers
 {
+    [Authorize]
+
     public class TicketsController : Controller
     {
         private readonly ApplicationDbContext _context;
