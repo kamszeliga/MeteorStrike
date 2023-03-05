@@ -1,90 +1,70 @@
 ﻿@model MeteorStrike.Models.Ticket
 
+@using MeteorStrike.Services.Interfaces
+@using MeteorStrike.Services
+@using MeteorStrike.Models.Enums
+
+@inject IBTFileService _BTFileService
+
 @{
     ViewData["Title"] = "Details";
-}
+} 
 
-<h1>Details</h1>
 
-<div>
-    <h4>Ticket</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Archived)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Archived)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ArchivedByProject)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ArchivedByProject)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Project)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Project.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketPriority)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketPriority.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketType.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketStatus.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeveloperUser)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeveloperUser.FullName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SubmitterUser)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SubmitterUser.FullName)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<!-- Container fluid  -->
+            <!-- -------------------------------------------------------------- -->
+            <div class="container-fluid page-content">
+                <!-- -------------------------------------------------------------- -->
+                <!-- Start Page Content -->
+                <!-- -------------------------------------------------------------- -->
+                <!-- basic table -->
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-0">Ticket Details</h4>
+                            </div>
+                            <div class="card-body bg-extra-light">
+                                <div class="row text-center">
+                                    <div class="col-6 my-2 text-start">
+                                        <span class="badge bg-warning">@Html.DisplayFor(model => model.TicketStatus.Name)</span>
+                                    </div>
+                                    <div class="col-6 my-2">
+                                        @Html.DisplayFor(model => model.Created)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="pt-3">Updated</h5>
+                                <span>@Html.DisplayFor(model => model.Updated)</span>
+                                <h5 class="mt-4">@Html.DisplayNameFor(model => model.Project)</h5>
+                                <span>@Html.DisplayFor(model => model.Project.Description)</span>
+                                <br/>
+                                <a asp-action="Edit" asp-route-id="@Model.Id" type="button" class="mt-3 btn waves-effect waves-light btn-success">Update</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">@Html.DisplayFor(model => model.Title)</h4> 
+                                @Html.DisplayFor(model => model.Description)
+                                <div class="row">
+                                <div class="col-6"> <h5 class="pt-3">Submitted By</h5>
+                                <span>@Html.DisplayFor(model => model.SubmitterUser.FullName)</span>
+                                </div>
+                                    <div class="col-6">
+                                <div class="col-6"> <h5 class="pt-3">Developer</h5>
+                                <span>@Html.DisplayFor(model => model.DeveloperUser.FullName)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- -------------------------------------------------------------- -->
+            <!-- End Container fluid  -->
+            <!-- -------------------------------------------------------------- -->
+
