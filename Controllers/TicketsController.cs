@@ -14,6 +14,7 @@ using System.ComponentModel.Design;
 using MeteorStrike.Services.Interfaces;
 using MeteorStrike.Extentions;
 using X.PagedList;
+using System.Net.Sockets;
 
 namespace MeteorStrike.Controllers
 {
@@ -246,13 +247,22 @@ namespace MeteorStrike.Controllers
 		[ValidateAntiForgeryToken]
         public async Task<IActionResult> AddTicketComment([Bind("Id,TicketId,BTUserId,Comment,Created")] TicketComment ticketComment)
 		{
-            ModelState.Remove("Created");
+            ModelState.Remove("BTUserId");
 
 			if (ModelState.IsValid)
 			{
-				_context.Add(ticketComment);
+                BTUser? btUser = await _userManager.GetUserAsync(User);
+
+                int ticketId = ticketComment.TicketId;
+
+                ticketComment.BTUserId = btUser!.Id;
+
+                ticketComment.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
+
+                _context.Add(ticketComment);
 				await _context.SaveChangesAsync();
-				return RedirectToAction(nameof(Details));
+
+				return RedirectToAction("Details", new { id = ticketId});
 			}
 
             return RedirectToAction(nameof(Details));
