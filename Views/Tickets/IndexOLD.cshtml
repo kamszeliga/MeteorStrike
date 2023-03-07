@@ -1,101 +1,178 @@
 ﻿@model IEnumerable<MeteorStrike.Models.Ticket>
 
+@using MeteorStrike.Services.Interfaces
+@using MeteorStrike.Services
+@using MeteorStrike.Models.Enums
+
+@inject IBTFileService _BTFileService
+
 @{
-    ViewData["Title"] = "Index";
-}
+    ViewData["Title"] = "Project Index";
+}          
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Updated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Archived)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ArchivedByProject)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Project)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TicketPriority)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TicketType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TicketStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeveloperUser)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SubmitterUser)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Updated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Archived)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArchivedByProject)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Project.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketPriority.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketType.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketStatus.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubmitterUser.FullName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<!-- -------------------------------------------------------------- -->
+            <!-- Container fluid  -->
+            <!-- -------------------------------------------------------------- -->
+            <div class="container-fluid page-content">
+                <!-- -------------------------------------------------------------- -->
+                <!-- Start Page Content -->
+                <!-- -------------------------------------------------------------- -->
+                <!-- basic table -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                              <h4 class="card-title">Tickets</h4>
+                                <div class="row mt-4">
+                                    <!-- Column -->
+                                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                                        <div class="card card-hover">
+                                            <div class="p-2 rounded bg-light-primary text-center">
+                                                <h1 class="fw-light text-primary">#</h1>
+                                                <h6 class="text-primary">Total Tickets</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Column -->
+                                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                                        <div class="card card-hover">
+                                            <div class="p-2 rounded bg-light-warning text-center">
+                                                <h1 class="fw-light text-warning">#</h1>
+                                                <h6 class="text-warning">In Progress</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Column -->
+                                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                                        <div class="card card-hover">
+                                            <div class="p-2 rounded bg-light-success text-center">
+                                                <h1 class="fw-light text-success">#</h1>
+                                                <h6 class="text-success">Opened</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Column -->
+                                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                                        <div class="card card-hover">
+                                            <div class="p-2 rounded bg-light-danger text-center">
+                                                <h1 class="fw-light text-danger">#</h1>
+                                                <h6 class="text-danger">Closed</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Column -->
+                                </div>
+                                <div class="table-responsive mt-4">
+                                   <div class="row">
+                                      <div class="col-sm-12 col-md-6">
+                                         <div class="dataTables_length" id="zero_config_length">
+                                            <label>Show <select name="zero_config_length" aria-controls="zero_config" class="form-select form-select-sm mb-2">
+                                               <option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option>
+                                               </select> entries</label>
+                                          </div>
+                                       </div>
+                                      <div class="col-sm-12 col-md-6">
+                                          <div id="zero_config_filter" class="dataTables_filter">
+                                          <label>Search:<input type="search" class="form-control mb-2 form-control-sm" placeholder="" aria-controls="zero_config">
+                                          </label>
+                                      </div>
+                                      </div>
+                                   </div>
+                                    <table id="zero_config" class="table table-bordered fs-3">
+                                        <thead>
+                                            <tr role="row">
+                                                <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" 
+                                                aria-label="Title: activate to sort column ascending" style="width: 0px;">
+                                                Ticket Priority
+                                                </th>
+                                                <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" 
+                                                aria-label="Title: activate to sort column ascending" style="width: 0px;">
+                                                Title
+                                                </th>
+                                                 <th class="sorting_asc" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" aria-sort="ascending" 
+                                                aria-label="Status: activate to sort column descending" style="width: 0px;">
+                                                Created
+                                                </th>
+                                                <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" 
+                                                aria-label="Title: activate to sort column ascending" style="width: 0px;">
+                                                Updated
+                                                </th>
+                                                <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" 
+                                                aria-label="Title: activate to sort column ascending" style="width: 0px;">
+                                                Project
+                                                </th>
+                                                <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" 
+                                                aria-label="Title: activate to sort column ascending" style="width: 0px;">
+                                                Ticket Type
+                                                </th>
+                                                <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" 
+                                                aria-label="Title: activate to sort column ascending" style="width: 0px;">
+                                                Ticket Status
+                                                </th>
+                                                <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" 
+                                                aria-label="Title: activate to sort column ascending" style="width: 0px;">
+                                                Assigned Developer
+                                                </th>
+                                                <th class="sorting" tabindex="0" aria-controls="zero_config" rowspan="1" colspan="1" 
+                                                aria-label="Title: activate to sort column ascending" style="width: 0px;">
+                                                Submitted By
+                                                </th>
+                                          </thead>
+@*                                        <thead>
+                                            <tr>
+                                                <th>Ticket Priority</th>
+                                                <th>Title</th>
+                                                <th>Created</th>
+                                                <th>Updated</th>
+                                                <th>Project</th>
+                                                <th>Ticket Type</th>
+                                                <th>Ticket Status</th>
+                                                <th>Assigned Developer</th>
+                                                <th>Submitted By</th>
+                                            </tr>
+                                        </thead>*@
+                                        <tbody>
+                                @foreach (var item in Model)
+                                {
+                                                <tr>
+                                                        <td>@Html.DisplayFor(modelItem => item.TicketPriority.Name)</td>
+                                                        <td><a asp-action="Details" asp-route-id="@item.Id" class="font-weight-medium link" >@Html.DisplayFor(modelItem => item.Title)</a></td>
+                                                    <td>@Html.DisplayFor(modelItem => item.Created)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.Updated)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.Project.Name)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.TicketType.Name)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.TicketStatus.Name)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.DeveloperUser.FullName)</td>
+                                                        <td>@Html.DisplayFor(modelItem => item.SubmitterUser.FullName)</td>
+                                                        <td>
+                                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                                    </td>
+                                                </tr>
+                                }
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Ticket Priority</th>
+                                                <th>Title</th>
+                                                <th>Created</th>
+                                                <th>Updated</th>
+                                                <th>Project</th>
+                                                <th>Ticket Type</th>
+                                                <th>Ticket Status</th>
+                                                <th>Assigned Developer</th>
+                                                <th>Submitted By</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- -------------------------------------------------------------- -->
+            <!-- End Container fluid  -->
+            <!-- -------------------------------------------------------------- -->

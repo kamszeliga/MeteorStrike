@@ -1,5 +1,8 @@
-﻿@model IEnumerable<MeteorStrike.Models.Project>
+﻿@model IPagedList<MeteorStrike.Models.Project>
 
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
 @using MeteorStrike.Services.Interfaces
 @using MeteorStrike.Services
 @using MeteorStrike.Models.Enums
@@ -8,89 +11,77 @@
 
 @{
     ViewData["Title"] = "Project Index";
-}
+}           
 
-<h1>Index</h1>
-
-<img src="" />
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-@*@if (User.CompanyId == project. || User.IsInRole("Moderator") || User.IsInRole("Admin"))
-{*@
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                Image
-            </th>
-            <th>
-               @* @Html.DisplayNameFor(model => model.Archived)*@
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Company)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProjectPriority)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @*Only show those that are archived and within your company*@
-        @*@foreach (var item in (await Model.Where(p => p.Archived == false)))*@
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Created)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    <img class="detailsImage" src="@_BTFileService.ConvertByteArrayToFile(item.ImageFileData!, item.ImageFileType!,(int)DefaultImage.ProjectImage)" alt="Post Images" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Archived)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Company.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+ <!-- -------------------------------------------------------------- -->
+ <!-- Container fluid  -->
+ <!-- -------------------------------------------------------------- -->
+ <div class="container-fluid page-content">
+     <!-- -------------------------------------------------------------- -->
+     <!-- Start Page Content -->
+     <!-- -------------------------------------------------------------- -->
+     <!-- basic table -->
+     <div class="row">
+         <div class="col-12">
+             <div class="card">
+                 <div class="card-body">
+                     <h4 class="card-title">Projects</h4>
+                     <div class="table-fixed mt-4">
+                         <table id="zero_config" class="table table-bordered fs-3">
+                             <thead>
+                                 <tr>
+                                     <th>Name</th>
+                                     <th>Description</th>
+                                     <th>Created</th>
+                                     <th>Start Date</th>
+                                     <th>End Date</th>
+                                     <th>Project Priority</th>
+                                     <th>Image</th>
+                                 </tr>
+                             </thead>
+                             <tbody>
+                                  @foreach (var item in Model) {
+                                 <tr>
+                                     <td><a asp-action="Details" asp-route-id="@item.Id" class="font-weight-medium link" >@Html.DisplayFor(modelItem => item.Name)</a></td>
+                                     <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                                     <td>@Html.DisplayFor(modelItem => item.Created)</td>
+                                     <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
+                                     <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
+                                     <td>@Html.DisplayFor(modelItem => item.ProjectPriority.Name)</td>
+                                         <td><img class="projectTableImage" src="@_BTFileService.ConvertByteArrayToFile(item.ImageFileData!, item.ImageFileType!,(int)DefaultImage.ProjectImage)" alt="Post Images" /></td>
+                                     <td>
+                                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                         <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                         <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                     </td>
+                                 </tr> }
+                             </tbody>
+                             <tfoot>
+                                 <tr>
+                                     <th>Name</th>
+                                     <th>Description</th>
+                                     <th>Created</th>
+                                     <th>Start Date</th>
+                                     <th>End Date</th>
+                                     <th>Project Priority</th>
+                                     <th>Image</th>
+                                 </tr>
+                             </tfoot>
+                         </table>
+                        @Html.PagedListPager(Model, pageNum => Url.Action("Index", new {pageNum}),
+                        new PagedListRenderOptions
+                        { MaximumPageNumbersToDisplay = 3, 
+                          DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                          UlElementClasses = new string[1] { "pagination" },                        
+                          LiElementClasses = new string[] {"page-item"},                        
+                          PageClasses = new string[] {"page-link"},                    
+                         })
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+ <!-- -------------------------------------------------------------- -->
+ <!-- End Container fluid  -->
+ <!-- -------------------------------------------------------------- -->

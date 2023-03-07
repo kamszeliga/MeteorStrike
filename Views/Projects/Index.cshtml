@@ -1,5 +1,8 @@
-﻿@model IEnumerable<MeteorStrike.Models.Project>
+﻿@model IPagedList<MeteorStrike.Models.Project>
 
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
 @using MeteorStrike.Services.Interfaces
 @using MeteorStrike.Services
 @using MeteorStrike.Models.Enums
@@ -8,73 +11,57 @@
 
 @{
     ViewData["Title"] = "Project Index";
-}          
- 
+}           
 
-<!-- -------------------------------------------------------------- -->
-            <!-- Container fluid  -->
-            <!-- -------------------------------------------------------------- -->
-            <div class="container-fluid page-content">
-                <!-- -------------------------------------------------------------- -->
-                <!-- Start Page Content -->
-                <!-- -------------------------------------------------------------- -->
-                <!-- basic table -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Projects</h4>
-                                <div class="table-fixed mt-4">
-                                    <table id="zero_config" class="table table-bordered fs-3">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Description</th>
-                                                <th>Created</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                                <th>Company</th>
-                                                <th>Project Priority</th>
-                                                <th>Image</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                             @foreach (var item in Model) {
-                                            <tr>
-                                                <td><a asp-action="Details" asp-route-id="@item.Id" class="font-weight-medium link" >@Html.DisplayFor(modelItem => item.Name)</a></td>
-                                                <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                                                <td>@Html.DisplayFor(modelItem => item.Created)</td>
-                                                <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
-                                                <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
-                                                <td>@Html.DisplayFor(modelItem => item.Company.Name)</td>
-                                                <td>@Html.DisplayFor(modelItem => item.ProjectPriority.Name)</td>
-                                                    <td><img class="projectTableImage" src="@_BTFileService.ConvertByteArrayToFile(item.ImageFileData!, item.ImageFileType!,(int)DefaultImage.ProjectImage)" alt="Post Images" /></td>
-                                                <td>
-                                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                                </td>
-                                            </tr> }
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Description</th>
-                                                <th>Created</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                                <th>Company</th>
-                                                <th>Project Priority</th>
-                                                <th>Image</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
+ <!-- -------------------------------------------------------------- -->
+ <!-- Container fluid  -->
+ <!-- -------------------------------------------------------------- -->
+ <div class="container-fluid page-content">
+     <!-- -------------------------------------------------------------- -->
+     <!-- Start Page Content -->
+     <!-- -------------------------------------------------------------- -->
+     <!-- basic table -->
+     <div class="container-fluid row">
+         <div class="col-12">
+             <div class="card">
+                 <div class="card-body">
+                     <h4 class="card-title">Projects</h4>
+                     <div class="row">
+                         <div class="card-group">
+                             @foreach (var item in Model) {
+                             <div class="card roundedCorners h-100 border m-2 rounded- " style="width: 25rem;">
+                                  <img class="card-img-top" src="@_BTFileService.ConvertByteArrayToFile(item.ImageFileData!, item.ImageFileType!,(int)DefaultImage.ProjectImage)" alt="Card image cap">
+                                  <div class="card-body h-100">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="card-title"> @Html.DisplayFor(modelItem => item.Name)</a>
+                                        <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                                  </div>
+                                  <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">@Html.DisplayFor(modelItem => item.ProjectPriority.Name)</li>
+                                        <li class="list-group-item">@Html.DisplayFor(modelItem => item.Created)</li>
+                                        <li class="list-group-item">@Html.DisplayFor(modelItem => item.StartDate) - @Html.DisplayFor(modelItem => item.EndDate)</li>
+                                  </ul>
+                                  <div class="card-footer">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="mdi mdi-pencil text-success"></a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="mdi mdi-note-text"></a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="mdi mdi-delete text-danger"></a>
+                                  </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- -------------------------------------------------------------- -->
-            <!-- End Container fluid  -->
-            <!-- -------------------------------------------------------------- -->
+                                }
+                         </div>
+                        @Html.PagedListPager(Model, pageNum => Url.Action("Index", new {pageNum}),
+                        new PagedListRenderOptions
+                        { MaximumPageNumbersToDisplay = 3, 
+                          DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                          UlElementClasses = new string[1] { "pagination" },                        
+                          LiElementClasses = new string[] {"page-item"},                        
+                          PageClasses = new string[] {"page-link"},                    
+                         })
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+ <!-- -------------------------------------------------------------- -->
+ <!-- End Container fluid  -->
+ <!-- -------------------------------------------------------------- -->

@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity;
 using MeteorStrike.Services;
 using MeteorStrike.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using MeteorStrike.Extentions;
+using X.PagedList;
 
 namespace MeteorStrike.Controllers
 {
@@ -22,19 +24,30 @@ namespace MeteorStrike.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTFileService _fileService;
+        private readonly IBTProjectService _btProjectService;
 
-        public ProjectsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTFileService fileService)
+        public ProjectsController(ApplicationDbContext context, 
+                                  UserManager<BTUser> userManager, 
+                                  IBTFileService fileService,
+                                  IBTProjectService btProjectService)
         {
             _context = context;
             _userManager = userManager;
             _fileService = fileService;
+            _btProjectService = btProjectService;
         }
 
         // GET: Projects
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNum)
         {
-            var applicationDbContext = _context.Projects.Include(p => p.Company).Include(p => p.ProjectPriority);
-            return View(await applicationDbContext.ToListAsync());
+            int pageSize = 6; 
+            int page = pageNum ?? 1; 
+
+            int companyId = User.Identity!.GetCompanyId();
+
+            IPagedList<Project> projects = (await _btProjectService.GetProjectsAsync(companyId)).ToPagedList(page, pageSize);
+
+            return View(projects);
         }
 
         // GET: Projects/Details/5
@@ -45,10 +58,10 @@ namespace MeteorStrike.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Projects
-                .Include(p => p.Company)
-                .Include(p => p.ProjectPriority)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            int companyId = User.Identity!.GetCompanyId();
+
+            Project? project = await _btProjectService.GetProjectAsync(companyId, id.Value);
+
             if (project == null)
             {
                 return NotFound();
@@ -58,9 +71,12 @@ namespace MeteorStrike.Controllers
         }
 
         // GET: Projects/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name");
+            IEnumerable<ProjectPriority> priorities = await _btProjectService.GetProjectPriorityAsync();
+
+            ViewData["ProjectPriorityId"] = new SelectList(priorities, "Id", "Name");
+
             return View();
         }
 
@@ -92,12 +108,14 @@ namespace MeteorStrike.Controllers
                     project.ImageFileType = project.ImageFormFile.ContentType;
                 }
 
-                _context.Add(project);
-                await _context.SaveChangesAsync();
+                await _btProjectService.AddProjectAsync(project);
+
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
+            IEnumerable<ProjectPriority> priorities = await _btProjectService.GetProjectPriorityAsync();
+
+            ViewData["ProjectPriorityId"] = new SelectList(priorities, "Id", "Name");
 
             return View(project);
         }
@@ -105,18 +123,24 @@ namespace MeteorStrike.Controllers
         // GET: Projects/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Projects == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var project = await _context.Projects.FindAsync(id);
+            int companyId = User.Identity!.GetCompanyId();
+
+            var project = await _btProjectService.GetProjectAsync(companyId, id.Value);
+
             if (project == null)
             {
                 return NotFound();
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name", project.ProjectPriorityId);
+
+            IEnumerable<ProjectPriority> priorities = await _btProjectService.GetProjectPriorityAsync();
+
+            ViewData["ProjectPriorityId"] = new SelectList(priorities, "Id", "Name");
+
             return View(project);
         }
 
@@ -151,12 +175,11 @@ namespace MeteorStrike.Controllers
                         project.ImageFileType = project.ImageFormFile.ContentType;
                     }
 
-                    _context.Update(project);
-                    await _context.SaveChangesAsync();
+                    await _btProjectService.UpdateProjectAsync(project);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProjectExists(project.Id))
+                    if (!_btProjectService.ProjectExists(project.Id))
                     {
                         return NotFound();
                     }
@@ -167,53 +190,56 @@ namespace MeteorStrike.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name", project.ProjectPriorityId);
+
+            IEnumerable<ProjectPriority> priorities = await _btProjectService.GetProjectPriorityAsync();
+
+            ViewData["ProjectPriorityId"] = new SelectList(priorities, "Id", "Name");            
+            
             return View(project);
         }
 
         // GET: Projects/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Projects == null)
+            try
             {
-                return NotFound();
+                int companyId = User.Identity!.GetCompanyId();
+
+                Project? project = await _btProjectService.GetProjectAsync(companyId, id.Value);
+
+                await _btProjectService.ArchiveProjectAsync(project);
+
+                return RedirectToAction(nameof(Index)); 
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
 
-            var project = await _context.Projects
-                .Include(p => p.Company)
-                .Include(p => p.ProjectPriority)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (project == null)
-            {
-                return NotFound();
-            }
-
-            return View(project);
         }
 
         // POST: Projects/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Projects == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Projects'  is null.");
-            }
-            var project = await _context.Projects.FindAsync(id);
-            if (project != null)
-            {
-               project.Archived = true;
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    if (_context.Projects == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-        private bool ProjectExists(int id)
-        {
-          return (_context.Projects?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        //    int companyId = User.Identity!.GetCompanyId();
+
+        //    Project? project = await _btProjectService.GetProjectAsync(companyId, id);
+
+        //    if (project != null)
+        //    {
+        //        project.Archived = true;
+        //    }
+
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
     }
 }

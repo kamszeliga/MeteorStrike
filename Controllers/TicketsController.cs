@@ -10,6 +10,10 @@ using MeteorStrike.Models;
 using Microsoft.AspNetCore.Identity;
 using DailyRoarBlog.Data;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.Design;
+using MeteorStrike.Services.Interfaces;
+using MeteorStrike.Extentions;
+using X.PagedList;
 
 namespace MeteorStrike.Controllers
 {
@@ -19,18 +23,39 @@ namespace MeteorStrike.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
+        private readonly IBTTicketService _btTicketService;
 
-        public TicketsController(ApplicationDbContext context, UserManager<BTUser> userManager)
+        public TicketsController(ApplicationDbContext context,
+                                 UserManager<BTUser> userManager,
+                                 IBTTicketService btTicketService)
         {
             _context = context;
             _userManager = userManager;
-        }
+            _btTicketService = btTicketService;
 
+        }
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Tickets.Include(t => t.DeveloperUser).Include(t => t.Project).Include(t => t.SubmitterUser).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
+            var applicationDbContext = _context.Tickets.Where(p => p.Archived == false)
+                                                       .Include(t => t.DeveloperUser)
+                                                       .Include(t => t.Project)
+                                                       .Include(t => t.SubmitterUser)
+                                                       .Include(t => t.TicketPriority)
+                                                       .Include(t => t.TicketStatus)
+                                                       .Include(t => t.TicketType);
+
             return View(await applicationDbContext.ToListAsync());
+
+            //int pageSize = 6;
+
+            //int page = pageNum ?? 1;
+
+            //int companyId = User.Identity!.GetCompanyId();
+
+            //IPagedList<Ticket> tickets = (await _btTicketService.GetTicketsAsync(companyId)).ToPagedList(page, pageSize);
+
+            //return View(tickets);
         }
 
         // GET: Tickets/Details/5
@@ -49,6 +74,7 @@ namespace MeteorStrike.Controllers
                 .Include(t => t.TicketStatus)
                 .Include(t => t.TicketType)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (ticket == null)
             {
                 return NotFound();
@@ -89,6 +115,8 @@ namespace MeteorStrike.Controllers
 
                 //Created Date
                 ticket.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
+
+                ticket.Updated = DataUtility.GetPostGresDate(DateTime.UtcNow);
 
                 ticket.TicketStatusId = 1;
 
@@ -207,16 +235,35 @@ namespace MeteorStrike.Controllers
             var ticket = await _context.Tickets.FindAsync(id);
             if (ticket != null)
             {
-                _context.Tickets.Remove(ticket);
+                ticket.Archived = true;
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TicketExists(int id)
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddTicketComment([Bind("Id,TicketId,BTUserId,Comment,Created")] TicketComment ticketComment)
+		{
+            ModelState.Remove("Created");
+
+			if (ModelState.IsValid)
+			{
+				_context.Add(ticketComment);
+				await _context.SaveChangesAsync();
+				return RedirectToAction(nameof(Details));
+			}
+
+            return RedirectToAction(nameof(Details));
+		}
+
+
+		private bool TicketExists(int id)
         {
           return (_context.Tickets?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+
     }
 }
