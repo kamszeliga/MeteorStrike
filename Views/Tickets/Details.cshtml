@@ -12,85 +12,111 @@
 
 
 <!-- Container fluid  -->
-            <!-- -------------------------------------------------------------- -->
-            <div class="container-fluid page-content">
-                <!-- -------------------------------------------------------------- -->
-                <!-- Start Page Content -->
-                <!-- -------------------------------------------------------------- -->
-                <!-- basic table -->
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title mb-0">Ticket Details</h4>
-                            </div>
-                            <div class="card-body bg-extra-light">
-                                <div class="row text-center">
-                                    <div class="col-6 my-2 text-start">
-                                        <span class="badge bg-warning">@Html.DisplayFor(model => model.TicketStatus.Name)</span>
-                                    </div>
-                                    <div class="col-6 my-2">
-                                        @Html.DisplayFor(model => model.Created)
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="pt-3">Updated</h5>
-                                <span>@Html.DisplayFor(model => model.Updated)</span>
-                                <h5 class="mt-4">@Html.DisplayNameFor(model => model.Project)</h5>
-                                <span>@Html.DisplayFor(model => model.Project.Description)</span>
-                                <br/>
-                                <a asp-action="Edit" asp-route-id="@Model.Id" type="button" class="mt-3 btn waves-effect waves-light btn-success">Update</a>
-                            </div>
+   <!-- -------------------------------------------------------------- -->
+   <div class="container-fluid page-content">
+       <!-- -------------------------------------------------------------- -->
+       <!-- Start Page Content -->
+       <!-- -------------------------------------------------------------- -->
+       <!-- basic table -->
+       <div class="row">
+         <div class="col-lg-4">
+               <div class="card">
+                   <div class="card-body">
+                       <h4 class="card-title mb-0">Ticket Details</h4>
+                   </div>
+                   <div class="card-body bg-extra-light">
+                       <div class="row text-center">
+                           <div class="col-6 my-2 text-start">
+                               <span class="badge bg-warning">@Html.DisplayFor(model => model.TicketStatus.Name)</span>
+                           </div>
+                           <div class="col-6 my-2">
+                               @Html.DisplayFor(model => model.Created)
+                           </div>
+                       </div>
+                   </div>
+                   <div class="card-body">
+                       <h5 class="pt-3">Updated</h5>
+                       <span>@Html.DisplayFor(model => model.Updated)</span>
+                       <h5 class="mt-4">@Html.DisplayNameFor(model => model.Project)</h5>
+                       <span>@Html.DisplayFor(model => model.Project.Description)</span>
+					   <br/>
+					   <div class="text-end">
+                       <a asp-action="Edit" asp-route-id="@Model.Id" type="button" class="mt-3 btn waves-effect waves-light btn-success">Update</a>
+					   </div>
+                   </div>
+               </div>
+           </div>
+
+         <div class="col-lg-8">
+               <div class="card">
+                  <div class="card-body">
+                       <h4 class="card-title">@Html.DisplayFor(model => model.Title)</h4> 
+                       @Html.DisplayFor(model => model.Description)
+                       <div class="row">
+                       <div class="col-6"> <h5 class="pt-3">Submitted By</h5>
+                       <span>@Html.DisplayFor(model => model.SubmitterUser.FullName)</span>
+                       </div>
+                           <div class="col-6">
+                       <div class="col-6"> <h5 class="pt-3">Developer</h5>
+                       <span>@Html.DisplayFor(model => model.DeveloperUser.FullName)</span>
                         </div>
+                       </div>
+		             </div>
+		             </div>
                     </div>
 
-                    <div class="col-lg-8">
-                        <div class="card">
-                           <div class="card-body">
-                                <h4 class="card-title">@Html.DisplayFor(model => model.Title)</h4> 
-                                @Html.DisplayFor(model => model.Description)
-                                <div class="row">
-                                <div class="col-6"> <h5 class="pt-3">Submitted By</h5>
-                                <span>@Html.DisplayFor(model => model.SubmitterUser.FullName)</span>
-                                </div>
-                                    <div class="col-6">
-                                <div class="col-6"> <h5 class="pt-3">Developer</h5>
-                                <span>@Html.DisplayFor(model => model.DeveloperUser.FullName)</span>
-                                    </div>
-                                </div>
-							 </div>
-							 </div>
-								 <div class="card-body">
-
-                                <!-- Start Comment Respond  -->
-								<div class="row">
-                                <div class="comment-respond">
-                                  <h4 class="title">Post a comment</h4>
-                                   <form asp-action="AddTicketComment" asp-controller="Tickets" method="post">
-                                     @*Get Ticket ID*@
-                                      <input type="hidden" asp-for="Id" name="TicketId"/>
-                                      <div class="col-12">
-                                         <div class="form-group">
-                                             <textarea id="message" name="Comment"></textarea>
-                                         </div>
-                                      </div>
-                                      <div class="col-lg-12">
-                                         <div class="form-submit">
-											 <input type="submit" class="mt-3 btn waves-effect waves-light btn-success" value="Post Comment">
-                                         </div>
-                                      </div>
-                                   </form>
-                                </div>
-								</div>
-                                <!-- End Comment Respond  -->
-
-                                </div>
-                                </div>
-                                </div>
-                                <!-- -------------------------------------------------------------- -->
-                                <!-- End Container fluid  -->
-                                <!-- -------------------------------------------------------------- -->
+		       <div class="card">
+		      	 <div class="card-body">
+                          <!-- Start Comment Area  -->
+                    <div class="axil-comment-area">
+		      
+                      @*# of comments on blog post*@
+		      
+                          <h4 class="title">@Model.Comments.Count comments</h4>
+		      
+                          <ul class="comment-list">
+                          @foreach (TicketComment comment in Model.Comments)
+                          {
+                                 <!-- Start Single Comment  -->
+                                 <li class="comment">
+                                     <h6 class="commenter">
+		      		  <span data-text="@comment.BTUser?.FullName">@comment.BTUser?.FullName</span> • @comment.Created.ToString("MMM dd, yyyy")
+                                     </h6>
+                                     <div class="">
+                                         <p class="">@Html.Raw(comment.Comment)</p>
+                                     </div>
+                                   <hr/>
+                                 </li>
+                              <!-- End Single Comment  --> }
+                            </ul>
+                           </div>
+                          <!-- End Comment Area  -->
+		      
+                          <!-- Start Comment Respond  -->
+                    <div class="comment-respond">
+                            <h4 class="title">Post a comment</h4>
+                             <form asp-action="AddTicketComment" asp-controller="Tickets" method="post">
+                               @*Get Ticket ID*@
+                                <input type="hidden" asp-for="Id" name="TicketId"/>
+                                   <div class="form-group">
+                                       <textarea class="w-100" id="message" name="Comment"></textarea>
+                                   </div>
+                                <div class="col-lg-12">
+                                   <div class="form-submit cerchio text-end">
+                                       <button type="submit" class="mt-1 btn waves-effect waves-light btn-info" value="Post Comment">Post Comment</button>
+                                   </div>
+                                  </div>
+                             </form>
+                          </div>
+                          <!-- End Comment Respond  -->
+		      
+                          </div>
+                          </div>
+                          </div>
+                          <!-- -------------------------------------------------------------- -->
+                          <!-- End Container fluid  -->
+                          <!-- -------------------------------------------------------------- -->
+			</div>
 
 <div>
 	<div classxfont-weighteighteightgetainer-fluid">

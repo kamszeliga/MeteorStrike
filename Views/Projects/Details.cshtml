@@ -5,6 +5,7 @@
 @using MeteorStrike.Models.Enums
 
 @inject IBTFileService _BTFileService
+@inject IBTProjectService _BTProjectService
 
 @{
     ViewData["Title"] = "Details";
@@ -31,17 +32,28 @@
                              <span class="badge bg-warning">@Html.DisplayFor(model => model.ProjectPriority.Name)</span>
                          </div>
                          <div class="col-6 my-2">
-                 @Html.DisplayFor(model => model.StartDate) -  @Html.DisplayFor(model => model.EndDate)
+                            @Model.StartDate.ToString("MMM dd, yyyy") -  @Model.EndDate.ToString("MMM dd, yyyy")
                          </div>
                      </div>
                  </div>
                  <div class="card-body">
-                     <h5 class="pt-3">Created</h5>
-                     <span>@Html.DisplayFor(model => model.Created)</span>
-                     <h5 class="mt-4">Company</h5>
-                     <span>@Html.DisplayFor(model => model.Company.Name)</span>
+                     <div class="row">
+                         <div class="col-md-6 col-12">
+                           <h5 class="mt-4">Project Manager</h5>
+                           <span>@((await _BTProjectService.GetProjectManagerAsync(Model.Id))?.FullName ?? "Unassigned")</span>
+                           <h5 class="pt-3">Created</h5>
+                           <span>@Model.Created.ToString("MMM dd, yyyy")</span>
+                           </div>
+
+                        <div class="col-md-6 col-12">
+                           <h5 class="mt-4">Company</h5>
+                           <span>@Html.DisplayFor(model => model.Company.Name)</span>                     
+                        </div>
+                     </div>
                      <br/>
                      <a asp-action="Edit" asp-route-id="@Model.Id" type="button" class="mt-3 btn waves-effect waves-light btn-success">Update</a>
+                     @if (User.IsInRole("Admin")){
+                     <a asp-action="AssignPM" asp-route-id="@Model.Id" type="button" class="mt-3 btn waves-effect waves-light btn-success">Assign Project Manager</a>}
                  </div>
              </div>
          </div>

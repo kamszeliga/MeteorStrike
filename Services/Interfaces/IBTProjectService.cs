@@ -21,6 +21,23 @@ namespace MeteorStrike.Services.Interfaces
 
         public bool ProjectExists(int projectId);
 
+        //------------------------------------------------------------
 
-    }
+        public Task<bool> AddMemberToProjectAsync(BTUser? member, int? projectId);
+
+        public Task<bool> AddProjectManagerAsync(string? userId, int? projectId);
+
+        public Task<Project> GetProjectByIdAsync(int? projectId, int? companyId);
+
+        public Task<BTUser> GetProjectManagerAsync(int? projectId);
+
+
+        public Task RemoveProjectManagerAsync(int? projectId);
+
+        public Task<bool> RemoveMemberFromProjectAsync(BTUser? member, int? projectId);
+
+
+
+
+	}
 }

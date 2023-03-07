@@ -14,6 +14,9 @@ using MeteorStrike.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using MeteorStrike.Extentions;
 using X.PagedList;
+using MeteorStrike.Models.ViewModels;
+using MeteorStrike.Models.Enums;
+using System.Collections;
 
 namespace MeteorStrike.Controllers
 {
@@ -25,16 +28,72 @@ namespace MeteorStrike.Controllers
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTFileService _fileService;
         private readonly IBTProjectService _btProjectService;
+        private readonly IBTRolesService _btRolesService;  
 
-        public ProjectsController(ApplicationDbContext context, 
-                                  UserManager<BTUser> userManager, 
+        public ProjectsController(ApplicationDbContext context,
+                                  UserManager<BTUser> userManager,
                                   IBTFileService fileService,
-                                  IBTProjectService btProjectService)
+                                  IBTProjectService btProjectService,
+                                  IBTRolesService btRolesService)
         {
             _context = context;
             _userManager = userManager;
             _fileService = fileService;
             _btProjectService = btProjectService;
+            _btRolesService = btRolesService;
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        // GET: Assign Project Manager
+        public async Task<IActionResult> AssignPM(int? id) 
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            int companyId = User.Identity!.GetCompanyId();
+
+            IEnumerable<BTUser> projectManagers = await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.ProjectManager), companyId);
+
+            BTUser? currentPM = await _btProjectService.GetProjectManagerAsync(id);
+
+            AssignPMViewModel viewModel = new()
+            {
+                Project = await _btProjectService.GetProjectByIdAsync(id, companyId),
+                PMList = new SelectList(projectManagers, "Id", "FullName",currentPM?.Id),
+                PMId = currentPM?.Id
+            };
+
+            return View(viewModel); 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        //POST: Assign Project Manager
+        public async Task<IActionResult> AssignPM(AssignPMViewModel viewModel) 
+        {
+            if (!string.IsNullOrEmpty(viewModel.PMId)) 
+            {
+                await _btProjectService.AddProjectManagerAsync(viewModel.PMId, viewModel.Project?.Id);
+
+                return RedirectToAction("Details", new { id = viewModel.Project?.Id});
+            }
+
+            ModelState.AddModelError("PMId", "No Project Manager selected. Please select a PM!");
+
+            int companyId = User.Identity!.GetCompanyId();
+
+            IEnumerable<BTUser> projectManagers = await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.ProjectManager), companyId);
+            BTUser? currentPM = await _btProjectService.GetProjectManagerAsync(viewModel.Project?.Id);
+            viewModel.Project = await _btProjectService.GetProjectByIdAsync(viewModel.Project?.Id, companyId);
+            viewModel.PMList = new SelectList(projectManagers, "Id", "FullName", currentPM?.Id);
+            viewModel.PMId= currentPM?.Id;
+
+            return View(viewModel);
+
         }
 
         // GET: Projects
@@ -53,7 +112,7 @@ namespace MeteorStrike.Controllers
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Projects == null)
+            if (id == null)
             {
                 return NotFound();
             }

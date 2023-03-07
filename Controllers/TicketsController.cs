@@ -71,6 +71,7 @@ namespace MeteorStrike.Controllers
                 .Include(t => t.DeveloperUser)
                 .Include(t => t.Project)
                 .Include(t => t.SubmitterUser)
+                .Include(t => t.Comments)
                 .Include(t => t.TicketPriority)
                 .Include(t => t.TicketStatus)
                 .Include(t => t.TicketType)
@@ -238,19 +239,19 @@ namespace MeteorStrike.Controllers
             {
                 ticket.Archived = true;
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddTicketComment([Bind("Id,TicketId,BTUserId,Comment,Created")] TicketComment ticketComment)
-		{
+        {
             ModelState.Remove("BTUserId");
 
-			if (ModelState.IsValid)
-			{
+            if (ModelState.IsValid)
+            {
                 BTUser? btUser = await _userManager.GetUserAsync(User);
 
                 int ticketId = ticketComment.TicketId;
@@ -260,18 +261,18 @@ namespace MeteorStrike.Controllers
                 ticketComment.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
 
                 _context.Add(ticketComment);
-				await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
-				return RedirectToAction("Details", new { id = ticketId});
-			}
+                return RedirectToAction("Details", new { id = ticketId });
+            }
 
             return RedirectToAction(nameof(Details));
-		}
+        }
 
 
-		private bool TicketExists(int id)
+        private bool TicketExists(int id)
         {
-          return (_context.Tickets?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Tickets?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
 
