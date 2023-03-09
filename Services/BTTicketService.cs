@@ -29,10 +29,30 @@ namespace MeteorStrike.Services
             throw new NotImplementedException();
         }
 
-        public Task<Ticket> GetTicketAsync(int ticketId)
+        public async Task<Ticket> GetTicketAsync(int? ticketId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _context.Tickets
+                                     .Include(t => t.DeveloperUser)
+                                     .Include(t => t.SubmitterUser)
+                                     .Include(t => t.Project)
+                                     .Include(t => t.TicketPriority)
+                                     .Include(t => t.TicketStatus)
+                                     .Include(t => t.TicketType)
+                                     .Include(t => t.Comments)
+                                     .Include(t => t.Attachments)
+                                     .Include(t => t.History)
+                                     .FirstOrDefaultAsync(t => t.Id == ticketId);
+                                     
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
+       
         public async Task<IEnumerable<Ticket>> GetTicketsAsync(int projectId)
         {
             try
@@ -60,5 +80,23 @@ namespace MeteorStrike.Services
         {
             throw new NotImplementedException();
         }
-    }
+
+
+		//-------------------------------------------------
+
+		public async Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment)
+		{
+			try
+			{
+				await _context.AddAsync(ticketAttachment);
+				await _context.SaveChangesAsync();
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+
+	}
 }

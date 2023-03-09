@@ -6,7 +6,7 @@ namespace MeteorStrike.Services.Interfaces
     {
         public Task AddTicketAsync(Ticket ticket);
 
-        public Task<Ticket> GetTicketAsync(int ticketId);
+        public Task<Ticket> GetTicketAsync(int? ticketId);
 
         public Task<IEnumerable<Ticket>> GetTicketsAsync(int projectId);
 
@@ -15,6 +15,9 @@ namespace MeteorStrike.Services.Interfaces
         public Task UpdateTicketAsync(Ticket ticket);
 
 
+		//-------------------------------------------------
 
-    }
+		public Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment);
+
+	}
 }

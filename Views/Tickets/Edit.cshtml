@@ -48,7 +48,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group mb-3">
-                                                   <label asp-for="TicketTypeId" class="control-label"></label>
+                                                   <label asp-for="TicketTypeId" class="control-label">Ticket Type</label>
                                                    <select asp-for="TicketTypeId" class="form-control" asp-items="ViewBag.TicketTypeId"></select>
                                                    <span asp-validation-for="TicketTypeId" class="text-danger"></span>
                                                 </div>
@@ -56,7 +56,7 @@
                                             <!--/span-->
                                             <div class="col-md-6">
                                                 <div class="form-group mb-3">
-                                                   <label asp-for="TicketStatusId" class="control-label"></label>
+                                                   <label asp-for="TicketStatusId" class="control-label">Status</label>
                                                    <select asp-for="TicketStatusId" class="form-control" asp-items="ViewBag.TicketStatusId"></select>
                                                    <span asp-validation-for="TicketStatusId" class="text-danger"></span>
                                                 </div>
@@ -68,7 +68,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group mb-3">
-                                                   <label asp-for="TicketPriorityId" class="control-label"></label>
+                                                   <label asp-for="TicketPriorityId" class="control-label">Priority</label>
                                                    <select asp-for="TicketPriorityId" class="form-control" asp-items="ViewBag.TicketPriorityId"></select>
                                                    <span asp-validation-for="TicketPriorityId" class="text-danger"></span>
                                                 </div>
@@ -76,7 +76,7 @@
                                             <!--/span-->
                                             <div class="col-md-6">
                                                 <div class="form-group mb-3">
-                                                   <label asp-for="DeveloperUserId" class="control-label"></label>
+                                                   <label asp-for="DeveloperUserId" class="control-label">Assigned Developer</label>
                                                    <select asp-for="DeveloperUserId" class="form-control" asp-items="ViewBag.DeveloperUserId"></select>
                                                    <span asp-validation-for="DeveloperUserId" class="text-danger"></span>
                                                 </div>
@@ -84,15 +84,15 @@
                                             <!--/span-->
                                         </div>
                                         <!--/row-->
-                                        <div class="row">
+@*                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group mb-3">
-                                                  <label asp-for="TicketPriorityId" class="control-label"></label>
+                                                  <label asp-for="TicketPriorityId" class="control-label">Priority</label>
                                                   <select asp-for="TicketPriorityId" class ="form-control" asp-items="ViewBag.TicketPriorityId"></select>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--/span-->
+                                            <!--/span-->*@
                                     <div class="form-actions">
                                         <button type="submit" value="create" class="btn btn-success rounded-pill px-4"> Save</button>
 

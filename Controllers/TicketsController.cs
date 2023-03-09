@@ -15,6 +15,9 @@ using MeteorStrike.Services.Interfaces;
 using MeteorStrike.Extentions;
 using X.PagedList;
 using System.Net.Sockets;
+using MeteorStrike.Services;
+using MeteorStrike.Models.Enums;
+using MeteorStrike.Models.ViewModels;
 
 namespace MeteorStrike.Controllers
 {
@@ -24,16 +27,21 @@ namespace MeteorStrike.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
+        private readonly IBTFileService _btFileService;
         private readonly IBTTicketService _btTicketService;
+        private readonly IBTRolesService _btRolesService;
 
         public TicketsController(ApplicationDbContext context,
-                                 UserManager<BTUser> userManager,
-                                 IBTTicketService btTicketService)
+                                  UserManager<BTUser> userManager,
+                                  IBTFileService btFileService,
+                                  IBTTicketService btTicketService,
+                                  IBTRolesService btRolesService)
         {
             _context = context;
             _userManager = userManager;
+            _btFileService = btFileService;
             _btTicketService = btTicketService;
-
+            _btRolesService = btRolesService;
         }
         // GET: Tickets
         public async Task<IActionResult> Index()
@@ -84,6 +92,70 @@ namespace MeteorStrike.Controllers
 
             return View(ticket);
         }
+
+
+        [HttpGet]
+        [Authorize(Roles = "Admin, ProjectManager")]
+        //GET: Assign Project Members
+        public async Task<IActionResult> AssignTicketMember(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            int companyId = User.Identity!.GetCompanyId();
+
+            Ticket ticket = await _btTicketService.GetTicketAsync(id);
+
+            List<BTUser> developers = await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.Developer), companyId);
+
+            string? currentDeveloperId = ticket.DeveloperUser?.Id;
+
+            TicketMemberViewModel viewModel = new()
+            {
+                Ticket = ticket,
+                UserList = new SelectList(developers, "Id", "FullName", currentDeveloperId),
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, ProjectManager")]
+        //POST: Assign Project Members
+        //public async Task<IActionResult> AssignProjectMembers(ProjectMembersViewModel viewModel)
+        //{
+        //    int companyId = User.Identity!.GetCompanyId();
+
+        //    if (viewModel.SelectedMembers != null)
+        //    {
+        //        //Remove current members
+        //        await _btProjectService.RemoveMembersFromProjectAsync(viewModel.Project!.Id, companyId);
+
+        //        //Add newly selected members
+        //        await _btProjectService.AddMembersToProjectAsync(viewModel.SelectedMembers, viewModel.Project!.Id, companyId);
+
+        //        return RedirectToAction(nameof(Details), new { id = viewModel.Project!.Id });
+        //    }
+
+        //    ModelState.AddModelError("SelectedMembers", "No Users selected. Please select some Users.");
+
+        //    //Reset the form
+        //    viewModel.Project = await _btProjectService.GetProjectByIdAsync(viewModel.Project!.Id, companyId);
+        //    List<string> currentMembers = viewModel.Project.Members.Select(m => m.Id).ToList();
+
+        //    List<BTUser> submitters = await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.Submitter), companyId);
+        //    List<BTUser> developers = await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.Developer), companyId);
+        //    List<BTUser> userList = submitters.Concat(developers).ToList();
+
+        //    viewModel.UserList = new MultiSelectList(userList, "Id", "FullName", currentMembers);
+
+        //    return View(viewModel);
+
+        //}
+
 
         // GET: Tickets/Create
         public async Task<IActionResult> Create()
@@ -275,6 +347,33 @@ namespace MeteorStrike.Controllers
             return (_context.Tickets?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> AddTicketAttachment([Bind("Id,FormFile,Description,TicketId")] TicketAttachment ticketAttachment)
+		{
+			string statusMessage;
 
-    }
+			if (ModelState.IsValid && ticketAttachment.FormFile != null)
+            {
+				ticketAttachment.FileData = await _btFileService.ConvertFileToByteArrayAsync(ticketAttachment.FormFile);
+				ticketAttachment.FileType = ticketAttachment.FormFile.ContentType;
+
+				ticketAttachment.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
+				ticketAttachment.BTUserId = _userManager.GetUserId(User);
+
+				await _btTicketService.AddTicketAttachmentAsync(ticketAttachment);
+				statusMessage = "Success: New attachment added to Ticket.";
+			}
+			else
+			{
+				statusMessage = "Error: Invalid data.";
+
+			}
+
+			return RedirectToAction("Details", new { id = ticketAttachment.TicketId, message = statusMessage });
+		}
+
+
+
+	}
 }
