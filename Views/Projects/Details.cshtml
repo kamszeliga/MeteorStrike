@@ -41,19 +41,29 @@
                          <div class="col-md-6 col-12">
                            <h5 class="mt-4">Project Manager</h5>
                            <span>@((await _BTProjectService.GetProjectManagerAsync(Model.Id))?.FullName ?? "Unassigned")</span>
-                           <h5 class="pt-3">Created</h5>
-                           <span>@Model.Created.ToString("MMM dd, yyyy")</span>
+                           <h5 class="pt-3">Members</h5>
+                           <ul>@foreach(BTUser member in Model.Members)
+                                {<li>
+                                    @member.FullName
+                                </li>}
+                           </ul>
                            </div>
 
                         <div class="col-md-6 col-12">
                            <h5 class="mt-4">Company</h5>
-                           <span>@Html.DisplayFor(model => model.Company.Name)</span>                     
+                           <span>@Html.DisplayFor(model => model.Company.Name)</span>   
+                           <h5 class="pt-3">Created</h5>
+                           <span>@Model.Created.ToString("MMM dd, yyyy")</span>
                         </div>
                      </div>
                      <br/>
-                     <a asp-action="Edit" asp-route-id="@Model.Id" type="button" class="mt-3 btn waves-effect waves-light btn-success">Update</a>
+                     <a asp-action="Edit" asp-route-id="@Model.Id" type="button" class="mt-2 btn waves-effect waves-light btn-success">Update</a>
+
                      @if (User.IsInRole("Admin")){
-                     <a asp-action="AssignPM" asp-route-id="@Model.Id" type="button" class="mt-3 btn waves-effect waves-light btn-success">Assign Project Manager</a>}
+                     <a asp-action="AssignPM" asp-route-id="@Model.Id" type="button" class="mt-2 btn waves-effect waves-light btn-info">Assign Project Manager</a>}
+
+                     @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin")){
+                     <a asp-action="AssignProjectMembers" asp-route-id="@Model.Id" type="button" class="mt-2 btn waves-effect waves-light btn-info">Assign Members</a>}
                  </div>
              </div>
          </div>

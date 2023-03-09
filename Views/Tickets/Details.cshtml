@@ -79,9 +79,8 @@
                           {
                                  <!-- Start Single Comment  -->
                                  <li class="comment">
-                                     <h6 class="commenter">
-		      		  <span data-text="@comment.BTUser?.FullName">@comment.BTUser?.FullName</span> • @comment.Created.ToString("MMM dd, yyyy")
-                                     </h6>
+                                     <h5 class="commenter">
+										 <span data-text="@comment.BTUser?.FullName">@comment.BTUser?.FullName</span></h5> • <h6>@comment.Created.ToString("MMM dd, yyyy")</h6>
                                      <div class="">
                                          <p class="">@Html.Raw(comment.Comment)</p>
                                      </div>

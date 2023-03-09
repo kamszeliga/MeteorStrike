@@ -28,7 +28,7 @@ namespace MeteorStrike.Controllers
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTFileService _fileService;
         private readonly IBTProjectService _btProjectService;
-        private readonly IBTRolesService _btRolesService;  
+        private readonly IBTRolesService _btRolesService;
 
         public ProjectsController(ApplicationDbContext context,
                                   UserManager<BTUser> userManager,
@@ -46,7 +46,7 @@ namespace MeteorStrike.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin")]
         // GET: Assign Project Manager
-        public async Task<IActionResult> AssignPM(int? id) 
+        public async Task<IActionResult> AssignPM(int? id)
         {
             if (id == null)
             {
@@ -62,24 +62,24 @@ namespace MeteorStrike.Controllers
             AssignPMViewModel viewModel = new()
             {
                 Project = await _btProjectService.GetProjectByIdAsync(id, companyId),
-                PMList = new SelectList(projectManagers, "Id", "FullName",currentPM?.Id),
+                PMList = new SelectList(projectManagers, "Id", "FullName", currentPM?.Id),
                 PMId = currentPM?.Id
             };
 
-            return View(viewModel); 
+            return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
         //POST: Assign Project Manager
-        public async Task<IActionResult> AssignPM(AssignPMViewModel viewModel) 
+        public async Task<IActionResult> AssignPM(AssignPMViewModel viewModel)
         {
-            if (!string.IsNullOrEmpty(viewModel.PMId)) 
+            if (!string.IsNullOrEmpty(viewModel.PMId))
             {
                 await _btProjectService.AddProjectManagerAsync(viewModel.PMId, viewModel.Project?.Id);
 
-                return RedirectToAction("Details", new { id = viewModel.Project?.Id});
+                return RedirectToAction("Details", new { id = viewModel.Project?.Id });
             }
 
             ModelState.AddModelError("PMId", "No Project Manager selected. Please select a PM!");
@@ -90,17 +90,83 @@ namespace MeteorStrike.Controllers
             BTUser? currentPM = await _btProjectService.GetProjectManagerAsync(viewModel.Project?.Id);
             viewModel.Project = await _btProjectService.GetProjectByIdAsync(viewModel.Project?.Id, companyId);
             viewModel.PMList = new SelectList(projectManagers, "Id", "FullName", currentPM?.Id);
-            viewModel.PMId= currentPM?.Id;
+            viewModel.PMId = currentPM?.Id;
 
             return View(viewModel);
 
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin, ProjectManager")]
+        //GET: Assign Project Members
+        public async Task<IActionResult> AssignProjectMembers(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            int companyId = User.Identity!.GetCompanyId();
+
+            Project project = await _btProjectService.GetProjectByIdAsync(id, companyId);
+
+            List<BTUser> submitters = await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.Submitter), companyId);
+            List<BTUser> developers = await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.Developer), companyId);
+
+            List<BTUser> userList = submitters.Concat(developers).ToList();
+
+            List<string> currentMembers = project.Members.Select(m=>m.Id).ToList();
+
+            ProjectMembersViewModel viewModel = new()
+            {
+                Project = project,
+                UserList = new MultiSelectList(userList, "Id", "FullName", currentMembers),
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, ProjectManager")]
+        //POST: Assign Project Members
+        public async Task<IActionResult> AssignProjectMembers(ProjectMembersViewModel viewModel)
+        {
+            int companyId = User.Identity!.GetCompanyId();
+
+            if (viewModel.SelectedMembers != null) 
+            {
+                //Remove current members
+                await _btProjectService.RemoveMembersFromProjectAsync(viewModel.Project!.Id, companyId);
+
+                //Add newly selected members
+                await _btProjectService.AddMembersToProjectAsync(viewModel.SelectedMembers, viewModel.Project!.Id, companyId);
+
+                return RedirectToAction(nameof(Details), new { id = viewModel.Project!.Id });
+            }
+
+            ModelState.AddModelError("SelectedMembers", "No Users selected. Please select some Users.");
+
+            //Reset the form
+            viewModel.Project = await _btProjectService.GetProjectByIdAsync(viewModel.Project!.Id, companyId);
+            List<string> currentMembers = viewModel.Project.Members.Select(m => m.Id).ToList();
+
+            List<BTUser> submitters = await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.Submitter), companyId);
+            List<BTUser> developers = await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.Developer), companyId);
+            List<BTUser> userList = submitters.Concat(developers).ToList();
+
+            viewModel.UserList = new MultiSelectList(userList, "Id", "FullName", currentMembers);
+
+            return View(viewModel);
+
+        }
+
+
         // GET: Projects
         public async Task<IActionResult> Index(int? pageNum)
         {
-            int pageSize = 6; 
-            int page = pageNum ?? 1; 
+            int pageSize = 6;
+            int page = pageNum ?? 1;
 
             int companyId = User.Identity!.GetCompanyId();
 
@@ -252,8 +318,8 @@ namespace MeteorStrike.Controllers
 
             IEnumerable<ProjectPriority> priorities = await _btProjectService.GetProjectPriorityAsync();
 
-            ViewData["ProjectPriorityId"] = new SelectList(priorities, "Id", "Name");            
-            
+            ViewData["ProjectPriorityId"] = new SelectList(priorities, "Id", "Name");
+
             return View(project);
         }
 
@@ -268,7 +334,7 @@ namespace MeteorStrike.Controllers
 
                 await _btProjectService.ArchiveProjectAsync(project);
 
-                return RedirectToAction(nameof(Index)); 
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception)
             {

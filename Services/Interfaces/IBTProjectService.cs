@@ -23,6 +23,11 @@ namespace MeteorStrike.Services.Interfaces
 
         //------------------------------------------------------------
 
+        public Task AddMembersToProjectAsync(IEnumerable<string> userIds, int? projectId, int? companyId);
+
+        public Task RemoveMembersFromProjectAsync(int? projectId, int? companyId);
+
+        
         public Task<bool> AddMemberToProjectAsync(BTUser? member, int? projectId);
 
         public Task<bool> AddProjectManagerAsync(string? userId, int? projectId);

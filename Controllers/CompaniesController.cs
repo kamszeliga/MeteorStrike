@@ -6,21 +6,116 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MeteorStrike.Data;
+using MeteorStrike.Models.ViewModels;
 using MeteorStrike.Models;
+using MeteorStrike.Extentions;
+using Microsoft.AspNetCore.Identity;
+using MeteorStrike.Services.Interfaces;
+using MeteorStrike.Services;
+using System.ComponentModel.Design;
 
 namespace MeteorStrike.Controllers
 {
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<BTUser> _userManager;
+        private readonly IBTRolesService _btRolesService;
+        private readonly IBTCompanyService _btCompanyService;
 
-        public CompaniesController(ApplicationDbContext context)
+        public CompaniesController(ApplicationDbContext context,
+                                  UserManager<BTUser> userManager,
+                                  IBTRolesService btRolesService,
+                                  IBTCompanyService btCompanyService)
         {
             _context = context;
+            _userManager = userManager;
+            _btRolesService = btRolesService;
+            _btCompanyService = btCompanyService;
         }
 
-        // GET: Companies
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> ManageUserRoles()
+        {
+            // 1 Add an instance of the ViewModel as a list
+            List<ManageUserRolesViewModel> viewModelList = new List<ManageUserRolesViewModel>();
+            
+            // 2 Get CompanyId
+            int companyId = User.Identity!.GetCompanyId();
+
+            // 3 Get all company users
+            IEnumerable<BTUser> members = await _btCompanyService.GetMembersAsync(companyId);
+
+            //4 Loop over the users to populate an instance of the ViewModel
+            foreach (BTUser member in members)
+            {
+                IEnumerable<string> currentRoles = await _btRolesService.GetUserRolesAsync(member);
+
+                // - instantiate single ViewModel
+                ManageUserRolesViewModel viewModel = new()
+                {
+                    BTUser = member,
+                    // - use _roleService to help populate the viewmodel instance 
+                    // - Create multiselect
+                    Roles = new MultiSelectList(await _btRolesService.GetRolesAsync(), "Name", "Name", currentRoles)
+                };
+                // - viewModel to model list
+                viewModelList.Add(viewModel);
+            }
+
+            //5 Return the model to the view
+            return View(viewModelList);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ManageUserRoles(ManageUserRolesViewModel viewModel)
+        {
+            // 1 Get the company Id
+            int companyId = User.Identity!.GetCompanyId();
+
+            // 2 Instantiate the BTUser
+            BTUser? btUser = await _context.Users.FindAsync(viewModel.BTUser.Id);
+
+            // 3 Get Roles for the User
+            IEnumerable<string> currentRoles = await _btRolesService.GetUserRolesAsync(btUser);
+
+            // 4 Get Selected Role(s) for the User submitted from the form
+            IEnumerable<string> selectedRoles = viewModel.SelectedRoles.ToList();
+
+            // 5 Remove current role(s) and Add new role
+            await _btRolesService.RemoveUserFromRolesAsync(btUser, currentRoles);
+
+            foreach (string role in selectedRoles)
+            {
+                await _btRolesService.AddUserToRoleAsync(btUser, role);
+            }
+
+            await _context.SaveChangesAsync();  
+
+            // 6 Navigate
+            return RedirectToAction("ManageUserRoles");
+
+
+        }
+    //    if (viewModel.SelectedMembers != null) 
+    //        {
+    //            //Remove current members
+    //            await _btProjectService.RemoveMembersFromProjectAsync(viewModel.Project!.Id, companyId);
+
+    //    //Add newly selected members
+    //    await _btProjectService.AddMembersToProjectAsync(viewModel.SelectedMembers, viewModel.Project!.Id, companyId);
+
+    //            return RedirectToAction(nameof(Details), new { id = viewModel.Project!.Id
+    //});
+    //        }
+
+
+
+
+
+// GET: Companies
+public async Task<IActionResult> Index()
         {
               return _context.Companies != null ? 
                           View(await _context.Companies.ToListAsync()) :
