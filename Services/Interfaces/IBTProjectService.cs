@@ -41,8 +41,12 @@ namespace MeteorStrike.Services.Interfaces
 
         public Task<bool> RemoveMemberFromProjectAsync(BTUser? member, int? projectId);
 
+        public Task<IEnumerable<Project>> GetCompanyProjectsAsync (int companyId);
 
 
 
-	}
+
+
+
+    }
 }

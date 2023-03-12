@@ -30,6 +30,7 @@ namespace MeteorStrike.Models
 		public virtual IFormFile? FormFile { get; set; }
 
         public byte[]? FileData { get; set; }
+        public string? FileName { get; set; }   
         public string? FileType { get; set; }
 
         //Navigation Properties

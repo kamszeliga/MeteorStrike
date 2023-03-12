@@ -18,6 +18,7 @@ using System.Net.Sockets;
 using MeteorStrike.Services;
 using MeteorStrike.Models.Enums;
 using MeteorStrike.Models.ViewModels;
+using Org.BouncyCastle.Bcpg;
 
 namespace MeteorStrike.Controllers
 {
@@ -30,65 +31,56 @@ namespace MeteorStrike.Controllers
         private readonly IBTFileService _btFileService;
         private readonly IBTTicketService _btTicketService;
         private readonly IBTRolesService _btRolesService;
+        private readonly IBTTicketHistoryService _btTicketHistoryService;
+        private readonly IBTProjectService _btProjectService;
 
         public TicketsController(ApplicationDbContext context,
                                   UserManager<BTUser> userManager,
                                   IBTFileService btFileService,
                                   IBTTicketService btTicketService,
-                                  IBTRolesService btRolesService)
+                                  IBTRolesService btRolesService,
+                                  IBTTicketHistoryService btTicketHistoryService, 
+                                  IBTProjectService btProjectService)
         {
             _context = context;
             _userManager = userManager;
             _btFileService = btFileService;
             _btTicketService = btTicketService;
             _btRolesService = btRolesService;
+            _btTicketHistoryService = btTicketHistoryService;
+            _btProjectService = btProjectService;
         }
+
+
+        //GET: MyTickets
+        public async Task<IActionResult> TicketHistory()
+        { 
+            int companyId = User.Identity!.GetCompanyId();
+
+            IEnumerable<TicketHistory> ticketHistory = await _btTicketHistoryService.GetCompanyTicketHistoriesAsync(companyId); 
+
+            return View(ticketHistory);
+        }
+
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Tickets.Where(p => p.Archived == false)
-                                                       .Include(t => t.DeveloperUser)
-                                                       .Include(t => t.Project)
-                                                       .Include(t => t.SubmitterUser)
-                                                       .Include(t => t.TicketPriority)
-                                                       .Include(t => t.TicketStatus)
-                                                       .Include(t => t.TicketType);
+            int companyId = User.Identity!.GetCompanyId();
 
-            return View(await applicationDbContext.ToListAsync());
+            IEnumerable<Ticket> tickets = await _btTicketService.GetTicketsAsync(companyId);
 
-            //int pageSize = 6;
-
-            //int page = pageNum ?? 1;
-
-            //int companyId = User.Identity!.GetCompanyId();
-
-            //IPagedList<Ticket> tickets = (await _btTicketService.GetTicketsAsync(companyId)).ToPagedList(page, pageSize);
-
-            //return View(tickets);
+            return View(tickets);
         }
 
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Tickets == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .Include(t => t.DeveloperUser)
-                .Include(t => t.Project)
-                .Include(t => t.SubmitterUser)
-                .Include(t => t.Comments)
-                .Include(t => t.TicketPriority)
-                .Include(t => t.TicketStatus)
-                .Include(t => t.TicketType)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (ticket == null)
-            {
-                return NotFound();
-            }
+            Ticket ticket = await _btTicketService.GetTicketAsync(id);
 
             return View(ticket);
         }
@@ -96,7 +88,7 @@ namespace MeteorStrike.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin, ProjectManager")]
-        //GET: Assign Project Members
+        //GET: Assign Ticket Members
         public async Task<IActionResult> AssignTicketMember(int? id)
         {
             if (id == null)
@@ -124,51 +116,40 @@ namespace MeteorStrike.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, ProjectManager")]
-        //POST: Assign Project Members
-        //public async Task<IActionResult> AssignProjectMembers(ProjectMembersViewModel viewModel)
-        //{
-        //    int companyId = User.Identity!.GetCompanyId();
+        //POST: Assign Ticket Members
+        public async Task<IActionResult> AssignTicketMember(TicketMemberViewModel viewModel)
+        {
+            Ticket ticket = await _btTicketService.GetTicketAsync(viewModel.Ticket?.Id);
 
-        //    if (viewModel.SelectedMembers != null)
-        //    {
-        //        //Remove current members
-        //        await _btProjectService.RemoveMembersFromProjectAsync(viewModel.Project!.Id, companyId);
+            if (viewModel.DeveloperId != null)
+            {
+                //Add newly selected member
+                ticket.DeveloperUserId = viewModel.DeveloperId;
 
-        //        //Add newly selected members
-        //        await _btProjectService.AddMembersToProjectAsync(viewModel.SelectedMembers, viewModel.Project!.Id, companyId);
+                await _btTicketService.UpdateTicketAsync(ticket);
 
-        //        return RedirectToAction(nameof(Details), new { id = viewModel.Project!.Id });
-        //    }
+                return RedirectToAction(nameof(Details), new { id = viewModel.Ticket!.Id });
+            }
 
-        //    ModelState.AddModelError("SelectedMembers", "No Users selected. Please select some Users.");
+            ModelState.AddModelError("SelectedMembers", "No Users selected. Please select some Users.");
 
-        //    //Reset the form
-        //    viewModel.Project = await _btProjectService.GetProjectByIdAsync(viewModel.Project!.Id, companyId);
-        //    List<string> currentMembers = viewModel.Project.Members.Select(m => m.Id).ToList();
+            return View(viewModel);
 
-        //    List<BTUser> submitters = await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.Submitter), companyId);
-        //    List<BTUser> developers = await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.Developer), companyId);
-        //    List<BTUser> userList = submitters.Concat(developers).ToList();
-
-        //    viewModel.UserList = new MultiSelectList(userList, "Id", "FullName", currentMembers);
-
-        //    return View(viewModel);
-
-        //}
+        }
 
 
         // GET: Tickets/Create
         public async Task<IActionResult> Create()
         {
-            BTUser? btUser = await _userManager.GetUserAsync(User);
 
-            IEnumerable<Project> projects = _context.Projects.Where(p => p.CompanyId == btUser!.CompanyId);
+            int companyId = User.Identity!.GetCompanyId();
 
-            //ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id");
+            IEnumerable<Project> projects = await _btProjectService.GetCompanyProjectsAsync(companyId);
+
             ViewData["ProjectId"] = new SelectList(projects, "Id", "Name");
-            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Name");
-            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Name");
-            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name");
+            ViewData["TicketPriorityId"] = new SelectList(await _btTicketService.GetTicketPriorities(), "Id", "Name");
+            //ViewData["TicketStatusId"] = new SelectList(await _btTicketService.GetTicketStatuses(), "Id", "Name");
+            ViewData["TicketTypeId"] = new SelectList(await _btTicketService.GetTicketTypes(), "Id", "Name");
             return View();
         }
 
@@ -181,8 +162,11 @@ namespace MeteorStrike.Controllers
         {
             ModelState.Remove("SubmitterUserId");
 
+            int companyId = User.Identity!.GetCompanyId();
+
             if (ModelState.IsValid)
             {
+
                 BTUser? btUser = await _userManager.GetUserAsync(User);
 
                 ticket.SubmitterUserId = btUser!.Id;
@@ -194,15 +178,22 @@ namespace MeteorStrike.Controllers
 
                 ticket.TicketStatusId = 1;
 
-                _context.Add(ticket);
-                await _context.SaveChangesAsync();
+                await _btTicketService.AddTicketAsync(ticket);
+
+                string? userId = _userManager.GetUserId(User);
+
+                //Add History
+                Ticket? newTicket = await _btTicketService.GetTicketAsNoTrackingAsync(ticket.Id, companyId);
+
+                await _btTicketHistoryService.AddHistoryAsync(null, newTicket, userId);
+
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.DeveloperUserId);
-            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Id", ticket.TicketPriorityId);
-            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Id", ticket.TicketStatusId);
-            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Id", ticket.TicketTypeId);
+            ViewData["DeveloperUserId"] = new SelectList(await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.Developer), companyId), "Id", "FullName", ticket.DeveloperUserId);
+            ViewData["TicketPriorityId"] = new SelectList(await _btTicketService.GetTicketPriorities(), "Id", "Name");
+            ViewData["TicketStatusId"] = new SelectList(await _btTicketService.GetTicketStatuses(), "Id", "Name");
+            ViewData["TicketTypeId"] = new SelectList(await _btTicketService.GetTicketTypes(), "Id", "Name");
 
             return View(ticket);
         }
@@ -210,21 +201,25 @@ namespace MeteorStrike.Controllers
         // GET: Tickets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Tickets == null)
+            int companyId = User.Identity!.GetCompanyId();
+
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets.FindAsync(id);
+            var ticket = await _btTicketService.GetTicketAsync(id);
+
             if (ticket == null)
             {
                 return NotFound();
             }
 
-            ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "FullName", ticket.DeveloperUserId);
-            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
-            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
-            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name", ticket.TicketTypeId);
+            ViewData["DeveloperUserId"] = new SelectList(await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.Developer), companyId), "Id", "FullName", ticket.DeveloperUserId);
+            ViewData["TicketPriorityId"] = new SelectList(await _btTicketService.GetTicketPriorities(), "Id", "Name");
+            ViewData["TicketStatusId"] = new SelectList(await _btTicketService.GetTicketStatuses(), "Id", "Name");
+            ViewData["TicketTypeId"] = new SelectList(await _btTicketService.GetTicketTypes(), "Id", "Name");
+
 
             return View(ticket);
         }
@@ -236,6 +231,8 @@ namespace MeteorStrike.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Created,Updated,Archived,ArchivedByProject,ProjectId,TicketTypeId,TicketStatusId,TicketPriorityId,DeveloperUserId,SubmitterUserId")] Ticket ticket)
         {
+            int companyId = User.Identity!.GetCompanyId();
+
             if (id != ticket.Id)
             {
                 return NotFound();
@@ -243,17 +240,20 @@ namespace MeteorStrike.Controllers
 
             if (ModelState.IsValid)
             {
+                string? userId = _userManager.GetUserId(User);
+
+                Ticket? oldTicket = await _btTicketService.GetTicketAsNoTrackingAsync(id, companyId);
+
                 try
                 {
                     ticket.Created = DataUtility.GetPostGresDate(ticket.Created);
                     ticket.Updated = DataUtility.GetPostGresDate(DateTime.UtcNow);
 
-                    _context.Update(ticket);
-                    await _context.SaveChangesAsync();
+                    await _btTicketService.UpdateTicketAsync(ticket);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TicketExists(ticket.Id))
+                    if (!await _btTicketService.TicketExists(ticket.Id))
                     {
                         return NotFound();
                     }
@@ -262,13 +262,21 @@ namespace MeteorStrike.Controllers
                         throw;
                     }
                 }
+
+                //Add History
+                Ticket newTicket = await _btTicketService.GetTicketAsNoTrackingAsync(id, companyId);
+
+                await _btTicketHistoryService.AddHistoryAsync(oldTicket, newTicket, userId);
+
+
+
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Name", ticket.DeveloperUserId);
-            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
-            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
-            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name", ticket.TicketTypeId);
+            ViewData["DeveloperUserId"] = new SelectList(await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.Developer), companyId), "Id", "FullName", ticket.DeveloperUserId);
+            ViewData["TicketPriorityId"] = new SelectList(await _btTicketService.GetTicketPriorities(), "Id", "Name");
+            ViewData["TicketStatusId"] = new SelectList(await _btTicketService.GetTicketStatuses(), "Id", "Name");
+            ViewData["TicketTypeId"] = new SelectList(await _btTicketService.GetTicketTypes(), "Id", "Name");
 
             return View(ticket);
         }
@@ -276,19 +284,14 @@ namespace MeteorStrike.Controllers
         // GET: Tickets/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Tickets == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .Include(t => t.DeveloperUser)
-                .Include(t => t.Project)
-                .Include(t => t.SubmitterUser)
-                .Include(t => t.TicketPriority)
-                .Include(t => t.TicketStatus)
-                .Include(t => t.TicketType)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            Ticket ticket = await _btTicketService.GetTicketAsync(id);
+
+
             if (ticket == null)
             {
                 return NotFound();
@@ -306,13 +309,16 @@ namespace MeteorStrike.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Tickets'  is null.");
             }
-            var ticket = await _context.Tickets.FindAsync(id);
+
+            Ticket ticket = await _btTicketService.GetTicketAsync(id);
+
             if (ticket != null)
             {
                 ticket.Archived = true;
             }
 
-            await _context.SaveChangesAsync();
+            await _btTicketService.UpdateTicketAsync(ticket);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -332,19 +338,14 @@ namespace MeteorStrike.Controllers
 
                 ticketComment.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
 
-                _context.Add(ticketComment);
-                await _context.SaveChangesAsync();
+                await _btTicketService.AddTicketComment(ticketComment);
+
+                await _btTicketHistoryService.AddHistoryAsync(ticketComment.TicketId, nameof(TicketComment), ticketComment.BTUserId);
 
                 return RedirectToAction("Details", new { id = ticketId });
             }
 
             return RedirectToAction(nameof(Details));
-        }
-
-
-        private bool TicketExists(int id)
-        {
-            return (_context.Tickets?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
 		[HttpPost]
@@ -353,22 +354,30 @@ namespace MeteorStrike.Controllers
 		{
 			string statusMessage;
 
-			if (ModelState.IsValid && ticketAttachment.FormFile != null)
+            ModelState.Remove("BTUserId");
+
+            if (ModelState.IsValid && ticketAttachment.FormFile != null)
             {
 				ticketAttachment.FileData = await _btFileService.ConvertFileToByteArrayAsync(ticketAttachment.FormFile);
+				ticketAttachment.FileName = ticketAttachment.FormFile.FileName;
 				ticketAttachment.FileType = ticketAttachment.FormFile.ContentType;
 
 				ticketAttachment.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
 				ticketAttachment.BTUserId = _userManager.GetUserId(User);
 
-				await _btTicketService.AddTicketAttachmentAsync(ticketAttachment);
-				statusMessage = "Success: New attachment added to Ticket.";
+                await _btTicketService.AddTicketAttachmentAsync(ticketAttachment);
+
+                await _btTicketHistoryService.AddHistoryAsync(ticketAttachment.TicketId, nameof(TicketAttachment), ticketAttachment.BTUserId);
+
+                statusMessage = "Success: New attachment added to Ticket.";
 			}
 			else
 			{
 				statusMessage = "Error: Invalid data.";
 
 			}
+
+
 
 			return RedirectToAction("Details", new { id = ticketAttachment.TicketId, message = statusMessage });
 		}

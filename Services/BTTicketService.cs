@@ -19,9 +19,10 @@ namespace MeteorStrike.Services
 
         }
 
-        public Task AddTicketAsync(Ticket ticket)
+        public async Task AddTicketAsync(Ticket ticket)
         {
-            throw new NotImplementedException();
+            _context.Add(ticket);
+            await _context.SaveChangesAsync();
         }
 
         public Task ArchiveTicketAsync(Ticket ticket)
@@ -33,18 +34,23 @@ namespace MeteorStrike.Services
         {
             try
             {
-                return await _context.Tickets
-                                     .Include(t => t.DeveloperUser)
-                                     .Include(t => t.SubmitterUser)
-                                     .Include(t => t.Project)
-                                     .Include(t => t.TicketPriority)
-                                     .Include(t => t.TicketStatus)
-                                     .Include(t => t.TicketType)
-                                     .Include(t => t.Comments)
-                                     .Include(t => t.Attachments)
-                                     .Include(t => t.History)
-                                     .FirstOrDefaultAsync(t => t.Id == ticketId);
-                                     
+
+                Ticket? ticket = await _context.Tickets
+                                               .Include(t => t.Project)
+                                               .Include(t => t.SubmitterUser)
+                                               .Include(t => t.DeveloperUser)
+                                               .Include(t => t.Comments)
+                                               .Include(t => t.TicketPriority)
+                                               .Include(t => t.TicketStatus)
+                                               .Include(t => t.TicketType)
+                                               .Include(t => t.History)
+                                               .Include(t => t.Attachments)
+                                               .FirstOrDefaultAsync(m => m.Id == ticketId);
+                return ticket;
+
+
+
+
             }
             catch (Exception)
             {
@@ -52,13 +58,13 @@ namespace MeteorStrike.Services
                 throw;
             }
         }
-       
-        public async Task<IEnumerable<Ticket>> GetTicketsAsync(int projectId)
+
+        public async Task<IEnumerable<Ticket>> GetTicketsAsync(int companyId)
         {
             try
             {
                 IEnumerable<Ticket> tickets = await _context.Tickets
-                                                       .Where(t => t.Archived == false && t.ProjectId == projectId)
+                                                       .Where(t => t.Archived == false && t.Project.CompanyId == companyId)
                                                        .Include(t => t.DeveloperUser)
                                                        .Include(t => t.Project)
                                                        .Include(t => t.SubmitterUser)
@@ -76,27 +82,93 @@ namespace MeteorStrike.Services
             }
         }
 
-        public Task UpdateTicketAsync(Ticket ticket)
+        public async Task UpdateTicketAsync(Ticket ticket)
         {
-            throw new NotImplementedException();
+            _context.Update(ticket);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Ticket> GetTicketAsNoTrackingAsync(int ticketId, int companyId)
+        {
+            Ticket? ticket = await _context.Tickets
+                                   .Include(t => t.Project)
+                                       .ThenInclude(p => p.Company)
+                                   .Include(t => t.Attachments)
+                                   .Include(t => t.Comments)
+                                   .Include(t => t.DeveloperUser)
+                                   .Include(t => t.History)
+                                   .Include(t => t.SubmitterUser)
+                                   .Include(t => t.TicketPriority)
+                                   .Include(t => t.TicketStatus)
+                                   .Include(t => t.TicketType)
+                                   .AsNoTracking()
+                                   .FirstOrDefaultAsync(t => t.Id == ticketId && t.Project!.CompanyId == companyId && t.Archived == false);
+            return ticket;
+        }
+
+        public async Task AddTicketComment(TicketComment ticketComment)
+        {
+            _context.Add(ticketComment);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> TicketExists(int id)
+        {
+            return (_context.Tickets?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
 
-		//-------------------------------------------------
+        //-------------------------------------------------
 
-		public async Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment)
-		{
-			try
-			{
-				await _context.AddAsync(ticketAttachment);
-				await _context.SaveChangesAsync();
-			}
-			catch (Exception)
-			{
+        public async Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment)
+        {
+            try
+            {
+                await _context.AddAsync(ticketAttachment);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
 
-				throw;
-			}
-		}
+                throw;
+            }
+        }
 
-	}
+        public async Task<IEnumerable<TicketPriority>> GetTicketPriorities()
+        {
+            IEnumerable<TicketPriority> ticketPriorities = await _context.TicketPriorities.ToListAsync();
+            return ticketPriorities;
+        }
+
+        public async Task<IEnumerable<TicketStatus>> GetTicketStatuses()
+        {
+            IEnumerable<TicketStatus> ticketStatuses = await _context.TicketStatuses.ToListAsync();
+
+            return ticketStatuses;
+        }
+
+        public async Task<IEnumerable<TicketType>> GetTicketTypes()
+        {
+            IEnumerable<TicketType> ticketTypes = await _context.TicketTypes.ToListAsync();
+
+            return ticketTypes;
+        }
+
+        public async Task<IEnumerable<Ticket>> GetUserTicketsAsync(string? userId, int? companyId)
+        {
+            IEnumerable<Ticket> tickets = await _context.Tickets.Where(t => t.SubmitterUserId == userId || t.DeveloperUserId == userId)
+                                                                .Include(t => t.Project)
+                                                                .Include(t => t.SubmitterUser)
+                                                                .Include(t => t.DeveloperUser)
+                                                                .Include(t => t.Comments)
+                                                                .Include(t => t.TicketPriority)
+                                                                .Include(t => t.TicketStatus)
+                                                                .Include(t => t.TicketType)
+                                                                .Include(t => t.History)
+                                                                .Include(t => t.Attachments)
+                                                                .ToListAsync();
+            return tickets; 
+        }
+
+    }
 }

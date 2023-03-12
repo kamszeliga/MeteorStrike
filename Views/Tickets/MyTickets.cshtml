@@ -1,0 +1,111 @@
+﻿@model IEnumerable<MeteorStrike.Models.Ticket>
+
+@using MeteorStrike.Services.Interfaces
+@using MeteorStrike.Services
+@using MeteorStrike.Models.Enums
+
+@inject IBTFileService _BTFileService
+
+@{
+    ViewData["Title"] = "Project Index";
+}          
+
+
+<!-- -------------------------------------------------------------- -->
+            <!-- Container fluid  -->
+            <!-- -------------------------------------------------------------- -->
+            <div class="container-fluid page-content">
+                <!-- -------------------------------------------------------------- -->
+                <!-- Start Page Content -->
+                <!-- -------------------------------------------------------------- -->
+                <!-- basic table -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                              <h4 class="card-title">Tickets</h4>
+                                <div class="row mt-4">
+                                    <!-- Column -->
+                                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                                        <div class="card card-hover">
+                                            <div class="p-2 rounded bg-light-primary text-center">
+                                                <h1 class="fw-light text-primary">#</h1>
+                                                <h6 class="text-primary">Total Tickets</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Column -->
+                                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                                        <div class="card card-hover">
+                                            <div class="p-2 rounded bg-light-warning text-center">
+                                                <h1 class="fw-light text-warning">#</h1>
+                                                <h6 class="text-warning">In Progress</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Column -->
+                                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                                        <div class="card card-hover">
+                                            <div class="p-2 rounded bg-light-success text-center">
+                                                <h1 class="fw-light text-success">#</h1>
+                                                <h6 class="text-success">Opened</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Column -->
+                                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                                        <div class="card card-hover">
+                                            <div class="p-2 rounded bg-light-danger text-center">
+                                                <h1 class="fw-light text-danger">#</h1>
+                                                <h6 class="text-danger">Closed</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Column -->
+                                </div>
+                                <div class="table-responsive mt-4">
+                                    <table id="zero_config" class="table table-bordered fs-3">
+                                        <thead>
+                                            <tr>
+                                                <th>Ticket Priority</th>
+                                                <th>Title</th>
+                                                <th>Created</th>
+                                                <th>Updated</th>
+                                                <th>Project</th>
+                                                <th>Ticket Type</th>
+                                                <th>Ticket Status</th>
+                                                <th>Assigned Developer</th>
+                                                <th>Submitted By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                @foreach (var item in Model)
+                                {
+                                            <tr>
+                                               <td>@Html.DisplayFor(modelItem => item.TicketPriority.Name)</td>
+                                               <td><a asp-action="Details" asp-route-id="@item.Id" class="font-weight-medium link" >@Html.DisplayFor(modelItem => item.Title)</a></td>
+                                               <td>@Html.DisplayFor(modelItem => item.Created)</td>
+                                               <td>@Html.DisplayFor(modelItem => item.Updated)</td>
+                                               <td>@Html.DisplayFor(modelItem => item.Project.Name)</td>
+                                               <td>@Html.DisplayFor(modelItem => item.TicketType.Name)</td>
+                                               <td>@Html.DisplayFor(modelItem => item.TicketStatus.Name)</td>
+                                               <td>@Html.DisplayFor(modelItem => item.DeveloperUser.FullName)</td>
+                                               <td>@Html.DisplayFor(modelItem => item.SubmitterUser.FullName)</td>
+                                               <td>
+                                               <a asp-action="Edit" asp-route-id="@item.Id" class="mdi mdi-pencil text-success"></a>
+                                               <a asp-action="Details" asp-route-id="@item.Id" class="mdi mdi-note-text"></a>
+                                               <a asp-action="Delete" asp-route-id="@item.Id" class="mdi mdi-delete text-danger"></a>
+                                               </td>
+                                               </tr> 
+                                               }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- -------------------------------------------------------------- -->
+            <!-- End Container fluid  -->
+            <!-- -------------------------------------------------------------- -->

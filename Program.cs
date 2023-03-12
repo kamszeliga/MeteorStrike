@@ -5,8 +5,8 @@ using MeteorStrike.Models;
 using MeteorStrike.Services;
 using MeteorStrike.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +29,8 @@ builder.Services.AddScoped<IBTProjectService, BTProjectService>();
 builder.Services.AddScoped<IBTTicketService, BTTicketService>();
 builder.Services.AddScoped<IBTRolesService, BTRolesService>();
 builder.Services.AddScoped<IBTCompanyService, BTCompanyService>();
+builder.Services.AddScoped<IEmailSender, BTEmailService>();
+builder.Services.AddScoped<IBTTicketHistoryService, BTTicketHistoryService>();
 
 
 builder.Services.AddMvc();

@@ -162,8 +162,21 @@ namespace MeteorStrike.Controllers
         }
 
 
-        // GET: Projects
-        public async Task<IActionResult> Index(int? pageNum)
+		// GET: Projects
+		public async Task<IActionResult> MyProjects()
+		{
+            string? userId = _userManager.GetUserId(User);
+
+			int companyId = User.Identity!.GetCompanyId();
+
+		    IEnumerable<Project> projects = (await _btProjectService.GetProjectsAsync(companyId)).Where(p=>p.Members.Any(m=>m.Id == userId));
+
+			return View(projects);
+		}
+
+
+		// GET: Projects
+		public async Task<IActionResult> Index(int? pageNum)
         {
             int pageSize = 6;
             int page = pageNum ?? 1;

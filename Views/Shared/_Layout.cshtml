@@ -311,13 +311,13 @@
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a class="sidebar-link">
+                                    <a class="sidebar-link" asp-controller="Projects" asp-action="MyProjects">
                                         <i class="mdi mdi-adjust"></i>
                                         <span class="hide-menu"> Your Projects </span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a class="sidebar-link">
+                                    <a class="sidebar-link" asp-controller="Tickets" asp-action="MyTickets">
                                         <i class="mdi mdi-adjust"></i>
                                         <span class="hide-menu"> Your Tickets </span>
                                     </a>
@@ -361,6 +361,12 @@
                                     <a class="sidebar-link" asp-controller="Tickets" asp-action="Index">
                                         <i class="mdi mdi-application"></i>
                                         <span class="hide-menu">View Tickets</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-controller="Tickets" asp-action="TicketHistory">
+                                        <i class="mdi mdi-application"></i>
+                                        <span class="hide-menu">View Ticket History</span>
                                     </a>
                                 </li>
                             </ul>

@@ -1,0 +1,12 @@
+﻿@model IEnumerable<MeteorStrike.Models.TicketHistory>
+
+    <div>
+    @foreach (TicketHistory history in Model)
+    {
+        <div>
+          <div>
+             <span>@history.Description</span> 
+          </div>
+       </div>
+    }
+</div>
