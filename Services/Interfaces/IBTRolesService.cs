@@ -11,7 +11,7 @@ namespace MeteorStrike.Services.Interfaces
 
 		public Task<IEnumerable<string>> GetUserRolesAsync(BTUser user);
 
-		public Task<List<BTUser>> GetUsersInRoleAsync(string roleName, int companyId);
+		public Task<List<BTUser>> GetUsersInRoleAsync(string roleName, int? companyId);
 
 		public Task<bool> IsUserInRoleAsync(BTUser member, string roleName);
 

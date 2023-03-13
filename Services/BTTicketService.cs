@@ -170,5 +170,22 @@ namespace MeteorStrike.Services
             return tickets; 
         }
 
-    }
+		public async Task<TicketAttachment> GetTicketAttachmentByIdAsync(int ticketAttachmentId)
+		{
+			try
+			{
+				TicketAttachment ticketAttachment = await _context.TicketAttachments
+																  .Include(t => t.BTUser)
+																  .FirstOrDefaultAsync(t => t.Id == ticketAttachmentId);
+				return ticketAttachment;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+
+
+	}
 }
