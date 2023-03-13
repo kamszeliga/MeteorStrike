@@ -2,6 +2,7 @@
 using MeteorStrike.Models;
 using MeteorStrike.Models.Enums;
 using MeteorStrike.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace MeteorStrike.Services
 {
@@ -20,8 +21,6 @@ namespace MeteorStrike.Services
 			_btMailService = btMailService;
 
 		}
-
-
 
 		public async Task AddNotificationAsync(Notification? notification)
 		{
@@ -67,19 +66,78 @@ namespace MeteorStrike.Services
 			}
 		}
 
-		public Task<List<Notification>> GetNotificationsByUserAsync(string? userId)
+		public async Task<List<Notification>> GetNotificationsByUserAsync(string? userId)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				List<Notification> notifications = new();
+
+				if (!string.IsNullOrEmpty(userId))
+				{
+
+					notifications = await _context.Notifications
+												  .Where(n => n.RecipientId == userId || n.SenderId == userId)
+												  .Include(n => n.Recipient)
+												  .Include(n => n.Sender)
+												  .ToListAsync();
+				}
+
+				return notifications;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
 		}
 
-		public Task<bool> SendAdminEmailNotificationAsync(Notification? notification, string? emailSubject, int? companyId)
+		public async Task<bool> SendAdminEmailNotificationAsync(Notification? notification, string? emailSubject, int? companyId)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				if (notification != null)
+				{
+					IEnumerable<string?> adminEmails = (await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.Admin), companyId)).Select(u => u.Email);
+
+					foreach (string adminEmail in adminEmails)
+					{
+						await _btMailService.SendEmailAsync(adminEmail, emailSubject!, notification.Message!);
+					}
+					return true;
+				}
+				return false;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
 		}
 
-		public Task<bool> SendEmailNotificationAsync(Notification? notification, string? emailSubject)
+		public async Task<bool> SendEmailNotificationAsync(Notification? notification, string? emailSubject)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				if (notification != null) 
+				{
+					BTUser? btUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == notification.RecipientId);
+
+					string? userEmail = btUser?.Email;
+
+					if (userEmail != null)
+					{
+						await _btMailService.SendEmailAsync(userEmail, emailSubject!, notification.Message!);
+
+						return true;
+					}
+				}
+				return false;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
 		}
 	}
 }

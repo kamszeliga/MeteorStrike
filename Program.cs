@@ -24,13 +24,15 @@ builder.Services.AddIdentity<BTUser, IdentityRole>(options => options.SignIn.Req
     .AddDefaultTokenProviders();
 
 // Custom Services
+builder.Services.AddScoped<IEmailSender, BTEmailService>();
+builder.Services.AddScoped<IBTRolesService, BTRolesService>();
 builder.Services.AddScoped<IBTFileService, BTFileService>();
+builder.Services.AddScoped<IBTInviteService, BTInviteService>();
 builder.Services.AddScoped<IBTProjectService, BTProjectService>();  
 builder.Services.AddScoped<IBTTicketService, BTTicketService>();
-builder.Services.AddScoped<IBTRolesService, BTRolesService>();
 builder.Services.AddScoped<IBTCompanyService, BTCompanyService>();
-builder.Services.AddScoped<IEmailSender, BTEmailService>();
 builder.Services.AddScoped<IBTTicketHistoryService, BTTicketHistoryService>();
+builder.Services.AddScoped<IBTNotifications, BTNotification>();
 
 
 builder.Services.AddMvc();

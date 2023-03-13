@@ -33,6 +33,7 @@ namespace MeteorStrike.Controllers
         private readonly IBTRolesService _btRolesService;
         private readonly IBTTicketHistoryService _btTicketHistoryService;
         private readonly IBTProjectService _btProjectService;
+        private readonly BTNotification _btNotification;
 
         public TicketsController(ApplicationDbContext context,
                                   UserManager<BTUser> userManager,
@@ -40,7 +41,8 @@ namespace MeteorStrike.Controllers
                                   IBTTicketService btTicketService,
                                   IBTRolesService btRolesService,
                                   IBTTicketHistoryService btTicketHistoryService, 
-                                  IBTProjectService btProjectService)
+                                  IBTProjectService btProjectService,
+                                  BTNotification btNotification)
         {
             _context = context;
             _userManager = userManager;
@@ -49,6 +51,7 @@ namespace MeteorStrike.Controllers
             _btRolesService = btRolesService;
             _btTicketHistoryService = btTicketHistoryService;
             _btProjectService = btProjectService;
+            _btNotification = btNotification;
         }
 
 
@@ -120,8 +123,9 @@ namespace MeteorStrike.Controllers
         public async Task<IActionResult> AssignTicketMember(TicketMemberViewModel viewModel)
         {
             Ticket ticket = await _btTicketService.GetTicketAsync(viewModel.Ticket?.Id);
+			int companyId = User.Identity!.GetCompanyId();
 
-            if (viewModel.DeveloperId != null)
+			if (viewModel.DeveloperId != null)
             {
                 //Add newly selected member
                 ticket.DeveloperUserId = viewModel.DeveloperId;
@@ -133,7 +137,33 @@ namespace MeteorStrike.Controllers
 
             ModelState.AddModelError("SelectedMembers", "No Users selected. Please select some Users.");
 
-            return View(viewModel);
+            //History
+            string? userId = _userManager.GetUserId(User);
+			Ticket? newTicket = await _btTicketService.GetTicketAsNoTrackingAsync(ticket.Id, companyId);
+
+			await _btTicketHistoryService.AddHistoryAsync(null, newTicket, userId);
+
+			// Notification
+			BTUser? btUser = await _userManager.GetUserAsync(User);
+
+			Notification? notification = new()
+			{
+				TicketId = ticket.Id,
+				Title = "Developer Assigned",
+				Message = $"Ticket: {ticket.Title} was assigned by by {btUser?.FullName}.",
+				Created = DataUtility.GetPostGresDate(DateTime.UtcNow),
+				SenderId = userId,
+				RecipientId =ticket.DeveloperUserId,
+				NotificationTypeId = (await _context.NotificationTypes.FirstOrDefaultAsync(n => n.Name == nameof(BTNotificationTypes.Ticket)))!.Id
+			};
+			    
+            await _btNotification.AdminNotificationAsync(notification, companyId);
+			    
+            await _btNotification.SendAdminEmailNotificationAsync(notification, "New Ticket Added; No Project Manager Found", companyId);
+                
+
+
+			return View(viewModel);
 
         }
 
@@ -171,7 +201,6 @@ namespace MeteorStrike.Controllers
 
                 ticket.SubmitterUserId = btUser!.Id;
 
-                //Created Date
                 ticket.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
 
                 ticket.Updated = DataUtility.GetPostGresDate(DateTime.UtcNow);
@@ -182,10 +211,37 @@ namespace MeteorStrike.Controllers
 
                 string? userId = _userManager.GetUserId(User);
 
-                //Add History
+                // History
                 Ticket? newTicket = await _btTicketService.GetTicketAsNoTrackingAsync(ticket.Id, companyId);
 
                 await _btTicketHistoryService.AddHistoryAsync(null, newTicket, userId);
+
+
+                // Notification
+                BTUser? projectManager = await _btProjectService.GetProjectManagerAsync(ticket.ProjectId);
+
+                Notification? notification = new()
+                {
+                    TicketId = ticket.Id,
+                    Title = "New Ticket Added",
+                    Message = $"New Ticket: {ticket.Title} was created by {btUser?.FullName}.",
+                    Created= DataUtility.GetPostGresDate(DateTime.UtcNow),
+                    SenderId = userId,
+                    RecipientId = projectManager?.Id,
+                    NotificationTypeId = (await _context.NotificationTypes.FirstOrDefaultAsync(n=>n.Name == nameof(BTNotificationTypes.Ticket)))!.Id
+                };
+
+                if (projectManager != null )
+                {
+                    await _btNotification.AddNotificationAsync(notification);
+                    await _btNotification.SendEmailNotificationAsync(notification, "New Ticket Added");
+                }
+                else
+                {
+                    await _btNotification.AdminNotificationAsync(notification, companyId);
+                    await _btNotification.SendAdminEmailNotificationAsync(notification, "New Ticket Added; No Project Manager Found", companyId);
+
+                }
 
                 return RedirectToAction(nameof(Index));
             }
