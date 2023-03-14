@@ -20,11 +20,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations.Schema;
+using MeteorStrike.Data;
 
 namespace MeteorStrike.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
+        private readonly ApplicationDbContext _context;
         private readonly SignInManager<BTUser> _signInManager;
         private readonly UserManager<BTUser> _userManager;
         private readonly IUserStore<BTUser> _userStore;
@@ -37,7 +39,7 @@ namespace MeteorStrike.Areas.Identity.Pages.Account
             IUserStore<BTUser> userStore,
             SignInManager<BTUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, ApplicationDbContext context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -45,6 +47,7 @@ namespace MeteorStrike.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         /// <summary>
@@ -81,6 +84,16 @@ namespace MeteorStrike.Areas.Identity.Pages.Account
             [Display(Name = "Last Name")]
             [StringLength(40, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
             public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "Company Name")]
+            [StringLength(40, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
+            public string CompanyName { get; set; }
+
+            [Required]
+            [Display(Name = "Company Description")]
+            [StringLength(40, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
+            public string CompanyDescription { get; set; }
 
             [NotMapped]
             [Display(Name = "Full Name")]
@@ -134,7 +147,17 @@ namespace MeteorStrike.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                //Create new company
+                Company company = new()
+                {
+                    Name = Input.CompanyName,
+                    Description = Input.CompanyDescription,
+                };
+                await _context.AddAsync(company);
+                await _context.SaveChangesAsync();
+
+                //Create new user
+                var user = CreateUser(company.Id);
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -176,16 +199,16 @@ namespace MeteorStrike.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private BTUser CreateUser()
+        private BTUser CreateUser(int companyId)
         {
             try
             {
-                return new BTUser()
-                {
-                    FirstName = Input.FirstName,
-                    LastName = Input.LastName,
-                };
-                
+                BTUser btUser = Activator.CreateInstance<BTUser>();
+                btUser.FirstName= Input.FirstName;
+                btUser.LastName= Input.LastName;
+                btUser.CompanyId = companyId;
+
+                return btUser;
             }
             catch
             {

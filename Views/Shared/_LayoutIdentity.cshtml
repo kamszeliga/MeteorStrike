@@ -1,0 +1,90 @@
+﻿@using MeteorStrike.Services.Interfaces;
+@using MeteorStrike.Models.Enums;
+@using Microsoft.AspNetCore.Identity;
+
+@inject IBTFileService _BTFileService
+@inject SignInManager<BTUser> SignInManager
+@inject UserManager<BTUser> _UserManager
+
+@{
+    BTUser? btUser = await _UserManager.GetUserAsync(User);
+}
+
+
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, ample admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template">
+    <meta name="description" content="Ample is powerful and clean admin dashboard template, inpired from Google's Material Design">
+    <meta name="robots" content="noindex,nofollow">
+    <title>@ViewData["Title"] - MeteorStrike</title>
+    <link rel="canonical" href="https://www.wrappixel.com/templates/ampleadmin/" />
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/favicon.png">
+    <link rel="stylesheet" href="~/assets/libs/apexcharts/dist/apexcharts.css">
+    <!-- Custom CSS -->
+    <link href="~/assets/libs/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" />
+    <link href="~/assets/extra-libs/calendar/calendar.css" rel="stylesheet" />
+@*    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <!-- needed css -->
+    <link href="~/dist/css/style.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/MeteorStrike.styles.css" asp-append-version="true" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head><body>
+            <div class="page-content container-fluid">
+
+                @RenderBody()
+
+             </div>
+
+
+       <!-- -------------------------------------------------------------- -->
+    <!-- All Jquery -->
+    <!-- -------------------------------------------------------------- -->
+    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/extra-libs/taskboard/js/jquery-ui.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- apps -->
+    <script src="../../dist/js/app.min.js"></script>
+    <script src="../../dist/js/app.init.js"></script>
+    <script src="../../dist/js/app-style-switcher.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="~/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="~/assets/extra-libs/sparkline/sparkline.js"></script>
+    <!--Wave Effects -->
+    <script src="../../dist/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="../../dist/js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="../../dist/js/feather.min.js"></script>
+    <script src="../../dist/js/custom.min.js"></script>
+    <!-- This Page JS -->
+    <script src="~/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="../../dist/js/pages/dashboards/dashboard1.js"></script>
+    <script src="~/assets/libs/moment/min/moment.min.js"></script>
+    <script src="~/assets/libs/fullcalendar/dist/fullcalendar.min.js"></script>
+    <script src="../../dist/js/pages/calendar/cal-init.js"></script>
+    <script>
+        $('#calendar').fullCalendar('option', 'height', 650);
+
+    </script>
+
+@await RenderSectionAsync("Scripts", required: false)
+
+    </body>
+</html>
+
+
