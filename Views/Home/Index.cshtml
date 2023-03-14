@@ -1,115 +1,68 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@using MeteorStrike.Services.Interfaces;
+@using MeteorStrike.Models.Enums;
+@using Microsoft.AspNetCore.Identity;
 
-                <!-- ============================================================== -->
-                <!-- First Cards Row  -->
-                <!-- ============================================================== -->
-                <div class="row">
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">New Clients</h5>
-                                <div class="d-flex align-items-center mb-2 mt-4">
-                                    <h2 class="mb-0 display-5"><i class="icon-people text-info"></i></h2>
-                                    <div class="ms-auto">
-                                        <h2 class="mb-0 display-6"><span class="fw-normal">23</span></h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">New Projects</h5>
-                                <div class="d-flex align-items-center mb-2 mt-4">
-                                    <h2 class="mb-0 display-5"><i class="icon-folder text-primary"></i></h2>
-                                    <div class="ms-auto">
-                                        <h2 class="mb-0 display-6"><span class="fw-normal">169</span></h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Open Projects</h5>
-                                <div class="d-flex align-items-center mb-2 mt-4">
-                                    <h2 class="mb-0 display-5"><i class="icon-folder-alt text-danger"></i></h2>
-                                    <div class="ms-auto">
-                                        <h2 class="mb-0 display-6"><span class="fw-normal">311</span></h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">New Tickets</h5>
-                                <div class="d-flex align-items-center mb-2 mt-4">
-                                    <h2 class="mb-0 display-5"><i class="ti-bookmark text-success"></i></h2>
-                                    <div class="ms-auto">
-                                        <h2 class="mb-0 display-6"><span class="fw-normal">117</span></h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- ============================================================== -->
-                <!-- User & Tickets  -->
-                <!-- ============================================================== -->
-                <div class="row">
-            <div class="col-lg-4">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex flex-row">
-                    <div class="">
-                      <img src="../../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="100">
-                    </div>
-                    <div class="ps-3">
-                      <h3 class="font-weight-medium">user name here</h3>
-                      <h6 class="text-muted">User role here</h6>
-                        @*                      <button class="btn btn-light-info text-info">
-                        Follow
-                      </button>*@
-                    </div>
-                  </div>
-                  <div class="row mt-4 pt-2">
-                    <div class="col text-center border-end">
-                      <h2 class="fw-light">14</h2>
-                      <h6 class="text-muted">Tickets</h6>
-                    </div>
-                    <div class="col text-center border-end">
-                      <h2 class="fw-light">54</h2>
-                      <h6 class="text-muted">Projects</h6>
-                    </div>
-                    <div class="col text-center">
-                      <h2 class="fw-light">145</h2>
-                      <h6 class="text-muted">Tasks</h6>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card w-100">
-                <div class="d-flex align-items-center px-3 py-4 border-bottom">
-                  <div>
-                    <h4 class="card-title font-weight-medium">To-do List</h4>
-                    <h5 class="card-subtitle mb-0">This Months Task</h5>
-                  </div>
-                  <div class="ms-auto">
-                    <button class="btn btn-danger text-white btn-rounded" data-bs-toggle="modal" data-bs-target="#addtask">
-                      Add Task
-                    </button>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="todo-widget">
-                    <ul class="list-task todo-list list-group mb-0" data-role="tasklist">
-                      <li class="list-group-item border-0 mb-0 pb-3 pe-3 ps-0" data-role="task">
+@inject IBTFileService _BTFileService
+@inject SignInManager<BTUser> SignInManager
+@inject UserManager<BTUser> _UserManager
+
+@{
+    ViewData["Title"] = "Home Page";
+
+    BTUser? btUser = await _UserManager.GetUserAsync(User);
+
+}
+<!-- ============================================================== -->
+<!-- User & Tickets  -->
+<!-- ============================================================== -->
+  <div class="row">
+   <div class="col-lg-4">
+     <div class="card">
+       <div class="card-body">
+         <div class="d-flex flex-row">
+           <div class="">
+             <img src="../../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="100">
+           </div>
+           <div class="ps-3">
+               @if (User.Identity.IsAuthenticated)
+               {
+                   <h3 class="font-weight-medium">@btUser!.FullName</h3>
+                   <h6 class="text-muted">@btUser!.Email</h6>
+               }
+           </div>
+         </div>
+         <div class="row mt-4 pt-2">
+           <div class="col text-center border-end">
+             <h2 class="fw-light">14</h2>
+             <h6 class="text-muted">Tickets</h6>
+           </div>
+           <div class="col text-center border-end">
+             <h2 class="fw-light">54</h2>
+             <h6 class="text-muted">Projects</h6>
+           </div>
+           <div class="col text-center">
+             <h2 class="fw-light">145</h2>
+             <h6 class="text-muted">Tasks</h6>
+           </div>
+         </div>
+       </div>
+     </div>
+     <div class="card w-100">
+       <div class="d-flex align-items-center px-3 py-4 border-bottom">
+         <div>
+           <h4 class="card-title font-weight-medium">To-do List</h4>
+           <h5 class="card-subtitle mb-0">This Months Task</h5>
+         </div>
+         <div class="ms-auto">
+           <button class="btn btn-danger text-white btn-rounded" data-bs-toggle="modal" data-bs-target="#addtask">
+             Add Task
+           </button>
+         </div>
+       </div>
+       <div class="card-body">
+         <div class="todo-widget">
+           <ul class="list-task todo-list list-group mb-0" data-role="tasklist">
+             <li class="list-group-item border-0 mb-0 pb-3 pe-3 ps-0" data-role="task">
                         <div class="
                             form-check
                             border-start border-2 border-info
@@ -121,7 +74,7 @@
                           </label>
                         </div>
                       </li>
-                      <li class="list-group-item border-0 mb-0 py-3 pe-3 ps-0" data-role="task">
+             <li class="list-group-item border-0 mb-0 py-3 pe-3 ps-0" data-role="task">
                         <div class="
                             form-check
                             border-start border-2 border-danger
@@ -143,7 +96,7 @@
                           </li>
                         </ul>
                       </li>
-                      <li class="list-group-item border-0 mb-0 py-3 pe-3 ps-0" data-role="task">
+             <li class="list-group-item border-0 mb-0 py-3 pe-3 ps-0" data-role="task">
                         <div class="
                             form-check
                             border-start border-2 border-primary
@@ -165,45 +118,45 @@
                           26 jun 2021
                         </div>
                       </li>
-                    </ul>
-                  </div>
-                </div>
-                <!-- Modal -->
-                <div class="modal fade" id="addtask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header d-flex align-items-center">
-                        <h5 class="modal-title" id="exampleModalLabel">
-                          Add Task
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <form>
-                          <div class="form-group">
-                            <label for="text_name">Name</label>
-                            <input type="text" class="form-control" id="text_name" placeholder="Enter your Name">
-                          </div>
-                          <div class="form-group">
-                            <label for="txt_email">Email Address</label>
-                            <input type="email" class="form-control" id="txt_email" placeholder="Enter Email">
-                          </div>
-                        </form>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                          Close
-                        </button>
-                        <button type="button" class="btn btn-primary">
-                          Save changes
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div></div>
-            <div class="col-lg-8">
-            <div class="card">
+           </ul>
+         </div>
+       </div>
+       <!-- Modal -->
+       <div class="modal fade" id="addtask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+           <div class="modal-content">
+             <div class="modal-header d-flex align-items-center">
+               <h5 class="modal-title" id="exampleModalLabel">
+                 Add Task
+               </h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+             </div>
+             <div class="modal-body">
+               <form>
+                 <div class="form-group">
+                   <label for="text_name">Name</label>
+                   <input type="text" class="form-control" id="text_name" placeholder="Enter your Name">
+                 </div>
+                 <div class="form-group">
+                   <label for="txt_email">Email Address</label>
+                   <input type="email" class="form-control" id="txt_email" placeholder="Enter Email">
+                 </div>
+               </form>
+             </div>
+             <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                 Close
+               </button>
+               <button type="button" class="btn btn-primary">
+                 Save changes
+               </button>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div></div>
+   <div class="col-lg-8">
+   <div class="card">
                 <div class="d-flex align-items-center p-3">
                   <h5 class="card-title mb-0">Recent Tickets</h5>
                   <div class="ms-auto">
@@ -357,622 +310,309 @@
                   </div>
                 </div>
               </div>            
-              </div>
-          </div>
-                <!-- ============================================================== -->
-                <!-- Manage User  -->
-                <!-- ============================================================== -->
-                <div class="row">
-                    <div class="col-md-12">
+     </div>
+ </div>
+
+       <!-- ============================================================== -->
+       <!-- First Cards Row  -->
+       <!-- ============================================================== -->
+       <div class="row">
+                    <div class="col-md-6 col-lg-3">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title mb-0">Manage Users</h5>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table no-wrap user-table mb-0">
-                                  <thead class="table-light">
-                                    <tr>
-                                      <th scope="col" class="border-0 font-weight-medium ps-4">#</th>
-                                      <th scope="col" class="border-0 font-weight-medium">Name</th>
-                                      <th scope="col" class="border-0 font-weight-medium">Occupation</th>
-                                      <th scope="col" class="border-0 font-weight-medium">Email</th>
-                                      <th scope="col" class="border-0 font-weight-medium">Added</th>
-                                      <th scope="col" class="border-0 font-weight-medium">Category</th>
-                                      <th scope="col" class="border-0 font-weight-medium">Manage</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td class="ps-4">1</td>
-                                      <td>
-                                        <div class="d-flex align-items-start">
-                                            <img src="../assets/images/users/1.jpg" class="rounded-circle" width="35">
-                                            <div class="ms-2">
-                                              <h5 class="font-weight-medium mb-0">Daniel Kristeen</h5>
-                                              <span class="text-muted">Texas, Unitedd states</span>
-                                            </div>
-                                        </div>
-                                      </td>
-                                      <td>
-                                          <span>Visual Designer</span><br>
-                                          <span>Past : teacher</span>
-                                      </td>
-                                      <td>
-                                          <span>daniel@website.com</span><br>
-                                          <span>999 - 444 - 555</span>
-                                      </td>
-                                      <td>
-                                          <span>15 Mar 1988</span><br>
-                                          <span>10: 55 AM</span>
-                                      </td>
-                                      <td>
-                                        <select class="form-select category-select" id="exampleFormControlSelect1">
-                                          <option>Modulator</option>
-                                          <option>Admin</option>
-                                          <option>User</option>
-                                          <option>Subscriber</option>
-                                        </select>
-                                      </td>
-                                      <td>
-                                        <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td class="ps-4">2</td>
-                                      <td>
-                                        <div class="d-flex align-items-start">
-                                            <img src="../assets/images/users/2.jpg" class="rounded-circle" width="35">
-                                            <div class="ms-2">
-                                              <h5 class="font-weight-medium mb-0">Emma Smith</h5>
-                                              <span class="text-muted">Texas, Unitedd states</span>
-                                            </div>
-                                        </div>
-                                      </td>
-                                      <td>
-                                          <span>Visual Designer</span><br>
-                                          <span>Past : teacher</span>
-                                      </td>
-                                      <td>
-                                          <span>daniel@website.com</span><br>
-                                          <span>999 - 444 - 555</span>
-                                      </td>
-                                      <td>
-                                          <span>15 Mar 1855</span><br>
-                                          <span>10: 00 AM</span>
-                                      </td>
-                                      <td>
-                                        <select class="form-select category-select" id="exampleFormControlSelect1">
-                                          <option>Modulator</option>
-                                          <option>Admin</option>
-                                          <option>User</option>
-                                          <option>Subscriber</option>
-                                        </select>
-                                      </td>
-                                      <td>
-                                        <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td class="ps-4">3</td>
-                                      <td>
-                                        <div class="d-flex align-items-start">
-                                            <img src="../assets/images/users/3.jpg" class="rounded-circle" width="35">
-                                            <div class="ms-2">
-                                              <h5 class="font-weight-medium mb-0">Olivia Johnson</h5>
-                                              <span class="text-muted">Texas, Unitedd states</span>
-                                            </div>
-                                        </div>
-                                      </td>
-                                      <td>
-                                          <span>Visual Designer</span><br>
-                                          <span>Past : teacher</span>
-                                      </td>
-                                      <td>
-                                          <span>daniel@website.com</span><br>
-                                          <span>999 - 444 - 555</span>
-                                      </td>
-                                      <td>
-                                          <span>17 Aug 1988</span><br>
-                                          <span>12: 55 AM</span>
-                                      </td>
-                                      <td>
-                                        <select class="form-select category-select" id="exampleFormControlSelect1">
-                                          <option>Modulator</option>
-                                          <option>Admin</option>
-                                          <option>User</option>
-                                          <option>Subscriber</option>
-                                        </select>
-                                      </td>
-                                      <td>
-                                        <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td class="ps-4">4</td>
-                                      <td>
-                                        <div class="d-flex align-items-start">
-                                            <img src="../assets/images/users/4.jpg" class="rounded-circle" width="35">
-                                            <div class="ms-2">
-                                              <h5 class="font-weight-medium mb-0">Isabella Williams</h5>
-                                              <span class="text-muted">Texas, Unitedd states</span>
-                                            </div>
-                                        </div>
-                                      </td>
-                                      <td>
-                                          <span>Visual Designer</span><br>
-                                          <span>Past : teacher</span>
-                                      </td>
-                                      <td>
-                                          <span>daniel@website.com</span><br>
-                                          <span>999 - 444 - 555</span>
-                                      </td>
-                                      <td>
-                                          <span>26 Mar 1999</span><br>
-                                          <span>10: 55 AM</span>
-                                      </td>
-                                      <td>
-                                        <select class="form-select category-select" id="exampleFormControlSelect1">
-                                          <option>Modulator</option>
-                                          <option>Admin</option>
-                                          <option>User</option>
-                                          <option>Subscriber</option>
-                                        </select>
-                                      </td>
-                                      <td>
-                                        <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td class="ps-4">5</td>
-                                      <td>
-                                        <div class="d-flex align-items-start">
-                                            <img src="../assets/images/users/5.jpg" class="rounded-circle" width="35">
-                                            <div class="ms-2">
-                                              <h5 class="font-weight-medium mb-0">Sophia Jones</h5>
-                                              <span class="text-muted">Texas, Unitedd states</span>
-                                            </div>
-                                        </div>
-                                      </td>
-                                      <td>
-                                          <span>Visual Designer</span><br>
-                                          <span>Past : teacher</span>
-                                      </td>
-                                      <td>
-                                          <span>daniel@website.com</span><br>
-                                          <span>999 - 444 - 555</span>
-                                      </td>
-                                      <td>
-                                          <span>16 Aug 2001</span><br>
-                                          <span>10: 55 AM</span>
-                                      </td>
-                                      <td>
-                                        <select class="form-select category-select" id="exampleFormControlSelect1">
-                                          <option>Modulator</option>
-                                          <option>Admin</option>
-                                          <option>User</option>
-                                          <option>Subscriber</option>
-                                        </select>
-                                      </td>
-                                      <td>
-                                        <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td class="ps-4">6</td>
-                                      <td>
-                                        <div class="d-flex align-items-start">
-                                            <img src="../assets/images/users/6.jpg" class="rounded-circle" width="35">
-                                            <div class="ms-2">
-                                                  <h5 class="font-weight-medium mb-0">Charlotte Brown</h5>
-                                                  <span class="text-muted">Texas, Unitedd states</span>
-                                            </div>
-                                        </div>
-                                      </td>
-                                      <td>
-                                          <span>Visual Designer</span><br>
-                                          <span>Past : teacher</span>
-                                      </td>
-                                      <td>
-                                          <span>daniel@website.com</span><br>
-                                          <span>999 - 444 - 555</span>
-                                      </td>
-                                      <td>
-                                          <span>15 Mar 1988</span><br>
-                                          <span>10: 55 AM</span>
-                                      </td>
-                                      <td>
-                                        <select class="form-select category-select" id="exampleFormControlSelect1">
-                                          <option>Modulator</option>
-                                          <option>Admin</option>
-                                          <option>User</option>
-                                          <option>Subscriber</option>
-                                        </select>
-                                      </td>
-                                      <td>
-                                        <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                                <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- ============================================================== -->
-                <!-- Chat App, Timeline & Chat Listing  -->
-                <!-- ============================================================== -->
-                <div class="row">
-                    <div class="col-md-12 col-lg-4 d-flex align-items-stretch">
-                        <div class="card w-100">
-                            <h5 class="card-title p-3 card-header mb-0">
-                                Chat Listing
-                            </h5>
-                            <div class="p-3">
-                                <ul class="list-style-none chat-list">
-                                    <li class="mb-3">
-                                        <a href="javascript:void(0)">
-                                            <div class="d-flex align-items-center">
-                                                <img src="../assets/images/users/1.jpg" class="rounded-circle" width="40">
-                                                <div class="ms-3">
-                                                    <h5 class="mb-0">Varun Dhavan</h5>
-                                                    <small class="text-success">Online</small>
-                                                </div>
-                                                <div class="ms-auto chat-icon">
-                                                    <button type="button" class="btn btn-light-success text-success btn-circle btn-circle">
-                                                        <i data-feather="phone" class="feather-sm"></i> 
-                                                      </button>
-                                                    <button type="button" class="btn btn-light-info text-info btn-circle btn-circle ms-2">
-                                                        <i data-feather="message-circle" class="feather-sm"></i> 
-                                                      </button>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="mb-3">
-                                        <a href="javascript:void(0)">
-                                            <div class="d-flex align-items-center">
-                                                <img src="../assets/images/users/2.jpg" class="rounded-circle" width="40">
-                                                <div class="ms-3">
-                                                    <h5 class="mb-0">Akshay Kumar</h5>
-                                                    <small class="text-muted">Offline</small>
-                                                </div>
-                                                <div class="ms-auto chat-icon">
-                                                    <button type="button" class="btn btn-light-success text-success btn-circle btn-circle">
-                                                        <i data-feather="phone" class="feather-sm"></i> 
-                                                      </button>
-                                                    <button type="button" class="btn btn-light-info text-info btn-circle btn-circle ms-2">
-                                                        <i data-feather="message-circle" class="feather-sm"></i> 
-                                                      </button>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="mb-3">
-                                        <a href="javascript:void(0)">
-                                            <div class="d-flex align-items-center">
-                                                <img src="../assets/images/users/3.jpg" class="rounded-circle" width="40">
-                                                <div class="ms-3">
-                                                    <h5 class="mb-0">Shraddha Kapoor</h5>
-                                                    <small class="text-success">Online</small>
-                                                </div>
-                                                <div class="ms-auto chat-icon">
-                                                    <button type="button" class="btn btn-light-success text-success btn-circle btn-circle">
-                                                        <i data-feather="phone" class="feather-sm"></i> 
-                                                      </button>
-                                                    <button type="button" class="btn btn-light-info text-info btn-circle btn-circle ms-2">
-                                                        <i data-feather="message-circle" class="feather-sm"></i> 
-                                                      </button>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="mb-3">
-                                        <a href="javascript:void(0)">
-                                            <div class="d-flex align-items-center">
-                                                <img src="../assets/images/users/4.jpg" class="rounded-circle" width="40">
-                                                <div class="ms-3">
-                                                    <h5 class="mb-0">Madhuri Dixit</h5>
-                                                    <small class="text-danger">Busy</small>
-                                                </div>
-                                                <div class="ms-auto chat-icon">
-                                                    <button type="button" class="btn btn-light-success text-success btn-circle btn-circle">
-                                                        <i data-feather="phone" class="feather-sm"></i> 
-                                                      </button>
-                                                    <button type="button" class="btn btn-light-info text-info btn-circle btn-circle ms-2">
-                                                        <i data-feather="message-circle" class="feather-sm"></i> 
-                                                      </button>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="mb-3">
-                                        <a href="javascript:void(0)">
-                                            <div class="d-flex align-items-center">
-                                                <img src="../assets/images/users/5.jpg" class="rounded-circle" width="40">
-                                                <div class="ms-3">
-                                                    <h5 class="mb-0">Shaina Nehwal</h5>
-                                                    <small class="text-muted">Offline</small>
-                                                </div>
-                                                <div class="ms-auto chat-icon">
-                                                    <button type="button" class="btn btn-light-success text-success btn-circle btn-circle">
-                                                        <i data-feather="phone" class="feather-sm"></i> 
-                                                      </button>
-                                                    <button type="button" class="btn btn-light-info text-info btn-circle btn-circle ms-2">
-                                                        <i data-feather="message-circle" class="feather-sm"></i> 
-                                                      </button>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="mb-3">
-                                        <a href="javascript:void(0)">
-                                            <div class="d-flex align-items-center">
-                                                <img src="../assets/images/users/6.jpg" class="rounded-circle" width="40">
-                                                <div class="ms-3">
-                                                    <h5 class="mb-0">Varun Dhavan</h5>
-                                                    <small class="text-success">Online</small>
-                                                </div>
-                                                <div class="ms-auto chat-icon">
-                                                    <button type="button" class="btn btn-light-success text-success btn-circle btn-circle">
-                                                        <i data-feather="phone" class="feather-sm"></i> 
-                                                      </button>
-                                                    <button type="button" class="btn btn-light-info text-info btn-circle btn-circle ms-2">
-                                                        <i data-feather="message-circle" class="feather-sm"></i> 
-                                                      </button>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="mb-3">
-                                        <a href="javascript:void(0)">
-                                            <div class="d-flex align-items-center">
-                                                <img src="../assets/images/users/2.jpg" class="rounded-circle" width="40">
-                                                <div class="ms-3">
-                                                    <h5 class="mb-0">Akshay Kumar</h5>
-                                                    <small class="text-muted">Offline</small>
-                                                </div>
-                                                <div class="ms-auto chat-icon">
-                                                    <button type="button" class="btn btn-light-success text-success btn-circle btn-circle">
-                                                        <i data-feather="phone" class="feather-sm"></i> 
-                                                      </button>
-                                                    <button type="button" class="btn btn-light-info text-info btn-circle btn-circle ms-2">
-                                                        <i data-feather="message-circle" class="feather-sm"></i> 
-                                                      </button>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)">
-                                            <div class="d-flex align-items-center">
-                                                <img src="../assets/images/users/3.jpg" class="rounded-circle" width="40">
-                                                <div class="ms-3">
-                                                    <h5 class="mb-0">Shraddha Kapoor</h5>
-                                                    <small class="text-success">Online</small>
-                                                </div>
-                                                <div class="ms-auto chat-icon">
-                                                    <button type="button" class="btn btn-light-success text-success btn-circle btn-circle">
-                                                        <i data-feather="phone" class="feather-sm"></i> 
-                                                      </button>
-                                                    <button type="button" class="btn btn-light-info text-info btn-circle btn-circle ms-2">
-                                                        <i data-feather="message-circle" class="feather-sm"></i> 
-                                                      </button>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-4 d-flex align-items-stretch">
-                        <div class="card w-100">
-                            <h5 class="card-title p-3 card-header mb-0">
-                                User Activity
-                            </h5>
-                            <div class="card-body scrollable" style="height: 598px;">
-                                <div class="steamline mt-0">
-                                    <div class="sl-item">
-                                        <div class="sl-left">
-                                            <button type="button" class="btn btn-success btn-circle btn-circle text-white">
-                                  <i class="ti-user"></i> 
-                                </button>
-                                        </div>
-                                        <div class="sl-right">
-                                            <div class="d-flex align-items-center">
-                                                <h5 class="mb-0">John Doe</h5> <span class="sl-date ms-2">5 minutes ago</span>
-                                            </div>
-                                                <p class="mt-1">Contrary to popular belief</p>
-                                        </div>
-                                    </div>
-                                    <div class="sl-item">
-                                        <div class="sl-left">
-                                            <button type="button" class="btn btn-info btn-circle btn-circle text-white">
-                                  <i class="fas fa-image"></i> 
-                                </button>
-                                        </div>
-                                        <div class="sl-right">
-                                            <div class="d-flex align-items-center">
-                                                <h5 class="mb-0">Hritik Roshan</h5> 
-                                                <span class="sl-date ms-2">5 minutes ago</span>
-                                            </div>
-                                            <p class="mt-1">Lorem Ipsum is simply dummy</p>
-                                            <div class="row mb-3">
-                                                <div class="col">
-                                                    <img src="../assets/images/big/img1.jpg" class="img-fluid">
-                                                </div>
-                                                <div class="col">
-                                                    <img src="../assets/images/big/img2.jpg" class="img-fluid">
-                                                </div>
-                                                <div class="col">
-                                                    <img src="../assets/images/big/img3.jpg" class="img-fluid">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="sl-item">
-                                        <div class="sl-left"> <img src="../assets/images/users/1.jpg" alt="user" class="rounded-circle" /> </div>
-                                        <div class="sl-right">
-                                            <div class="d-flex align-items-center">
-                                                <h5 class="mb-0">Gohn Doe</h5>
-                                                <span class="sl-date ms-2">5 minutes ago</span>
-                                            </div>
-                                            <p class="mt-1">The standard chunk of ipsum</p>
-                                        </div>
-                                    </div>
-                                    <div class="sl-item">
-                                        <div class="sl-left"> <img src="../assets/images/users/2.jpg" alt="user" class="rounded-circle" /> </div>
-                                        <div class="sl-right">
-                                            <div class="d-flex align-items-center">
-                                                <h5 class="mb-0">Herry Deo</h5>
-                                                <span class="sl-date ms-2">5 minutes ago</span>
-                                            </div>
-                                            <p class="">Contrary to popular belief hi there..!</p>
-                                        </div>
-                                    </div>
-                                    <div class="sl-item">
-                                        <div class="sl-left"> <img src="../assets/images/users/5.jpg" alt="user" class="rounded-circle" /> </div>
-                                        <div class="sl-right">
-                                            <div class="d-flex align-items-center">
-                                                <h5 class="mb-0">Tiger Sroff</h5> 
-                                                <span class="sl-date ms-2">5 minutes ago</span>
-                                            </div>
-                                            <p class="mt-1">The generated lorem ipsum</p>
-                                            <button class="btn btn-outline-success btn-rounded mb-3">Approve</button>
-                                            <button class="btn btn-outline-danger btn-rounded mb-3 ms-2">Refuse</button>
-                                        </div>
-                                    </div>
-                                    <div class="sl-item">
-                                        <div class="sl-left">
-                                            <button type="button" class="btn btn-success btn-circle btn-circle text-white">
-                                              <i class="ti-user"></i> 
-                                            </button>
-                                        </div>
-                                        <div class="sl-right">
-                                            <div class="d-flex align-items-center">
-                                                <h5 class="mb-0">Peterson</h5> <span class="sl-date ms-2">15 minutes ago</span>
-                                            </div>
-                                                <p class="mt-1">Contrary to popular belief</p>
-                                        </div>
+                                <h5 class="card-title">New Clients</h5>
+                                <div class="d-flex align-items-center mb-2 mt-4">
+                                    <h2 class="mb-0 display-5"><i class="icon-people text-info"></i></h2>
+                                    <div class="ms-auto">
+                                        <h2 class="mb-0 display-6"><span class="fw-normal">23</span></h2>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-lg-4 d-flex align-items-stretch">
-                        <div class="card w-100">
-                            <h5 class="card-title p-3 card-header mb-0">
-                                Recent Chat
-                            </h5>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
                             <div class="card-body">
-                                <div class="chat-box scrollable" style="height:434px;">
-                                    <!--chat Row -->
-                                    <ul class="chat-list m-0 p-0">
-                                        <!--chat Row -->
-                                        <li class="mt-4">
-                                            <div class="chat-img d-inline-block align-top"><img
-                                                    src="../assets/images/users/1.jpg" alt="user"
-                                                    class="rounded-circle" /></div>
-                                            <div class="chat-content ps-3 d-inline-block">
-                                                <h5 class="text-muted fs-3 fw-normal">James Anderson</h5>
-                                                <div class="message fs-3 bg-primary text-white d-inline-block mb-2 fw-normal shadow">
-                                                    Lorem Ipsum
-                                                    is simply dummy text of the printing & type setting industry.</div>
-                                            </div>
-                                            <div class="chat-time d-inline-block text-end fs-2 font-weight-medium">10:56 am</div>
-                                        </li>
-                                        <!--chat Row -->
-                                        <li class="mt-4">
-                                            <div class="chat-img d-inline-block align-top"><img
-                                                    src="../assets/images/users/2.jpg" alt="user"
-                                                    class="rounded-circle" /></div>
-                                            <div class="chat-content ps-3 d-inline-block">
-                                                <h5 class="text-muted fs-3 fw-normal">Bianca Doe</h5>
-                                                <div class="message fs-3 bg-primary text-white d-inline-block mb-2 fw-normal shadow">
-                                                    It’s
-                                                    Great opportunity to work.</div>
-                                            </div>
-                                            <div class="chat-time d-inline-block text-end fs-2 font-weight-medium">10:57 am</div>
-                                        </li>
-                                        <!--chat Row -->
-                                        <li class="odd mt-4">
-                                            <div class="chat-content ps-3 d-inline-block text-end">
-                                                <div class="message fs-3 bg-light-inverse d-inline-block mb-2 font-weight-medium">
-                                                    I would
-                                                    love to join the team.</div>
-                                                <br />
-                                            </div>
-                                            <div class="chat-time d-inline-block text-end fs-2 font-weight-medium">10:58 am</div>
-                                        </li>
-                                        <!--chat Row -->
-                                        <li class="odd mt-4">
-                                            <div class="chat-content ps-3 d-inline-block text-end">
-                                                <div class="message fs-3 bg-light-inverse d-inline-block mb-2 font-weight-medium">
-                                                    Whats
-                                                    budget of the ample admin project.</div>
-                                                <br />
-                                            </div>
-                                            <div class="chat-time d-inline-block text-end fs-2 font-weight-medium">10:59 am</div>
-                                        </li>
-                                        <!--chat Row -->
-                                        <li class="mt-4">
-                                            <div class="chat-img d-inline-block align-top"><img
-                                                    src="../assets/images/users/3.jpg" alt="user"
-                                                    class="rounded-circle" /></div>
-                                            <div class="chat-content ps-3 d-inline-block">
-                                                <h5 class="text-muted fs-3 fw-normal">Angelina Rhodes</h5>
-                                                <div class="message fs-3 bg-primary text-white d-inline-block mb-2 fw-normal shadow">
-                                                    Well we
-                                                    have good budget for the project</div>
-                                            </div>
-                                            <div class="chat-time d-inline-block text-end fs-2 font-weight-medium">11:00 am</div>
-                                        </li>
-                                        <!--chat Row -->
-                                        <li class="mt-4">
-                                            <div class="chat-img d-inline-block align-top"><img
-                                                    src="../assets/images/users/1.jpg" alt="user"
-                                                    class="rounded-circle" /></div>
-                                            <div class="chat-content ps-3 d-inline-block">
-                                                <h5 class="text-muted fs-3 fw-normal">James Anderson</h5>
-                                                <div class="message fs-3 bg-primary text-white d-inline-block mb-2 fw-normal shadow">
-                                                    Lorem Ipsum
-                                                    is simply dummy text of the printing &
-                                                    type setting industry.</div>
-                                            </div>
-                                            <div class="chat-time d-inline-block text-end fs-2 font-weight-medium">10:56 am</div>
-                                        </li>
-                                        <!--chat Row -->
-                                        <li class="odd mt-4">
-                                            <div class="chat-content ps-3 d-inline-block text-end">
-                                                <div class="message fs-3 bg-light-inverse d-inline-block mb-2 font-weight-medium">
-                                                    Whats
-                                                    budget of the new project.</div>
-                                                <br />
-                                            </div>
-                                            <div class="chat-time d-inline-block text-end fs-2 font-weight-medium">10:59 am</div>
-                                        </li>
-                                    </ul>
+                                <h5 class="card-title">New Projects</h5>
+                                <div class="d-flex align-items-center mb-2 mt-4">
+                                    <h2 class="mb-0 display-5"><i class="icon-folder text-primary"></i></h2>
+                                    <div class="ms-auto">
+                                        <h2 class="mb-0 display-6"><span class="fw-normal">169</span></h2>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="card-body border-top">
-                                <div class="row">
-                                    <div class="col-9">
-                                        <div class="input-field mt-0 mb-0">
-                                            <input type="text" id="textarea1" placeholder="Type and enter" class="form-control border-0">
-                                        </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Open Projects</h5>
+                                <div class="d-flex align-items-center mb-2 mt-4">
+                                    <h2 class="mb-0 display-5"><i class="icon-folder-alt text-danger"></i></h2>
+                                    <div class="ms-auto">
+                                        <h2 class="mb-0 display-6"><span class="fw-normal">311</span></h2>
                                     </div>
-                                    <div class="col-3 text-end">
-                                        <a class="btn-circle btn-lg btn-success btn text-white" href="javascript:void(0)"><i data-feather="send" class="feather-sm"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">New Tickets</h5>
+                                <div class="d-flex align-items-center mb-2 mt-4">
+                                    <h2 class="mb-0 display-5"><i class="ti-bookmark text-success"></i></h2>
+                                    <div class="ms-auto">
+                                        <h2 class="mb-0 display-6"><span class="fw-normal">117</span></h2>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-       
+
+       <!-- ============================================================== -->
+       <!-- Manage User  -->
+       <!-- ============================================================== -->
+       <div class="row">
+           <div class="col-md-12">
+               <div class="card">
+                   <div class="card-body">
+                       <h5 class="card-title mb-0">Team Members</h5>
+                   </div>
+                   <div class="table-responsive">
+                       <table class="table no-wrap user-table mb-0">
+                         <thead class="table-light">
+                           <tr>
+                             <th scope="col" class="border-0 font-weight-medium ps-4">#</th>
+                             <th scope="col" class="border-0 font-weight-medium">Name</th>
+                             <th scope="col" class="border-0 font-weight-medium">Occupation</th>
+                             <th scope="col" class="border-0 font-weight-medium">Email</th>
+                             <th scope="col" class="border-0 font-weight-medium">Added</th>
+                             <th scope="col" class="border-0 font-weight-medium">Category</th>
+                             <th scope="col" class="border-0 font-weight-medium">Manage</th>
+                           </tr>
+                         </thead>
+                         <tbody>
+                           <tr>
+                             <td class="ps-4">1</td>
+                             <td>
+                               <div class="d-flex align-items-start">
+                                   <img src="../assets/images/users/1.jpg" class="rounded-circle" width="35">
+                                   <div class="ms-2">
+                                     <h5 class="font-weight-medium mb-0">Daniel Kristeen</h5>
+                                     <span class="text-muted">Texas, Unitedd states</span>
+                                   </div>
+                               </div>
+                             </td>
+                             <td>
+                                 <span>Visual Designer</span><br>
+                                 <span>Past : teacher</span>
+                             </td>
+                             <td>
+                                 <span>daniel@website.com</span><br>
+                                 <span>999 - 444 - 555</span>
+                             </td>
+                             <td>
+                                 <span>15 Mar 1988</span><br>
+                                 <span>10: 55 AM</span>
+                             </td>
+                             <td>
+                               <select class="form-select category-select" id="exampleFormControlSelect1">
+                                 <option>Modulator</option>
+                                 <option>Admin</option>
+                                 <option>User</option>
+                                 <option>Subscriber</option>
+                               </select>
+                             </td>
+                             <td>
+                               <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
+                                       <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
+                             </td>
+                           </tr>
+                           <tr>
+                             <td class="ps-4">2</td>
+                             <td>
+                               <div class="d-flex align-items-start">
+                                   <img src="../assets/images/users/2.jpg" class="rounded-circle" width="35">
+                                   <div class="ms-2">
+                                     <h5 class="font-weight-medium mb-0">Emma Smith</h5>
+                                     <span class="text-muted">Texas, Unitedd states</span>
+                                   </div>
+                               </div>
+                             </td>
+                             <td>
+                                 <span>Visual Designer</span><br>
+                                 <span>Past : teacher</span>
+                             </td>
+                             <td>
+                                 <span>daniel@website.com</span><br>
+                                 <span>999 - 444 - 555</span>
+                             </td>
+                             <td>
+                                 <span>15 Mar 1855</span><br>
+                                 <span>10: 00 AM</span>
+                             </td>
+                             <td>
+                               <select class="form-select category-select" id="exampleFormControlSelect1">
+                                 <option>Modulator</option>
+                                 <option>Admin</option>
+                                 <option>User</option>
+                                 <option>Subscriber</option>
+                               </select>
+                             </td>
+                             <td>
+                               <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
+                                       <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
+                             </td>
+                           </tr>
+                           <tr>
+                             <td class="ps-4">3</td>
+                             <td>
+                               <div class="d-flex align-items-start">
+                                   <img src="../assets/images/users/3.jpg" class="rounded-circle" width="35">
+                                   <div class="ms-2">
+                                     <h5 class="font-weight-medium mb-0">Olivia Johnson</h5>
+                                     <span class="text-muted">Texas, Unitedd states</span>
+                                   </div>
+                               </div>
+                             </td>
+                             <td>
+                                 <span>Visual Designer</span><br>
+                                 <span>Past : teacher</span>
+                             </td>
+                             <td>
+                                 <span>daniel@website.com</span><br>
+                                 <span>999 - 444 - 555</span>
+                             </td>
+                             <td>
+                                 <span>17 Aug 1988</span><br>
+                                 <span>12: 55 AM</span>
+                             </td>
+                             <td>
+                               <select class="form-select category-select" id="exampleFormControlSelect1">
+                                 <option>Modulator</option>
+                                 <option>Admin</option>
+                                 <option>User</option>
+                                 <option>Subscriber</option>
+                               </select>
+                             </td>
+                             <td>
+                               <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
+                                       <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
+                             </td>
+                           </tr>
+                           <tr>
+                             <td class="ps-4">4</td>
+                             <td>
+                               <div class="d-flex align-items-start">
+                                   <img src="../assets/images/users/4.jpg" class="rounded-circle" width="35">
+                                   <div class="ms-2">
+                                     <h5 class="font-weight-medium mb-0">Isabella Williams</h5>
+                                     <span class="text-muted">Texas, Unitedd states</span>
+                                   </div>
+                               </div>
+                             </td>
+                             <td>
+                                 <span>Visual Designer</span><br>
+                                 <span>Past : teacher</span>
+                             </td>
+                             <td>
+                                 <span>daniel@website.com</span><br>
+                                 <span>999 - 444 - 555</span>
+                             </td>
+                             <td>
+                                 <span>26 Mar 1999</span><br>
+                                 <span>10: 55 AM</span>
+                             </td>
+                             <td>
+                               <select class="form-select category-select" id="exampleFormControlSelect1">
+                                 <option>Modulator</option>
+                                 <option>Admin</option>
+                                 <option>User</option>
+                                 <option>Subscriber</option>
+                               </select>
+                             </td>
+                             <td>
+                               <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
+                                       <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
+                             </td>
+                           </tr>
+                           <tr>
+                             <td class="ps-4">5</td>
+                             <td>
+                               <div class="d-flex align-items-start">
+                                   <img src="../assets/images/users/5.jpg" class="rounded-circle" width="35">
+                                   <div class="ms-2">
+                                     <h5 class="font-weight-medium mb-0">Sophia Jones</h5>
+                                     <span class="text-muted">Texas, Unitedd states</span>
+                                   </div>
+                               </div>
+                             </td>
+                             <td>
+                                 <span>Visual Designer</span><br>
+                                 <span>Past : teacher</span>
+                             </td>
+                             <td>
+                                 <span>daniel@website.com</span><br>
+                                 <span>999 - 444 - 555</span>
+                             </td>
+                             <td>
+                                 <span>16 Aug 2001</span><br>
+                                 <span>10: 55 AM</span>
+                             </td>
+                             <td>
+                               <select class="form-select category-select" id="exampleFormControlSelect1">
+                                 <option>Modulator</option>
+                                 <option>Admin</option>
+                                 <option>User</option>
+                                 <option>Subscriber</option>
+                               </select>
+                             </td>
+                             <td>
+                               <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
+                                       <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
+                             </td>
+                           </tr>
+                           <tr>
+                             <td class="ps-4">6</td>
+                             <td>
+                               <div class="d-flex align-items-start">
+                                   <img src="../assets/images/users/6.jpg" class="rounded-circle" width="35">
+                                   <div class="ms-2">
+                                         <h5 class="font-weight-medium mb-0">Charlotte Brown</h5>
+                                         <span class="text-muted">Texas, Unitedd states</span>
+                                   </div>
+                               </div>
+                             </td>
+                             <td>
+                                 <span>Visual Designer</span><br>
+                                 <span>Past : teacher</span>
+                             </td>
+                             <td>
+                                 <span>daniel@website.com</span><br>
+                                 <span>999 - 444 - 555</span>
+                             </td>
+                             <td>
+                                 <span>15 Mar 1988</span><br>
+                                 <span>10: 55 AM</span>
+                             </td>
+                             <td>
+                               <select class="form-select category-select" id="exampleFormControlSelect1">
+                                 <option>Modulator</option>
+                                 <option>Admin</option>
+                                 <option>User</option>
+                                 <option>Subscriber</option>
+                               </select>
+                             </td>
+                             <td>
+                               <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
+                                       <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
+                             </td>
+                           </tr>
+                         </tbody>
+                       </table>
+                   </div>
+               </div>
+           </div>
+       </div>

@@ -32,9 +32,10 @@
     <link href="~/assets/extra-libs/calendar/calendar.css" rel="stylesheet" />
 @*    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/MeteorStrike.styles.css" asp-append-version="true" />
     <!-- needed css -->
     <link href="~/dist/css/style.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/MeteorStrike.styles.css" asp-append-version="true" />
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -195,7 +196,7 @@
                                         <a class="dropdown-item" href="#"><i data-feather="mail" class="feather-sm text-success me-1 ms-1"></i>
                                             Inbox</a>
                                         <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit();"><i data-feather="log-out"
+                                         <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout"><i data-feather="log-out"
                                         class="feather-sm text-danger me-1 ms-1"></i> Logout</a>
                                     }
                                     else

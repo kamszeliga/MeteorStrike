@@ -21,9 +21,25 @@ body {
   margin-bottom: 60px;
 }
 
-.card-img-top {
-    width: 100%;
-    height: 15vw;
-    object-fit: cover;
+.cardheaderimg {
+    object-fit: cover !important;
+    object-position: center !important; /* Center the image within the element */
+    width: 100% !important;
+    max-height: 100px !important;
 }
 
+
+.card-index-text {
+    line-clamp: 3 !important;
+}
+
+.text-truncate-container {
+    width: 250px;
+}
+
+    .text-truncate-container p {
+        -webkit-line-clamp: 3;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }

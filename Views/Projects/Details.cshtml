@@ -23,29 +23,55 @@
          <div class="col-lg-4">
              <div class="card">
                  <div class="card-body">
-                     <h4 class="card-title mb-0">Project Details</h4>
+                     <div class="card-header">
+                     <h4 class="card-title mb-0">Project Details</h4></div>
                  </div>
                  <img class="detailsImage" src="@_BTFileService.ConvertByteArrayToFile(Model.ImageFileData!, Model.ImageFileType!,(int)DefaultImage.ProjectImage)" alt="Post Images" />
                  <div class="card-body bg-extra-light">
                      <div class="row text-center">
-                         <div class="col-6 my-2 text-start">
+                         <div class="col-4 my-2 text-start">
                              <span class="badge bg-warning">@Html.DisplayFor(model => model.ProjectPriority.Name)</span>
                          </div>
-                         <div class="col-6 my-2">
+                         <div class="col-8 my-2">
                             @Model.StartDate.ToString("MMM dd, yyyy") -  @Model.EndDate.ToString("MMM dd, yyyy")
                          </div>
+
+                        <a asp-action="Edit" asp-route-id="@Model.Id" type="button" class="mt-2 btn waves-effect waves-light btn-success">Update</a>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                             <a asp-action="AssignPM" asp-route-id="@Model.Id" type="button" class="mt-2 btn waves-effect waves-light btn-info">Assign Project Manager</a>
+                        }
+
+                        @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+                        {
+                             <a asp-action="AssignProjectMembers" asp-route-id="@Model.Id" type="button" class="mt-2 btn waves-effect waves-light btn-info">Assign Members</a>
+                        }
                      </div>
                  </div>
+             </div>
+         </div>
+
+         <div class="col-lg-8">
+             <div class="card">
                  <div class="card-body">
+                     <div class="card-header">
+                     <h4 class="card-title">@Html.DisplayFor(model => model.Name)</h4> 
+                     </div>
+                      @Html.DisplayFor(model => model.Description)
+                 </div>
+             <div class="card-body">
                      <div class="row">
                          <div class="col-md-6 col-12">
                            <h5 class="mt-4">Project Manager</h5>
                            <span>@((await _BTProjectService.GetProjectManagerAsync(Model.Id))?.FullName ?? "Unassigned")</span>
                            <h5 class="pt-3">Members</h5>
-                           <ul>@foreach(BTUser member in Model.Members)
-                                {<li>
-                                    @member.FullName
-                                </li>}
+                           <ul>@foreach (BTUser member in Model.Members)
+                                {
+                                    <li>
+                                        @member.FullName
+                                    </li>
+                                }
                            </ul>
                            </div>
 
@@ -57,27 +83,10 @@
                         </div>
                      </div>
                      <br/>
-                     <a asp-action="Edit" asp-route-id="@Model.Id" type="button" class="mt-2 btn waves-effect waves-light btn-success">Update</a>
-
-                     @if (User.IsInRole("Admin")){
-                     <a asp-action="AssignPM" asp-route-id="@Model.Id" type="button" class="mt-2 btn waves-effect waves-light btn-info">Assign Project Manager</a>}
-
-                     @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin")){
-                     <a asp-action="AssignProjectMembers" asp-route-id="@Model.Id" type="button" class="mt-2 btn waves-effect waves-light btn-info">Assign Members</a>}
-                 </div>
-             </div>
-         </div>
-
-         <div class="col-lg-8">
-             <div class="card">
-                 <div class="card-body">
-                     <h4 class="card-title">@Html.DisplayFor(model => model.Name)</h4> 
-                      @Html.DisplayFor(model => model.Description)
                  </div>
              </div>
          </div>
      </div>
- </div>
  <!-- -------------------------------------------------------------- -->
  <!-- End Container fluid  -->
  <!-- -------------------------------------------------------------- -->

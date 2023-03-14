@@ -33,7 +33,7 @@ namespace MeteorStrike.Controllers
         private readonly IBTRolesService _btRolesService;
         private readonly IBTTicketHistoryService _btTicketHistoryService;
         private readonly IBTProjectService _btProjectService;
-        private readonly BTNotification _btNotification;
+        private readonly IBTNotification _btNotification;
 
         public TicketsController(ApplicationDbContext context,
                                   UserManager<BTUser> userManager,
@@ -42,7 +42,7 @@ namespace MeteorStrike.Controllers
                                   IBTRolesService btRolesService,
                                   IBTTicketHistoryService btTicketHistoryService, 
                                   IBTProjectService btProjectService,
-                                  BTNotification btNotification)
+                                  IBTNotification btNotification)
         {
             _context = context;
             _userManager = userManager;
@@ -222,6 +222,7 @@ namespace MeteorStrike.Controllers
 
                 Notification? notification = new()
                 {
+                    ProjectId = ticket.ProjectId,
                     TicketId = ticket.Id,
                     Title = "New Ticket Added",
                     Message = $"New Ticket: {ticket.Title} was created by {btUser?.FullName}.",

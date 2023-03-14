@@ -31,11 +31,11 @@
 							</div>
 							<div class="col col-6">
 								<h5 class="pt-3">Updated</h5>
-									<span>@Html.DisplayFor(model => model.Updated)</span>
+									<span>@Model.Updated.ToString("MMM dd, yyyy")</span>
 								</div>
 							<div class="col col-6">
 								<h5 class="pt-3">Created</h5>
-									<span>@Html.DisplayFor(model => model.Created)</span>
+									<span>@Model.Created.ToString("MMM dd, yyyy")</span>
 							</div>
 					   <br/>
 					   <div class="row">
@@ -110,7 +110,7 @@
 					<div class="card-header">
 								<h4>Attachments</h4>
 							</div>
-							<div class="card-body" style="overflow-y:auto;height:300px;">
+							<div class="card-body" style="overflow-y:auto;height:150px;">
 
 								<div class="row">
 											@foreach (TicketAttachment item in Model.Attachments)
@@ -130,16 +130,9 @@
 									</div>
 											}
 								</div>
-
-
-									@* Ticket attachments part 2 here *@
-
 							</div>
-						<div class="card-footer">
-					   </div>
                  </div>
                 </div>
-
 
 		       <div class="card">
 		      	 <div class="card-body">
@@ -200,10 +193,7 @@
 				<div class="row col-cols-2 mt-5 bg-secondary">
 					<div class="card col m-1 p-2">
 						<div class="card-body">
-								@*Title of Ticket*@
-							<h5>[Title]</h5>
-								@*Description of Ticket*@
-							<p>[Description]</p>
+
 							<div class="progress-container progress-info m-b-25">
 									@*Project Name and information*@
 								<span class="progress-badge" style="font-size:small">Project: [Project Name]</span>
@@ -215,64 +205,6 @@
 										<span class="progress-value">[Percent]%</span>
 									</div>
 								</div>
-							</div>
-						</div>
-					</div>
-					<div class="card col m-1 p-2">
-						<div class="card-body">
-							<ul class="list-unstyled">				  @*Ticket date*@
-								<li><strong>Date Entered:</strong> <span class="">  [Ticket created date]</</span></li>
-									@*Project end date*@
-								<li><strong>Deadline:</strong> <span class="">  [Project End date]</</span></li>
-									@*Ticket type*@
-								<li><strong>Type:</strong> <span class="">  [Ticket Type]</span></li>
-									@*Ticket priority*@
-								<li><strong>Priority:</strong> <span class="">  [Ticket priority]</span></li>
-									@*Ticket status*@
-								<li><strong>Status:</strong> <span class="">  [Ticket status]</span></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-8 col col-cols-2 mt-5 ">
-				<div class="col">
-					<div class="bg-secondary">
-						<div class="card m-1 p-2">
-							<div class="card-header">
-								<h2>Comments</h2>
-							</div>
-							<div class="card-body" style="overflow-y:auto;height:600px;">
-
-									@*Form and Logic for authorized users to add comments*@
-								<hr />
-									<h6>Comments</h6>
-									<ul class="right_chat list-unstyled mb-0">
-										@*Loop to show comments made for the Ticket*@
-									</ul>
-							</div>
-							<div class="card-footer">
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col">
-					<div class="bg-secondary">
-						<div class="card m-1 p-2">
-							<div class="card-header">
-								<h2>Attachments</h2>
-							</div>
-							<div class="card-body" style="overflow-y:auto;height:300px;">
-
-									@* Refer to the Ticket Attachments document for this section *@
-
-									@* Ticket attachments part 1 here *@
-
-
-									@* Ticket attachments part 2 here *@
-
-							</div>
-							<div class="card-footer">
 							</div>
 						</div>
 					</div>
