@@ -2,7 +2,7 @@
 
 namespace MeteorStrike.Services.Interfaces
 {
-		public interface IBTNotifications
+		public interface IBTNotification
 		{
 			public Task AddNotificationAsync(Notification? notification);
 

@@ -1,4 +1,5 @@
 using DailyRoarBlog.Data;
+using FossilRecordsProject.Models;
 using MeteorStrike.Data;
 using MeteorStrike.Extentions;
 using MeteorStrike.Models;
@@ -25,14 +26,16 @@ builder.Services.AddIdentity<BTUser, IdentityRole>(options => options.SignIn.Req
 
 // Custom Services
 builder.Services.AddScoped<IEmailSender, BTEmailService>();
-builder.Services.AddScoped<IBTRolesService, BTRolesService>();
 builder.Services.AddScoped<IBTFileService, BTFileService>();
-builder.Services.AddScoped<IBTInviteService, BTInviteService>();
-builder.Services.AddScoped<IBTProjectService, BTProjectService>();  
+builder.Services.AddScoped<IBTRolesService, BTRolesService>();
+builder.Services.AddScoped<IBTProjectService, BTProjectService>();
 builder.Services.AddScoped<IBTTicketService, BTTicketService>();
-builder.Services.AddScoped<IBTCompanyService, BTCompanyService>();
 builder.Services.AddScoped<IBTTicketHistoryService, BTTicketHistoryService>();
-builder.Services.AddScoped<IBTNotifications, BTNotification>();
+builder.Services.AddScoped<IBTCompanyService, BTCompanyService>();
+builder.Services.AddScoped<IBTNotification, BTNotification>();
+builder.Services.AddScoped<IBTInviteService, BTInviteService>();
+
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
 
 builder.Services.AddMvc();

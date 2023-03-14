@@ -1,24 +1,26 @@
-﻿using MeteorStrike.Data;
+﻿using MailKit;
+using MeteorStrike.Data;
 using MeteorStrike.Models;
 using MeteorStrike.Models.Enums;
 using MeteorStrike.Services.Interfaces;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace MeteorStrike.Services
 {
-	public class BTNotification : IBTNotifications
+	public class BTNotification : IBTNotification
 	{
 		private readonly ApplicationDbContext _context;
-		private readonly BTRolesService _btRolesService;
-		private readonly BTEmailService _btMailService;
+		private readonly IBTRolesService _rolesService;
+		private readonly IEmailSender _MailService;
 
 		public BTNotification(ApplicationDbContext context,
-								BTRolesService btRolesService,
-								BTEmailService btMailService)
+								IBTRolesService btRolesService,
+                                IEmailSender MailService)
 		{
 			_context = context;
-			_btRolesService = btRolesService;
-			_btMailService = btMailService;
+			_rolesService= btRolesService;
+			_MailService = MailService;
 
 		}
 
@@ -45,7 +47,7 @@ namespace MeteorStrike.Services
 			{
 				if (notification != null)
 				{
-					IEnumerable<string> adminIds = (await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.Admin), companyId)).Select(u => u.Id);
+					IEnumerable<string> adminIds = (await _rolesService.GetUsersInRoleAsync(nameof(BTRoles.Admin), companyId)).Select(u => u.Id);
 
 					foreach (string adminId in adminIds) 
 					{
@@ -97,11 +99,11 @@ namespace MeteorStrike.Services
 			{
 				if (notification != null)
 				{
-					IEnumerable<string?> adminEmails = (await _btRolesService.GetUsersInRoleAsync(nameof(BTRoles.Admin), companyId)).Select(u => u.Email);
+					IEnumerable<string?> adminEmails = (await _rolesService.GetUsersInRoleAsync(nameof(BTRoles.Admin), companyId)).Select(u => u.Email);
 
 					foreach (string adminEmail in adminEmails)
 					{
-						await _btMailService.SendEmailAsync(adminEmail, emailSubject!, notification.Message!);
+						await _MailService.SendEmailAsync(adminEmail, emailSubject!, notification.Message!);
 					}
 					return true;
 				}
@@ -126,7 +128,7 @@ namespace MeteorStrike.Services
 
 					if (userEmail != null)
 					{
-						await _btMailService.SendEmailAsync(userEmail, emailSubject!, notification.Message!);
+						await _MailService.SendEmailAsync(userEmail, emailSubject!, notification.Message!);
 
 						return true;
 					}

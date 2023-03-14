@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.DataProtection;
 using DailyRoarBlog.Data;
 using Microsoft.AspNetCore.Authorization;
+using MailKit;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace MeteorStrike.Controllers
 {
@@ -24,7 +26,7 @@ namespace MeteorStrike.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IBTProjectService _btProjectService;
         private readonly IBTCompanyService _btCompanyService;
-        private readonly BTEmailService _btMailService;
+        private readonly IEmailSender _btMailService;
         private readonly IBTInviteService _btInviteService;
         private readonly UserManager<BTUser> _userManager;
         private readonly IDataProtector _protector;
@@ -33,7 +35,7 @@ namespace MeteorStrike.Controllers
         public InvitesController(ApplicationDbContext context,
                                  IBTProjectService bTProjectService,
                                  IBTCompanyService btCompanyService,
-                                 BTEmailService btEmailService,
+                                 IEmailSender btEmailService,
                                  IBTInviteService bTInviteService,
                                  UserManager<BTUser> userManager,
                                  IDataProtectionProvider dataProtectionProvider,
@@ -164,7 +166,7 @@ namespace MeteorStrike.Controllers
 
             try
             {
-                Invite? invite = await _btInviteService.GetInviteAsync(companyToken, email, companyId);
+                Invite? invite = await _btInviteService.GetInviteAsync(companyToken, inviteeEmail, companyId);
 
                 if(invite != null)  
                 { 
