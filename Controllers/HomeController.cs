@@ -18,6 +18,11 @@ namespace MeteorStrike.Controllers
             return View();
         }
 
+        public IActionResult LandingPage()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

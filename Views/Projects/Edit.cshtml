@@ -54,42 +54,33 @@
                                         <!--/row-->
                                         <!--/row-->
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group mb-3">
-                                                 <label asp-for="ProjectPriorityId" class="control-label">Project Priority</label>
-                                                 <select asp-for="ProjectPriorityId" class ="form-control" asp-items="ViewBag.ProjectPriorityId"></select>
-                                                 <span asp-validation-for="ProjectPriorityId" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <!--/span-->
-                                             <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="form-group mb-3">
                                                   <label asp-for="StartDate" class="control-label">Start Date</label>
                                                   <input asp-for="StartDate" class="form-control" />
                                                   <span asp-validation-for="StartDate" class="text-danger"></span>
                                                 </div>
-                                            </div>
-                                            <!--/span-->
-                                        </div>
-                                        <!--/row-->
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="col-md-6">
                                                 <div class="form-group mb-3">
-                                                    <label asp-for="ImageFormFile" class="control-label">Project Image</label>
-                                                    <img class="img-fluid border rounded-3 m-2" style="max-height: 250px;" src="@_BTFileService.ConvertByteArrayToFile(Model.ImageFileData!, Model.ImageFileType!,(int)DefaultImage.ProjectImage)" id="blogImage">
-                                                    <input asp-for="ImageFormFile" type="file" class="form-control mt-3 pt-2" accept=".png,.jpg,.jpeg,.gif"
-                                                        onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
+                                                 <label asp-for="EndDate" class="control-label">End Date</label>
+                                                 <input asp-for="EndDate" class="form-control" />
+                                                 <span asp-validation-for="EndDate" class="text-danger"></span>
+                                                 </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group mb-3">
+                                                 <label asp-for="ProjectPriorityId" class="control-label">Project Priority</label>
+                                                 <select asp-for="ProjectPriorityId" class ="form-control" asp-items="ViewBag.ProjectPriorityId"></select>
+                                                 <span asp-validation-for="ProjectPriorityId" class="text-danger"></span>
+                                                </div>
+                                                 <div class="form-group mb-3">
+                                                 <label asp-for="ImageFormFile" class="control-label">Project Image</label>
+                                                 <input asp-for="ImageFormFile" type="file" class="form-control pt-2" accept=".png,.jpg,.jpeg,.gif"
+                                                  onchange="document.getElementById('blogImage').src = window.URL.createObjectURL(this.files[0])" />
                                                 </div>
                                             </div>
-                                            <!--/span-->
-                                            <div class="form-group mb-3">
-                                                    <label asp-for="EndDate" class="control-label">End Date</label>
-                                                    <input asp-for="EndDate" class="form-control" />
-                                                    <span asp-validation-for="EndDate" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-                                        </div>
+                                           <div class="col-md-4 text-center">
+                                               <img class="img-fluid border rounded-3 m-2" style="max-height: 250px;" src="@_BTFileService.ConvertByteArrayToFile(Model.ImageFileData!, Model.ImageFileType!,(int)DefaultImage.ProjectImage)" id="blogImage">
+                                          </div>
                                     <div class="form-actions">
                                         <button type="submit" value="create" class="btn btn-success rounded-pill px-4"> Save</button>
 

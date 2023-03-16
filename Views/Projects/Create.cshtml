@@ -3,95 +3,128 @@
 @{
     ViewData["Title"] = "Create New Project";
 }
+ <!-- ============================================================== -->
+ <!-- Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+ <div class="page-breadcrumb border-bottom">
+     <div class="row">
+         <div class="col-lg-3 col-md-4 col-xs-12 justify-content-start d-flex align-items-center">
+             <h5 class="font-weight-medium text-uppercase mb-0">Create Project</h5>
+         </div>
+         <div class="col-lg-9 col-md-8 col-xs-12 d-flex justify-content-start justify-content-md-end align-self-center">
+             <nav aria-label="breadcrumb" class="mt-2">
+                 <ol class="breadcrumb mb-0 p-0">
+                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                     <li class="breadcrumb-item active" aria-current="page"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                     <li class="breadcrumb-item active" aria-current="page"><b><a asp-controller="Projects" asp-action="Create">Create Project</a></b></li>
+                 </ol>
+             </nav>
+             <a asp-controller="Tickets" asp-action="Create" class="btn btn-danger text-white ms-3 d-none d-md-block">Create Ticket</a>
+         </div>
+     </div>
+ </div>
+ <!-- ============================================================== -->
+ <!-- End Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
 
-            <!-- -------------------------------------------------------------- -->
-            <!-- Container fluid  -->
-            <!-- -------------------------------------------------------------- -->
-            <div class="container-fluid page-content">
-                <!-- -------------------------------------------------------------- -->
-                <!-- Start Page Content -->
-                <!-- -------------------------------------------------------------- -->
-                <div class="row">
-                    <!-- Column -->
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <form asp-action="Create" enctype="multipart/form-data">
-                                   <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                    <div class="form-body">
-                                        <h5 class="card-title">Create a New Project</h5>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="mb-3">
-                                                  <label asp-for="Name" class="control-label"></label>
-                                                  <input asp-for="Name" class="form-control" />
-                                                  <span asp-validation-for="Name" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <!--/span-->
-                                            <div class="col-12">
-                                                <div class="form-group mb-3">
-                                                  <label asp-for="Description" class="control-label"></label>
-                                                  <textarea rows="4" asp-for="Description" class="form-control"></textarea>
-                                                  <span asp-validation-for="Description" class="text-danger"></span>
-                                                  </div>
-                                            </div>
-                                            <!--/span-->
-                                        </div>
-                                        <!--/row-->
-                                        <!--/row-->
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group mb-3">
-                                                  <label asp-for="StartDate" class="control-label"></label>
-                                                  <input asp-for="StartDate" class="form-control" />
-                                                  <span asp-validation-for="StartDate" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <!--/span-->
-                                            <div class="col-md-6">
-                                                <div class="form-group mb-3">
-                                                <label asp-for="ProjectPriorityId" class="control-label"></label>
-                                                <select asp-for="ProjectPriorityId" class ="form-control" asp-items="ViewBag.ProjectPriorityId"></select>
-                                                </div>
-                                            </div>
-                                            <!--/span-->
-                                        </div>
-                                        <!--/row-->
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group mb-3">
-                                                    <label asp-for="EndDate" class="control-label"></label>
-                                                    <input asp-for="EndDate" class="form-control" />
-                                                    <span asp-validation-for="EndDate" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-                                            <!--/span-->
-                                            <div class="col-md-6">
-                                                <div class="form-group mb-3">
-                                                     <label asp-for="ImageFormFile" class="control-label">Project Image</label>
-                                                     <input asp-for="ImageFormFile" type="file" class="form-control mt-3 pt-2" accept=".png,.jpg,.jpeg,.gif"
-                                                            onchange="document.getElementById('projectImage').src = window.URL.createObjectURL(this.files[0])" />
-                                                      <img class="img-fluid border rounded-3 m-2" style="max-height: 150px;" src="~/img/DefaultProjectImage.png" id="projectImage">
-                                                </div>
-                                            </div>
-                                            </div>
-                                        <div class="form-actions">
-                                            <button type="submit" value="create" class="btn btn-success rounded-pill px-4"> Save</button>
+ <!-- -------------------------------------------------------------- -->
+ <!-- Container fluid  -->
+ <!-- -------------------------------------------------------------- -->
+ <div class="container-fluid page-content">
+     <!-- -------------------------------------------------------------- -->
+     <!-- Start Page Content -->
+     <!-- -------------------------------------------------------------- -->
+     <div class="row">
+         <!-- Column -->
+         <div class="col-lg-12">
+             <div class="card">
+                 <div class="card-body">
+                     <form asp-action="Create" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                         <div class="form-body">
+                             <h5 class="card-title">Create a New Project</h5>
+                             <hr>
+                             <div class="row">
+                                 <div class="col-12">
+                                     <div class="mb-3">
+                                       <label asp-for="Name" class="control-label"></label>
+                                       <input asp-for="Name" class="form-control" />
+                                       <span asp-validation-for="Name" class="text-danger"></span>
+                                     </div>
+                                     <div class="form-group mb-3">
+                                       <label asp-for="Description" class="control-label"></label>
+                                       <textarea rows="4" asp-for="Description" class="form-control"></textarea>
+                                       <span asp-validation-for="Description" class="text-danger"></span>
+                                       </div>
+                                 </div>
+                             </div>
+                             <!--/row-->
+                             <div class="row">
+                                 <div class="col-md-4">
+                                     <div class="form-group mb-3">
+                                       <label asp-for="StartDate" class="control-label"></label>
+                                       <input asp-for="StartDate" class="form-control" />
+                                       <span asp-validation-for="StartDate" class="text-danger"></span>
+                                     </div>
+                                     <div class="form-group mb-3">
+                                       <label asp-for="EndDate" class="control-label"></label>
+                                       <input asp-for="EndDate" class="form-control" />
+                                       <span asp-validation-for="EndDate" class="text-danger"></span>
+                                       </div>
+                                     </div>
+                                 <!---->
+                                 <div class="col-md-4">
+                                     <div class="form-group mb-3">
+                                     <label asp-for="ProjectPriorityId" class="control-label"></label>
+                                     <select asp-for="ProjectPriorityId" class ="form-control" asp-items="ViewBag.ProjectPriorityId"></select>
 
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Column -->
-                </div>
-                <!-- -------------------------------------------------------------- -->
-                <!-- End PAge Content -->
-                <!-- -------------------------------------------------------------- -->
-            </div>
-            <!-- -------------------------------------------------------------- -->
-            <!-- End Container fluid  -->
-            <!-- -------------------------------------------------------------- -->
+                                     </div>
+                                     <div class="form-group mb-3">
+                                      <label asp-for="ImageFormFile" class="control-label">Project Image</label>
+                                      <input asp-for="ImageFormFile" type="file" class="form-control pt-2" accept=".png,.jpg,.jpeg,.gif"
+                                       onchange="document.getElementById('projectImage').src = window.URL.createObjectURL(this.files[0])" />                                     </div>
+
+                                 </div>                                 
+                                 <div class="col-md-4 text-center">
+                                     <div class="form-group mb-3">
+                                      <img class="img-fluid border rounded-3 m-2" style="max-height: 200px;" src="~/img/DefaultProjectImage.png" id="projectImage">
+                                     </div>
+                                 </div>
+                             <div class="form-actions">
+                                 <button type="submit" value="create" class="btn btn-success rounded-pill px-4"> Save</button>
+
+                             </div>
+                         </div>
+                     </form>
+                 </div>
+             </div>
+         </div>
+         <!-- Column -->
+     </div>
+     <!-- -------------------------------------------------------------- -->
+     <!-- End PAge Content -->
+     <!-- -------------------------------------------------------------- -->
+ </div>
+ <!-- -------------------------------------------------------------- -->
+ <!-- End Container fluid  -->
+ <!-- -------------------------------------------------------------- -->
+
+@section Scripts {
+
+            <script src="~/ckeditor5/build/ckeditor.js"></script>
+            <script>
+                 ClassicEditor
+                     .create(document.querySelector('.editor'), {
+                         licenseKey: '',
+                     })
+                     .then(editor => {
+                         window.editor = editor;
+                     })
+                     .catch(error => {
+                         console.error('Oops, something went wrong!');
+                         console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                         console.warn('Build id: xx09iayzufkn-lkt434h3lx2z');
+                         console.error(error);
+                     });
+            </script>
+}

@@ -20,7 +20,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, ample admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template">
-    <meta name="description" content="Ample is powerful and clean admin dashboard template, inpired from Google's Material Design">
+    <meta name="description" content="Meteor Strike is a powerful bug tracking web application">
     <meta name="robots" content="noindex,nofollow">
     <title>@ViewData["Title"] - MeteorStrike</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ampleadmin/" />
@@ -30,9 +30,10 @@
     <!-- Custom CSS -->
     <link href="~/assets/libs/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" />
     <link href="~/assets/extra-libs/calendar/calendar.css" rel="stylesheet" />
-@*    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <!-- needed css -->
+    <link rel="stylesheet" href="~/css/table.css" asp-append-version="true" />
+    <!-- Needed css -->
+    <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css">
     <link href="~/dist/css/style.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/MeteorStrike.styles.css" asp-append-version="true" />
 
@@ -237,42 +238,6 @@
                                 </li>
                         }
 
-                        @* @if (User.Identity.IsAuthenticated)
-                        {
-                                                <li class="nav-item dropdown has-arrow main-drop">
-                                                    <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <span class="user-img">
-                                                            <img src="@_ImageService.ConvertByteArrayToFile(blogUser!.ImageData!,blogUser!.ImageType!,(int)DefaultImage.BlogUserImage)" alt="">
-                                                            <span class="status online"></span>
-                                                        </span>
-                                                        <span>@blogUser.FullName</span>
-                                                    </a>
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                                                    <div class="dropdown-menu animate__slideInDown">
-                                                                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">My Profile</a>
-                                                                        <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit();">Logout</a>
-                                                                    </div>
-                                }
-                                else
-                                {
-                                                                    <div class="dropdown-menu animate__slideInDown">
-                                                                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">Sign In</a>
-                                                                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                                                                    </div>
-                                }
-                                                </li>
-                        }
-                        else
-                        {
-                                                <li>
-                                                    <a class="btn-outline-success" asp-area="Identity" asp-page="/Account/Login">
-                                                        <i class="fa fa-sign-in fa-2x" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-
-                        }*@
-
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
@@ -386,28 +351,6 @@
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
         <div class="page-wrapper">
-            <!-- ============================================================== -->
-            <!-- Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <div class="page-breadcrumb border-bottom">
-                <div class="row">
-                    <div class="col-lg-3 col-md-4 col-xs-12 justify-content-start d-flex align-items-center">
-                        <h5 class="font-weight-medium text-uppercase mb-0">Dashboard</h5>
-                    </div>
-                    <div class="col-lg-9 col-md-8 col-xs-12 d-flex justify-content-start justify-content-md-end align-self-center">
-                        <nav aria-label="breadcrumb" class="mt-2">
-                            <ol class="breadcrumb mb-0 p-0">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-                            </ol>
-                        </nav>
-                        <a asp-controller="Tickets" asp-action="Create" class="btn btn-danger text-white ms-3 d-none d-md-block">Create Ticket</a>
-                    </div>
-                </div>
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
             <!-- ============================================================== -->
             <!-- Container fluid  -->
             <!-- ============================================================== -->
@@ -696,10 +639,7 @@
     <script src="~/assets/libs/moment/min/moment.min.js"></script>
     <script src="~/assets/libs/fullcalendar/dist/fullcalendar.min.js"></script>
     <script src="../../dist/js/pages/calendar/cal-init.js"></script>
-    <script>
-        $('#calendar').fullCalendar('option', 'height', 650);
-
-    </script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 
 @await RenderSectionAsync("Scripts", required: false)
 

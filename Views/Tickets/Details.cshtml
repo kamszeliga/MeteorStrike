@@ -10,6 +10,29 @@
     ViewData["Title"] = "Details";
 } 
 
+ <!-- ============================================================== -->
+ <!-- Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+ <div class="page-breadcrumb border-bottom">
+	 <div class="row">
+		 <div class="col-lg-3 col-md-4 col-xs-12 justify-content-start d-flex align-items-center">
+			 <h5 class="font-weight-medium text-uppercase mb-0">Ticket: @Model.Title</h5>
+		 </div>
+		 <div class="col-lg-9 col-md-8 col-xs-12 d-flex justify-content-start justify-content-md-end align-self-center">
+			 <nav aria-label="breadcrumb" class="mt-2">
+				 <ol class="breadcrumb mb-0 p-0">
+					 <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+					 <li class="breadcrumb-item active" aria-current="page"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+					 <li class="breadcrumb-item active" aria-current="page"><b><a asp-action="Details" asp-route-id="@Model.Id">@Model.Title</a></b></li>
+				 </ol>
+			 </nav>
+			 <a asp-controller="Tickets" asp-action="Create" class="btn btn-danger text-white ms-3 d-none d-md-block">Create Ticket</a>
+		 </div>
+	 </div>
+ </div>
+ <!-- ============================================================== -->
+ <!-- End Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
 
 <!-- Container fluid  -->
    <!-- -------------------------------------------------------------- -->
@@ -23,7 +46,7 @@
                <div class="card">
                    <div class="card-body">
 					   <div class="card-header">
-                       <h4 class="card-title mb-0">Ticket Details</h4>
+                       <h4 class="card-title mb-0">Ticket Project Details</h4>
 					   </div>
 					   <div class="row">
 						   <div class="col-12">					   
@@ -148,8 +171,8 @@
                           {
                                  <!-- Start Single Comment  -->
                                  <li class="comment">
-                                     <h6 class="commenter">
-									     <span data-text="@comment.BTUser?.FullName"><b>@comment.BTUser?.FullName</b></span> • @comment.Created.ToString("MMM dd, yyyy")</h6>
+                                     <h5 class="commenter">
+										@comment.BTUser?.FullName - <b>@comment.Created.ToString("MMM dd, yyyy 'at' H:mm tt")</b></h5>
                                      <div class="">
                                          <p class="">@Html.Raw(comment.Comment)</p>
                                      </div>

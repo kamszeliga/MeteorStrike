@@ -3,6 +3,29 @@
 @{
     ViewData["Title"] = "Create New Ticket";
 }
+ <!-- ============================================================== -->
+ <!-- Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+ <div class="page-breadcrumb border-bottom">
+     <div class="row">
+         <div class="col-lg-3 col-md-4 col-xs-12 justify-content-start d-flex align-items-center">
+             <h5 class="font-weight-medium text-uppercase mb-0">Create Ticket</h5>
+         </div>
+         <div class="col-lg-9 col-md-8 col-xs-12 d-flex justify-content-start justify-content-md-end align-self-center">
+             <nav aria-label="breadcrumb" class="mt-2">
+                 <ol class="breadcrumb mb-0 p-0">
+                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                     <li class="breadcrumb-item active" aria-current="page"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                     <li class="breadcrumb-item active" aria-current="page"><b><a asp-controller="Tickets" asp-action="Create">Create Ticket</a></b></li>
+                 </ol>
+             </nav>
+             <a asp-controller="Tickets" asp-action="Create" class="btn btn-danger text-white ms-3 d-none d-md-block">Create Ticket</a>
+         </div>
+     </div>
+ </div>
+ <!-- ============================================================== -->
+ <!-- End Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
 
             <!-- -------------------------------------------------------------- -->
             <!-- Container fluid  -->
@@ -33,7 +56,7 @@
                                             <div class="col-12">
                                                 <div class="form-group mb-3">
                                                   <label asp-for="Description" class="control-label"></label>
-                                                  <input asp-for="Description" class="form-control" />
+                                                  <textarea asp-for="Description" class="editor form-control"></textarea>
                                                   <span asp-validation-for="Description" class="text-danger"></span>
                                                 </div>
                                               </div>
@@ -89,5 +112,22 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
     }
+        <script src="~/ckeditor5/build/ckeditor.js"></script>
+        <script>
+             ClassicEditor
+                 .create(document.querySelector('.editor'), {
+                     licenseKey: '',
+                 })
+                 .then(editor => {
+                     window.editor = editor;
+                 })
+                 .catch(error => {
+                     console.error('Oops, something went wrong!');
+                     console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                     console.warn('Build id: xx09iayzufkn-lkt434h3lx2z');
+                     console.error(error);
+                 });
+            </script>
 }

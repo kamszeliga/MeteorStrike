@@ -12,11 +12,12 @@ namespace MeteorStrike.Services
     public class BTTicketService : IBTTicketService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IBTRolesService _btRolesService;
 
-        public BTTicketService(ApplicationDbContext context)
+        public BTTicketService(ApplicationDbContext context, IBTRolesService btRolesService)
         {
             _context = context;
-
+            _btRolesService = btRolesService;
         }
 
         public async Task AddTicketAsync(Ticket ticket)
@@ -186,6 +187,29 @@ namespace MeteorStrike.Services
 			}
 		}
 
+        public async Task<IEnumerable<Ticket>> GetUnassignedTicketsAsync(BTUser? user)
+        {
+            try
+            {
+                List<Ticket> tickets = new List<Ticket>();
+                //Get all unassigned tickets for the admin in the company
+                if (await _btRolesService.IsUserInRoleAsync(user!, nameof(BTRoles.Admin)))
+                {
+                    tickets = await _context.Tickets.Where(t => t.Project!.CompanyId == user!.CompanyId && t.Archived == false && t.DeveloperUser == null)
+                                            .ToListAsync();
+                }
+                if (await _btRolesService.IsUserInRoleAsync(user!, nameof(BTRoles.ProjectManager)))
+                {
+                    tickets = await _context.Tickets.Where(t => t.Project!.CompanyId == user!.CompanyId && t.Archived == false && t.DeveloperUser == null && user!.Projects!.Contains(t.Project))
+                                            .ToListAsync();
+                }
+                return tickets;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-	}
+    }
 }
