@@ -23,6 +23,7 @@
 				 <ol class="breadcrumb mb-0 p-0">
 					 <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
 					 <li class="breadcrumb-item active" aria-current="page"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+					 <li class="breadcrumb-item active" aria-current="page"><a asp-controller="Tickets" asp-action="Index">Tickets</a></li>
 					 <li class="breadcrumb-item active" aria-current="page"><b><a asp-action="Details" asp-route-id="@Model.Id">@Model.Title</a></b></li>
 				 </ol>
 			 </nav>
@@ -114,7 +115,7 @@
                   <div class="card-body">
 					  <div class="card-header mb-2">
                        <h4 class="card-title">@Html.DisplayFor(model => model.Title)</h4></div>
-                       @Html.DisplayFor(model => model.Description)
+                       @Html.Raw(Model.Description)
                        <div class="row">
                        <div class="col-6"> <h5 class="pt-3">Submitted By</h5>
                        <span>@Html.DisplayFor(model => model.SubmitterUser.FullName)</span>

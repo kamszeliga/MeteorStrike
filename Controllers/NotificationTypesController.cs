@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MeteorStrike.Data;
 using MeteorStrike.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MeteorStrike.Controllers
 {
+    [Authorize]
     public class NotificationTypesController : Controller
     {
         private readonly ApplicationDbContext _context;

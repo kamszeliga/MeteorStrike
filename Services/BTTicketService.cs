@@ -155,6 +155,16 @@ namespace MeteorStrike.Services
             return ticketTypes;
         }
 
+        public async Task<List<TicketHistory>> GetUserTicketHistoryAsync(int? companyId)
+        {
+            List<TicketHistory> ticketHistories = (await _context.TicketHistories.Include(t => t.BTUser)
+                                                                                 .Include(th => th.Ticket)
+                                                                                 .ThenInclude(t => t.Project)
+                                                                                 .Where(t => t.Ticket.Project.CompanyId == companyId)
+                                                                                 .ToListAsync());
+            return ticketHistories; 
+        }
+
         public async Task<IEnumerable<Ticket>> GetUserTicketsAsync(string? userId, int? companyId)
         {
             IEnumerable<Ticket> tickets = await _context.Tickets.Where(t => t.SubmitterUserId == userId || t.DeveloperUserId == userId)

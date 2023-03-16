@@ -262,30 +262,23 @@
                                 <img src="~/assets/images/users/1.jpg" class="rounded-circle ms-2" width="30">
                                 <span class="hide-menu">@btUser?.FullName</span>
                             </a>
-                            </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                                <i class="mdi mdi-av-timer"></i>
-                                <span class="hide-menu">Dashboard</span> 
-                                @*<span class="badge bg-inverse rounded-pill ms-auto me-3 font-weight-medium px-2 py-1">6</span>*@
-                            </a>
                             <ul aria-expanded="false" class="collapse  first-level">
                                 <li class="sidebar-item">
                                     <a class="sidebar-link" asp-controller="Home" asp-action="Index">
-                                        <i class="mdi mdi-adjust"></i>
-                                        <span class="hide-menu">Dashboard</span>
+                                        <i class="mdi mdi-av-timer"></i>
+                                        <span class="hide-menu"> My Dashboard</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
                                     <a class="sidebar-link" asp-controller="Projects" asp-action="MyProjects">
-                                        <i class="mdi mdi-adjust"></i>
-                                        <span class="hide-menu"> Your Projects </span>
+                                        <i class="mdi mdi-folder"></i>
+                                        <span class="hide-menu"> My Projects </span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
                                     <a class="sidebar-link" asp-controller="Tickets" asp-action="MyTickets">
-                                        <i class="mdi mdi-adjust"></i>
-                                        <span class="hide-menu"> Your Tickets </span>
+                                        <i class="mdi mdi-tag-multiple"></i>
+                                        <span class="hide-menu"> My Tickets </span>
                                     </a>
                                 </li>
                             </ul>
@@ -298,13 +291,13 @@
                             <ul aria-expanded="false" class="collapse first-level">
                                 <li class="sidebar-item">
                                     <a class="sidebar-link" asp-controller="Projects" asp-action="Create">
-                                        <i class="mdi mdi-cards-variant"></i>
+                                        <i class="mdi mdi-book-plus"></i>
                                         <span class="hide-menu">Create Project</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
                                     <a class="sidebar-link" asp-controller="Projects" asp-action="Index">
-                                        <i class="mdi mdi-cart"></i>
+                                        <i class="mdi mdi-book"></i>
                                         <span class="hide-menu">View Projects</span>
                                     </a>
                                 </li>
@@ -312,31 +305,61 @@
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                                <i class="mdi mdi-bookmark"></i>
+                                <i class="mdi mdi-tag-multiple"></i>
                                 <span class="hide-menu">Tickets</span>
                                 @*<span class="badge bg-info rounded-pill ms-auto me-3 font-weight-medium px-2 py-1">12</span>*@
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
                                 <li class="sidebar-item">
                                     <a class="sidebar-link" asp-controller="Tickets" asp-action="Create">
-                                        <i class="mdi mdi-box-shadow"></i>
+                                        <i class="mdi mdi-tag-plus"></i>
                                         <span class="hide-menu">Create Ticket</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
                                     <a class="sidebar-link" asp-controller="Tickets" asp-action="Index">
-                                        <i class="mdi mdi-application"></i>
+                                        <i class="mdi mdi-tag-multiple"></i>
                                         <span class="hide-menu">View Tickets</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
                                     <a class="sidebar-link" asp-controller="Tickets" asp-action="TicketHistory">
-                                        <i class="mdi mdi-application"></i>
+                                        <i class="mdi mdi-tag-outline"></i>
                                         <span class="hide-menu">View Ticket History</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                    <i class="mdi mdi-bank"></i>
+                                    <span class="hide-menu">Admin</span>
+                                    @*<span class="badge bg-info rounded-pill ms-auto me-3 font-weight-medium px-2 py-1">12</span>*@
+                                </a>
+                                    <ul aria-expanded="false" class="collapse first-level">
+                                        <li class="sidebar-item">
+                                            <a class="sidebar-link" asp-controller="Project" asp-action="Index">
+                                                <i class="mdi mdi-book-multiple"></i>
+                                                <span class="hide-menu">All Projects</span>
+                                            </a>
+                                        </li>
+                                        <li class="sidebar-item">
+                                            <a class="sidebar-link" asp-controller="Tickets" asp-action="Index">
+                                                <i class="mdi mdi-tag-multiple"></i>
+                                                <span class="hide-menu">All Tickets</span>
+                                            </a>
+                                        </li>
+                                        <li class="sidebar-item">
+                                            <a class="sidebar-link" asp-controller="Home" asp-action="Archives">
+                                                <i class="mdi mdi-archive"></i>
+                                                <span class="hide-menu">Archives</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                        }
                         <div class="devider"></div>
                     </ul>
                 </nav>

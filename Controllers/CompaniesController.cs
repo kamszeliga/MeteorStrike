@@ -13,9 +13,11 @@ using Microsoft.AspNetCore.Identity;
 using MeteorStrike.Services.Interfaces;
 using MeteorStrike.Services;
 using System.ComponentModel.Design;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MeteorStrike.Controllers
 {
+    [Authorize]
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;

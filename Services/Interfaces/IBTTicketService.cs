@@ -34,5 +34,9 @@ namespace MeteorStrike.Services.Interfaces
         public Task<IEnumerable<Ticket>> GetUserTicketsAsync(string? userId, int? companyId);
 
 		public Task<TicketAttachment> GetTicketAttachmentByIdAsync(int ticketAttachmentId);
-	}
+
+        public Task<List<TicketHistory>> GetUserTicketHistoryAsync(int? companyId);
+
+
+    }
 }

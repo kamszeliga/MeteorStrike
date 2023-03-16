@@ -45,7 +45,7 @@
                                             <div class="col-12">
                                                 <div class="form-group mb-3">
                                                   <label asp-for="Description" class="control-label"></label>
-                                                  <textarea rows="4" asp-for="Description" class="form-control"></textarea>
+                                                  <textarea rows="4" asp-for="Description" rows="4" class="editor form-control"></textarea>
                                                   <span asp-validation-for="Description" class="text-danger"></span>
                                                 </div>
                                             </div>
@@ -98,3 +98,23 @@
             <!-- -------------------------------------------------------------- -->
             <!-- End Container fluid  -->
             <!-- -------------------------------------------------------------- -->
+
+@section Scripts {
+
+                <script src="~/ckeditor5/build/ckeditor.js"></script>
+                <script>
+                     ClassicEditor
+                         .create(document.querySelector('.editor'), {
+                             licenseKey: '',
+                         })
+                         .then(editor => {
+                             window.editor = editor;
+                         })
+                         .catch(error => {
+                             console.error('Oops, something went wrong!');
+                             console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                             console.warn('Build id: xx09iayzufkn-lkt434h3lx2z');
+                             console.error(error);
+                         });
+                </script>
+}
