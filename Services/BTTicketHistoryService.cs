@@ -148,8 +148,17 @@ namespace MeteorStrike.Services
                             NewValue = newTicket.DeveloperUser?.FullName,
                             Created = DataUtility.GetPostGresDate(DateTime.Now),
                             BTUserId = userId,
-                            Description = $"Ticket developer updated from {oldTicket.DeveloperUser?.FullName} to {newTicket.DeveloperUser?.FullName}"
+                            Description = string.Empty,
                         };
+
+                        if (oldTicket.DeveloperUserId != null)
+                        {
+                            history.Description = $"Ticket priority updated from {oldTicket.DeveloperUser?.FullName} to {newTicket.DeveloperUser?.FullName}";
+                        }
+                        else
+                        {
+                            history.Description = $"Ticket assigned to {newTicket.DeveloperUser?.FullName}";
+                        }
 
                         await _context.TicketHistories.AddAsync(history);
 
