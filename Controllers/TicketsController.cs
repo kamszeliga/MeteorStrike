@@ -75,6 +75,18 @@ namespace MeteorStrike.Controllers
             return View(tickets);
         }
 
+        // GET: Tickets
+        public async Task<IActionResult> MyTickets()
+        {
+            string? userId = _userManager.GetUserId(User);
+
+            int? companyId = User.Identity!.GetCompanyId();
+
+            IEnumerable<Ticket> tickets = await _btTicketService.GetUserTicketsAsync(userId, companyId);
+
+            return View(tickets);
+        }
+
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)
         {

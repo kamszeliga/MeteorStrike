@@ -29,18 +29,20 @@ namespace MeteorStrike.Controllers
         private readonly IBTFileService _fileService;
         private readonly IBTProjectService _btProjectService;
         private readonly IBTRolesService _btRolesService;
+        private readonly IBTTicketService _btTicketService;
 
         public ProjectsController(ApplicationDbContext context,
                                   UserManager<BTUser> userManager,
                                   IBTFileService fileService,
                                   IBTProjectService btProjectService,
-                                  IBTRolesService btRolesService)
+                                  IBTRolesService btRolesService, IBTTicketService btTicketService)
         {
             _context = context;
             _userManager = userManager;
             _fileService = fileService;
             _btProjectService = btProjectService;
             _btRolesService = btRolesService;
+            _btTicketService = btTicketService;
         }
 
         [HttpGet]

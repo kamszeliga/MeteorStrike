@@ -30,12 +30,12 @@
     <!-- Custom CSS -->
     <link href="~/assets/libs/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" />
     <link href="~/assets/extra-libs/calendar/calendar.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/table.css" asp-append-version="true" />
     <!-- Needed css -->
     <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css">
     <link href="~/dist/css/style.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/MeteorStrike.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -73,19 +73,13 @@
                     <a class="navbar-brand" href="index.html">
                         <!-- Logo icon -->
                         <b class="logo-icon">
-                            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                            <!-- Dark Logo icon -->
-                            <img src="~/assets/images/logos/logo-icon.png" alt="homepage" class="dark-logo" />
-                            <!-- Light Logo icon -->
-                            <img src="~/assets/images/logos/logo-light-icon.png" alt="homepage" class="light-logo" />
+                            <img src="~/img/MeteorLogo.png" alt="homepage" style="max-height: 50px;" class="dark-logo;" />
                         </b>
                         <!--End Logo icon -->
                         <!-- Logo text -->
                         <span class="logo-text">
-                             <!-- dark Logo text -->
-                             <img src="~/assets/images/logos/logo-text.png" alt="homepage" class="dark-logo" />
                              <!-- Light Logo text -->    
-                             <img src="~/assets/images/logos/logo-light-text.png" class="light-logo" alt="homepage" />
+                             @*<img src="~/img/MeteorLogo.png" class="light-logo" style="max-height: 50px;" alt="homepage" />*@
                         </span>
                     </a>
                     <!-- ============================================================== -->
@@ -165,12 +159,12 @@
                         <!-- ============================================================== -->
                         <!-- Search -->
                         <!-- ============================================================== -->
-                        <li class="nav-item search-box"> 
+@*                        <li class="nav-item search-box"> 
                             <form class="app-search d-none d-lg-block">
                                 <input type="text" class="form-control" placeholder="Search...">
                                 <a href="" class="active"><i class="fa fa-search"></i></a>
                             </form>
-                        </li>
+                        </li>*@
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
@@ -360,7 +354,7 @@
                                     </ul>
                                 </li>
                         }
-                        <div class="devider"></div>
+                        <hr />
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
@@ -408,21 +402,6 @@
     <aside class="customizer">
         <a href="javascript:void(0)" class="service-panel-toggle"><i class="fa fa-spin fa-cog"></i></a>
         <div class="customizer-body">
-            <ul class="nav customizer-tab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home" role="tab"
-                        aria-controls="pills-home" aria-selected="true"><i class="mdi mdi-wrench fs-6"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#chat" role="tab"
-                        aria-controls="chat" aria-selected="false"><i class="mdi mdi-message-reply fs-6"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" href="#pills-contact" role="tab"
-                        aria-controls="pills-contact" aria-selected="false"><i
-                            class="mdi mdi-star-circle fs-6"></i></a>
-                </li>
-            </ul>
             <div class="tab-content" id="pills-tabContent">
                 <!-- Tab 1 -->
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
@@ -510,132 +489,12 @@
                         <!-- Logo BG -->
                     </div>
                 </div>
-                <!-- End Tab 1 -->
-                <!-- Tab 2 -->
-                <div class="tab-pane fade" id="chat" role="tabpanel" aria-labelledby="pills-profile-tab">
-                    <ul class="mailbox list-style-none mt-3">
-                        <li>
-                            <div class="message-center chat-scroll position-relative">
-                                <a href="javascript:void(0)"
-                                    class="message-item d-flex align-items-center border-bottom px-3 py-2"
-                                    id='chat_user_1' data-user-id='1'>
-                                    <span class="user-img position-relative d-inline-block"> <img
-                                            src="~/assets/images/users/1.jpg" alt="user" class="rounded-circle w-100">
-                                        <span class="profile-status rounded-circle online"></span> </span>
-                                    <div class="w-75 d-inline-block v-middle ps-3">
-                                        <h5 class="message-title mb-0 mt-1">Pavan kumar</h5> <span
-                                            class="fs-2 text-nowrap d-block text-muted text-truncate">Wow! This software is great!</span> 
-                                            <span class="fs-2 text-nowrap d-block text-muted">9:30
-                                            AM</span>
-                                    </div>
-                                </a>
-                                <!-- Message -->
-                                <a href="javascript:void(0)"
-                                    class="message-item d-flex align-items-center border-bottom px-3 py-2"
-                                    id='chat_user_8' data-user-id='8'>
-                                    <span class="user-img position-relative d-inline-block"> <img
-                                            src="~/assets/images/users/8.jpg" alt="user" class="rounded-circle w-100">
-                                        <span class="profile-status rounded-circle offline"></span> </span>
-                                    <div class="w-75 d-inline-block v-middle ps-3">
-                                        <h5 class="message-title mb-0 mt-1">Varun Dhavan</h5> <span
-                                            class="fs-2 text-nowrap d-block text-muted text-truncate">Just see the my
-                                            admin!</span> <span class="fs-2 text-nowrap d-block text-muted">9:02
-                                            AM</span>
-                                    </div>
-                                </a>
-                                <!-- Message -->
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <!-- End Tab 2 -->
-                <!-- Tab 3 -->
-                <div class="tab-pane fade p-3" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-                    <h6 class="mt-3 mb-3">Activity Timeline</h6>
-                    <div class="steamline">
-                        <div class="sl-item">
-                            <div class="sl-left bg-light-success text-success"> 
-                                <i data-feather="user" class="feather-sm fill-white"></i>
-                            </div>
-                            <div class="sl-right">
-                                <div class="font-weight-medium">Meeting today <span class="sl-date"> 5pm</span></div>
-                                <div class="desc">you can write anything </div>
-                            </div>
-                        </div>
-                        <div class="sl-item">
-                            <div class="sl-left bg-light-info text-info">
-                                <i data-feather="camera" class="feather-sm fill-white"></i>
-                            </div>
-                            <div class="sl-right">
-                                <div class="font-weight-medium">Send documents to Clark</div>
-                                <div class="desc">Lorem Ipsum is simply </div>
-                            </div>
-                        </div>
-                        <div class="sl-item">
-                            <div class="sl-left"> <img class="rounded-circle" alt="user"
-                                    src="~/assets/images/users/2.jpg"> </div>
-                            <div class="sl-right">
-                                <div class="font-weight-medium">Go to the Doctor <span class="sl-date">5 minutes
-                                        ago</span>
-                                </div>
-                                <div class="desc">Contrary to popular belief</div>
-                            </div>
-                        </div>
-                        <div class="sl-item">
-                            <div class="sl-left"> <img class="rounded-circle" alt="user"
-                                    src="~/assets/images/users/1.jpg"> </div>
-                            <div class="sl-right">
-                                <div><a href="javascript:void(0)">Stephen</a> <span class="sl-date">5 minutes ago</span>
-                                </div>
-                                <div class="desc">Approve meeting with tiger</div>
-                            </div>
-                        </div>
-                        <div class="sl-item">
-                            <div class="sl-left bg-light-primary text-primary">
-                                <i data-feather="user" class="feather-sm fill-white"></i>
-                            </div>
-                            <div class="sl-right">
-                                <div class="font-weight-medium">Meeting today <span class="sl-date"> 5pm</span></div>
-                                <div class="desc">you can write anything </div>
-                            </div>
-                        </div>
-                        <div class="sl-item">
-                            <div class="sl-left bg-light-info text-info">
-                                <i data-feather="send" class="feather-sm fill-white"></i>
-                            </div>
-                            <div class="sl-right">
-                                <div class="font-weight-medium">Send documents to Clark</div>
-                                <div class="desc">Lorem Ipsum is simply </div>
-                            </div>
-                        </div>
-                        <div class="sl-item">
-                            <div class="sl-left"> <img class="rounded-circle" alt="user"
-                                    src="~/assets/images/users/4.jpg"> </div>
-                            <div class="sl-right">
-                                <div class="font-weight-medium">Go to the Doctor <span class="sl-date">5 minutes
-                                        ago</span>
-                                </div>
-                                <div class="desc">Contrary to popular belief</div>
-                            </div>
-                        </div>
-                        <div class="sl-item">
-                            <div class="sl-left"> <img class="rounded-circle" alt="user"
-                                    src="~/assets/images/users/6.jpg"> </div>
-                            <div class="sl-right">
-                                <div><a href="javascript:void(0)">Stephen</a> <span class="sl-date">5 minutes ago</span>
-                                </div>
-                                <div class="desc">Approve meeting with tiger</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Tab 3 -->
             </div>
         </div>
     </aside>
     <div class="chat-windows"></div>
 
-       <!-- -------------------------------------------------------------- -->
+    <!-- -------------------------------------------------------------- -->
     <!-- All Jquery -->
     <!-- -------------------------------------------------------------- -->
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
@@ -643,25 +502,25 @@
     <!-- Bootstrap tether Core JavaScript -->
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- apps -->
-    <script src="../../dist/js/app.min.js"></script>
-    <script src="../../dist/js/app.init.js"></script>
-    <script src="../../dist/js/app-style-switcher.js"></script>
+    <script src="~/dist/js/app.min.js"></script>
+    <script src="~/dist/js/app.init.js"></script>
+    <script src="~/dist/js/app-style-switcher.js"></script>
     <!-- slimscrollbar scrollbar JavaScript -->
     <script src="~/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
     <script src="~/assets/extra-libs/sparkline/sparkline.js"></script>
     <!--Wave Effects -->
-    <script src="../../dist/js/waves.js"></script>
+    <script src="~/dist/js/waves.js"></script>
     <!--Menu sidebar -->
-    <script src="../../dist/js/sidebarmenu.js"></script>
+    <script src="~/dist/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
-    <script src="../../dist/js/feather.min.js"></script>
-    <script src="../../dist/js/custom.min.js"></script>
+    <script src="~/dist/js/feather.min.js"></script>
+    <script src="~/dist/js/custom.min.js"></script>
     <!-- This Page JS -->
     <script src="~/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="../../dist/js/pages/dashboards/dashboard1.js"></script>
+    <script src="~/dist/js/pages/dashboards/dashboard1.js"></script>
     <script src="~/assets/libs/moment/min/moment.min.js"></script>
     <script src="~/assets/libs/fullcalendar/dist/fullcalendar.min.js"></script>
-    <script src="../../dist/js/pages/calendar/cal-init.js"></script>
+    <script src="~/dist/js/pages/calendar/cal-init.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 
 @await RenderSectionAsync("Scripts", required: false)

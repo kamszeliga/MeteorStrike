@@ -47,20 +47,40 @@
                <div class="card">
                    <div class="card-body">
 					   <div class="card-header">
-                       <h4 class="card-title mb-0">Ticket Project Details</h4>
+						   <div class="row">
+						   <div class="col-10">
+					   <h4 class="card-title mb-0">Ticket Project Details</h4></div>
+					   <div class="col-2">
+						    @{
+								int statusId = Model.TicketStatusId;
+							   }
+							@switch (statusId)
+							{
+								default: 
+									<td data-order="@Model.TicketStatusId"><span class="badge bg-info text-uppercase">@Model.TicketStatus.Name</span></td>
+									break;
+								case 2: 
+									<td data-order="@Model.TicketStatusId"><span class="badge bg-success text-uppercase">@Model.TicketStatus.Name</span></td>
+									break;
+								case 3: 
+									<td data-order="@Model.TicketStatusId"><span class="badge bg-warning text-uppercase">@Model.TicketStatus.Name</span></td>
+									break;
+								case 4: 
+									<td data-order="@Model.TicketStatusId"><span class="badge bg-danger text-uppercase">@Model.TicketStatus.Name</span></td>
+									break;
+							}
+						</div>	
+						</div>
 					   </div>
 					   <div class="row">
-						   <div class="col-12">					   
-							   <span class="badge bg-warning mb-2 mt-2">@Html.DisplayFor(model => model.TicketStatus.Name)</span>
-							</div>
 							<div class="col col-6">
-								<h5 class="pt-3">Updated</h5>
-									<span>@Model.Updated.ToString("MMM dd, yyyy")</span>
-								</div>
-							<div class="col col-6">
-								<h5 class="pt-3">Created</h5>
+								<h5 class="pt-3">Ticket Created</h5>
 									<span>@Model.Created.ToString("MMM dd, yyyy")</span>
 							</div>
+							<div class="col col-6">
+								<h5 class="pt-3">Last Updated</h5>
+									<span>@Model.Updated.ToString("MMM dd, yyyy")</span>
+								</div>	
 					   <br/>
 					   <div class="row">
 							<div class="col">
@@ -68,12 +88,16 @@
 						<span>@Html.DisplayFor(model => model.Project.Description)</span>
 							</div>
 						</div>
-
-					   <div class="text-end">
+						<div class="card-footer mt-2">
+							<a asp-action="Edit" asp-route-id="@Model.Id" class="mdi mdi-pencil text-success"></a>
+							<a asp-action="Details" asp-route-id="@Model.Id" class="mdi mdi-note-text"></a>
+							<a asp-action="Delete" asp-route-id="@Model.Id" class="mdi mdi-delete text-danger"></a>
+						</div>
+@*					   <div class="text-start">
                        <a asp-action="Edit" asp-route-id="@Model.Id" type="button" class="mt-2 btn waves-effect waves-light btn-success">Update</a>
 					   @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
 					   {<a asp-action="AssignTicketMember" asp-route-id="@Model.Id" type="button" class="mt-2 btn waves-effect waves-light btn-info">Assign Members</a>}
-					   </div>
+					   </div>*@
 					   </div>
 				   </div>
                </div>
@@ -82,29 +106,34 @@
 				   <div class="card-body">
 					   <div class="row clearfix">
 						   <div class="card-header">
-								<h4>Add Attachments</h4>
+								<h4>Ticket History</h4>
 							</div>
-							   <div>
-								  <form asp-action="AddTicketAttachment" asp-controller="Tickets" enctype="multipart/form-data" method="post">
-									  <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-									  <input type="hidden" asp-for="@Model.Id" name="TicketId">     
-									  <div class="media-body ml-3">
-										   <h5 class="pt-3">File</h5>
-										   <label class="btn btn-outline-primary btn-sm">
-											   <input asp-for="@Model.Attachments.FirstOrDefault().FormFile" type="file" class="form-control-file" />
-										   </label>
-										   <br />
-										   <h5 class="pt-3">Description</h5>
-										   <label>
-											   <input asp-for="@Model.Attachments.FirstOrDefault().Description" type="text" class="form-control" />
-										   </label>
-										   <div class="form-submit cerchio text-end">
-										   <button type="submit" class="mt-1 btn waves-effect waves-light btn-info" value="Post Comment">Submit</button>
-										   </div>
-@*										   <button type="submit" class="btn btn-outline-secondary btn-sm md-btn-flat">Submit</button>*@
-									  </div>
-								  </form>
-							 </div>
+							<div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+							<div class="card-body" style="overflow-y:auto; max-height: 400px;">
+                                <ul class="timeline timeline-left">
+									@foreach (TicketHistory history in Model.History)
+								   {
+                                    <li class="timeline-inverted timeline-item">
+                                        <div class="timeline-badge info"><i class="fa fa-clock"></i> </div>
+                                        <div class="timeline-panel">
+                                            <div class="timeline-heading">
+														<h4 class="timeline-title">@history.Created.ToString("MMM dd, yyyy 'at' H:mm tt")</h4>
+                                            </div>
+                                            <div class="timeline-body">
+														<p>@Html.Raw(history.Description)</p>
+                                            </div>
+                                        </div>
+                                    </li>
+									}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+							</div>
 						</div>
 				   </div>
 			   </div>
@@ -133,28 +162,52 @@
 		      	 <div class="card-body">
 					<div class="card-header">
 								<h4>Attachments</h4>
-							</div>
-							<div class="card-body" style="overflow-y:auto;height:150px;">
+					</div>
+					<div class="card-body" style="overflow-y:auto;">
 
-								<div class="row">
-											@foreach (TicketAttachment item in Model.Attachments)
-											{
-									<div class="col col-sm-2">
-									    <a asp-action="ShowFile" asp-controller="Tickets" asp-route-Id="@item.Id">
-									     <div class="icon">
-												 <img src="@_BTFileService.GetFileIcon(item.FileName)" style="height:50px;width:50px" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="@item.FileName" />
-									     </div>
-									    </a>
-									    <div style="font-size:x-small">
-									     <div class="file-name">
-									  	   <strong>@item.Description</strong>
-									     </div>
-											 <small>Size: @_BTFileService.FormatFileSize(item.FileData.Length) </small>
-									    </div>
-									</div>
-											}
-								</div>
+						<div class="row">
+									@foreach (TicketAttachment item in Model.Attachments)
+									{
+							<div class="col col-sm-2">
+							    <a asp-action="ShowFile" asp-controller="Tickets" asp-route-Id="@item.Id">
+							     <div class="icon">
+										 <img src="@_BTFileService.GetFileIcon(item.FileName)" style="height:50px;width:50px" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="@item.FileName" />
+							     </div>
+							    </a>
+							    <div style="font-size:x-small">
+							     <div class="file-name">
+							  	   <strong>@item.Description</strong>
+							     </div>
+									 <small>Size: @_BTFileService.FormatFileSize(item.FileData.Length) </small>
+							    </div>
 							</div>
+									}
+						</div>
+						 <form asp-action="AddTicketAttachment" asp-controller="Tickets" enctype="multipart/form-data" method="post">
+							  <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+							  <input type="hidden" asp-for="@Model.Id" name="TicketId">     
+							  <div class="row">
+								  <div class="col-5">
+								     <h5 class="pt-3">File</h5>
+								     <label class="btn btn-outline-primary btn-sm">
+									      <input asp-for="@Model.Attachments.FirstOrDefault().FormFile" type="file" class="form-control-file" />
+								     </label>
+								   </div>
+								   <div class="col-5">
+								      <h5 class="pt-3">Description</h5>
+								      <label>
+									       <input asp-for="@Model.Attachments.FirstOrDefault().Description" type="text" class="form-control" />
+								      </label>
+								   </div>
+								   <div class="col-2">
+								   <div class="form-submit cerchio text-end">
+								   <button type="submit" class="mt-5 btn waves-effect waves-light btn-info">Add</button>
+								   </div>
+								   </div>
+						@*										   <button type="submit" class="btn btn-outline-secondary btn-sm md-btn-flat">Submit</button>*@
+							  </div>
+						  </form>
+					</div>
                  </div>
                 </div>
 
@@ -209,46 +262,6 @@
                           <!-- End Container fluid  -->
                           <!-- -------------------------------------------------------------- -->
 			</div>
-
-<div>
-	<div classxfont-weighteighteightgetainer-fluid">
-		<div class="row gy-2">
-			<div class="col-md-12 col">
-				<div class="row col-cols-2 mt-5 bg-secondary">
-					<div class="card col m-1 p-2">
-						<div class="card-body">
-
-							<div class="progress-container progress-info m-b-25">
-									@*Project Name and information*@
-								<span class="progress-badge" style="font-size:small">Project: [Project Name]</span>
-								<div class="progress">
-										@*Progress bar logic*@
-										@*Variable from razor logic*@
-									@*<div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: [Percent]%;">*@
-											@*Variable from razor logic*@
-										<span class="progress-value">[Percent]%</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-4 col mt-5 ">
-				<div class="bg-dark">
-					<div class="card m-1 p-2">
-						<div class="card-header">
-							<h2>History</h2>
-							<hr />
-						</div>
-						<div class="card-body" style="overflow-y:auto;height:1000px;background-color:antiquewhite">
-								@*Loop to show the history entries for the Ticket*@
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 </div>
 
 

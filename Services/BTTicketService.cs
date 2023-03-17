@@ -65,13 +65,15 @@ namespace MeteorStrike.Services
             try
             {
                 IEnumerable<Ticket> tickets = await _context.Tickets
-                                                       .Where(t => t.Archived == false && t.Project.CompanyId == companyId)
+                                                       .Where(t => t.Project!.CompanyId == companyId)
                                                        .Include(t => t.DeveloperUser)
                                                        .Include(t => t.Project)
                                                        .Include(t => t.SubmitterUser)
                                                        .Include(t => t.TicketPriority)
                                                        .Include(t => t.TicketStatus)
                                                        .Include(t => t.TicketType)
+                                                       .Include(t => t.History)
+                                                       .Include (t => t.Attachments)
                                                        .ToListAsync();
 
                 return tickets;

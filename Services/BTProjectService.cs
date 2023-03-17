@@ -41,6 +41,12 @@ namespace MeteorStrike.Services
                 if (project != null)
                 {
                     project.Archived = true;
+
+                    foreach (Ticket ticket in project.Tickets)
+                    {
+                        ticket.Archived = true;
+                        ticket.ArchivedByProject = true;
+                    }
                 }
 
                 await _context.SaveChangesAsync();
