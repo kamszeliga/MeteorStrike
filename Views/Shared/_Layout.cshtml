@@ -46,6 +46,7 @@
 </head>
 
 <body>
+    <partial name="_LogoutPartial" />
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
@@ -191,7 +192,7 @@
                                         <a class="dropdown-item" href="#"><i data-feather="mail" class="feather-sm text-success me-1 ms-1"></i>
                                             Inbox</a>
                                         <div class="dropdown-divider"></div>
-                                         <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout"><i data-feather="log-out"
+                                        <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit();"><i data-feather="log-out"
                                         class="feather-sm text-danger me-1 ms-1"></i> Logout</a>
                                     }
                                     else

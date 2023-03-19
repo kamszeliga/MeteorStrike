@@ -55,16 +55,32 @@
         <!-- Login box.scss -->
         <!-- -------------------------------------------------------------- -->
         <div class="row auth-wrapper gx-0">
-            <div class="col-lg-4 col-xl-3 bg-info auth-box-2 on-sidebar">
+            <div class="col-lg-4 col-xl-3 bg-dark auth-box-2 on-sidebar">
                 <div class="h-100 d-flex align-items-center justify-content-center">
                     <div class="row justify-content-center text-center">
                         <div class="col-md-7 col-lg-12 col-xl-9">
                             <div>
-                                <span class="db"><img src="../assets/images/logos/logo-light-icon.png" alt="logo" /></span>
-                                <span class="db"><img src="../assets/images/logos/logo-light-text.png" alt="logo" /></span>
+                                <span class="db"><img src="~/img/MeteorLogo.png" alt="logo" /></span>
                             </div>
-                            <h2 class="text-white mt-4 fw-light">Build <span class="font-weight-medium">Fast & Responsive</span> Web Apps with Bootstrap 5</h2>
-                            <p class="op-5 text-white fs-4 mt-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+                            <h2 class="text-white mt-4 fw-light"><span class="font-weight-medium">Meteor Strike</span></h2>
+                            <p class="op-5 text-white fs-4 mt-4">A bug tracking and ticket managing software. Create an account to test it out or use one of the demo logins provided below.</p>
+                                
+                            <div class="mb-1 text-center">
+                                <form class="" id="account" method="post">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-6 btn-block">
+                                                <button type="submit" class="btn btn-light w-100 mt-2" name="demoEmail" value="DemoAdminEmail">Demo Admin</button>
+                                                <button type="submit" class="btn btn-light w-100 mt-2" name="demoEmail" value="DemoPMEmail">Demo Manager</button>
+                                            </div>
+                                            <div class="col-6 btn-block">
+                                                <button type="submit" class="btn btn-light w-100 mt-2" name="demoEmail" value="DemoDevEmail">Demo Developer</button>
+                                                <button type="submit" class="btn btn-light w-100 mt-2" name="demoEmail" value="DemoSubEmail">Demo Submitter</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -75,7 +91,7 @@
                         <div class="card" id="loginform">
                             <div class="card-body text-center">
                                 <h2>Welcome to Meteor Strike</h2>
-                                <p class="text-muted fs-4">New Here? <a href="javascript:void(0)" id="to-register">Create an account</a></p>
+                                <p class="text-muted fs-4">New Here? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Create an account</a></p>
                                    <form id="account" method="post">
                                       <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                                       <div class="form-floating mb-3">
@@ -88,28 +104,41 @@
                                           <label asp-for="Input.Password" class="form-label">Password</label>
                                           <span asp-validation-for="Input.Password" class="text-danger"></span>
                                       </div>
-                                      <div class="checkbox mb-3">
-                                          <label asp-for="Input.RememberMe" class="form-label">
-                                              <input class="form-check-input" asp-for="Input.RememberMe" />
-                                              @Html.DisplayNameFor(m => m.Input.RememberMe)
-                                          </label>
-                                      </div>
                                       <div>
                                           <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
                                       </div>
+
                                       <div>
-                                          <p>
-                                              <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                                          </p>
-                                          <p>
-                                              <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                                          </p>
-                                          <p>
-                                              <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                                          <p class="mt-2 text-center">
+                                              <a id="forgot-password" asp-page="./ForgotPassword">Reset Password</a> |
+                                              <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend Email Confirmation</a>
                                           </p>
                                       </div>
                                   </form>
+@*---------------------------------------------------------------------------------*@
+@*                                      <section class="mt-2">
+                                          <hr/>
+                                          <h5>Or use one of the Demo Accounts to log in. </h5>
+                                       
+                                          <div class="mb-1 text-center">
+                                              <form class="" id="account" method="post">
+                                                  <div class="form-group">
+                                                      <div class="row">
+                                                          <div class="col-6 btn-block">
+                                                              <button type="submit" class="btn btn-light w-100 mt-2" name="demoEmail" value="DemoAdminEmail">Demo Admin</button>
+                                                              <button type="submit" class="btn btn-light w-100 mt-2" name="demoEmail" value="DemoPMEmail">Demo Manager</button>
+                                                          </div>
+                                                          <div class="col-6 btn-block">
+                                                              <button type="submit" class="btn btn-light w-100 mt-2" name="demoEmail" value="DemoDevEmail">Demo Developer</button>
+                                                              <button type="submit" class="btn btn-light w-100 mt-2" name="demoEmail" value="DemoSubEmail">Demo Submitter</button>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </form>
+                                          </div>
 
+                                         </section>*@
+@*---------------------------------------------------------------------------------*@                                       
                             </div>
                         </div>
                         <div class="card" id="recoverform">
