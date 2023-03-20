@@ -37,6 +37,10 @@ namespace MeteorStrike.Services.Interfaces
 
         public Task<List<TicketHistory>> GetUserTicketHistoryAsync(int? companyId);
 
+        public Task<IEnumerable<Ticket>> GetRecentTicketsAsync(int? companyId);
+
+        public Task<IEnumerable<Ticket>> GetNumberOfRecentTicketsAsync();
+
 
     }
 }

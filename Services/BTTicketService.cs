@@ -223,5 +223,40 @@ namespace MeteorStrike.Services
             }
         }
 
+        public async Task<IEnumerable<Ticket>> GetRecentTicketsAsync(int? companyId)
+        {
+            try
+            {
+                IEnumerable<Ticket> tickets = await _context.Tickets
+                                                                .Where(b => b.Archived == false)
+                                                                .Include(t => t.Project)
+                                                                .Where(t => t.Project!.CompanyId == companyId)
+                                                                .Include(t => t.SubmitterUser)
+                                                                .Include(t => t.DeveloperUser)
+                                                                .Include(t => t.Comments)
+                                                                .Include(t => t.TicketPriority)
+                                                                .Include(t => t.TicketStatus)
+                                                                .Include(t => t.TicketType)
+                                                                .Include(t => t.History)
+                                                                .Include(t => t.Attachments)
+                                                                .ToListAsync();
+
+                return tickets.OrderByDescending(b => b.Created);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<Ticket>> GetNumberOfRecentTicketsAsync()
+        {
+            IEnumerable<Ticket> tickets = await _context.Tickets
+                                                                .Where(b => b.Archived == false)
+                                                                .Where(t => (t.Created - DateTime.UtcNow).TotalDays <= 7)
+                                                                .ToListAsync();
+            return tickets;
+        }
     }
 }

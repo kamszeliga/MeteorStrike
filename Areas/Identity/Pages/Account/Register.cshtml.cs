@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations.Schema;
 using MeteorStrike.Data;
+using MeteorStrike.Models.Enums;
 
 namespace MeteorStrike.Areas.Identity.Pages.Account
 {
@@ -166,6 +167,7 @@ namespace MeteorStrike.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    await _userManager.AddToRoleAsync(user, nameof(BTRoles.Admin));
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

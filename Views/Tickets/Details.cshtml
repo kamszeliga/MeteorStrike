@@ -55,7 +55,7 @@
                        <div class="card-header">
                            <div class="row">
                            <div class="col-10">
-                       <h4 class="card-title mb-0">Ticket Project Details</h4></div>
+                       <h4 class="card-title mb-0">Project Details</h4></div>
                        <div class="col-2">
                           @{
                               int statusId = Model.TicketStatusId;
@@ -79,6 +79,12 @@
                         </div>
                        </div>
                        <div class="row">
+                            <div class="col">
+                        <h5 class="mt-4">Project Description</h5>
+                        <span>@Html.DisplayFor(model => model.Project.Description)</span>
+                            </div>
+                            <br/>
+                            <div class="row">
                             <div class="col col-6">
                                 <h5 class="pt-3">Ticket Created</h5>
                                     <span>@Model.Created.ToString("MMM dd, yyyy")</span>
@@ -86,20 +92,19 @@
                             <div class="col col-6">
                                 <h5 class="pt-3">Last Updated</h5>
                                     <span>@Model.Updated.ToString("MMM dd, yyyy")</span>
-                                </div>	
-                       <br/>
-                       <div class="row">
-                            <div class="col">
-                        <h5 class="mt-4">@Html.DisplayNameFor(model => model.Project)</h5>
-                        <span>@Html.DisplayFor(model => model.Project.Description)</span>
-                            </div>
+                            </div>	
+
                         </div>
                         <div class="card-footer mt-2">
+                            @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+                            {
+                            <a asp-action="AssignTicketMember" asp-route-id="@Model.Id" class="mdi mdi-account-plus text-warning"></a>
+                            }
                             <a asp-action="Edit" asp-route-id="@Model.Id" class="mdi mdi-pencil text-success"></a>
                             <a asp-action="Details" asp-route-id="@Model.Id" class="mdi mdi-note-text"></a>
                             <a asp-action="Delete" asp-route-id="@Model.Id" class="mdi mdi-delete text-danger"></a>
                         </div>
-                        @*					   <div class="text-start">
+                        @*<div class="text-start">
                        <a asp-action="Edit" asp-route-id="@Model.Id" type="button" class="mt-2 btn waves-effect waves-light btn-success">Update</a>
 					   @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
 					   {<a asp-action="AssignTicketMember" asp-route-id="@Model.Id" type="button" class="mt-2 btn waves-effect waves-light btn-info">Assign Members</a>}

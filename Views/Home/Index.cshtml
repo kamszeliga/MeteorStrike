@@ -5,6 +5,8 @@
 @using Microsoft.AspNetCore.Identity;
 
 @inject IBTFileService _BTFileService
+@inject IBTTicketService _btTicketService
+@inject IBTCompanyService _btCompany
 @inject SignInManager<BTUser> SignInManager
 @inject UserManager<BTUser> _UserManager
 
@@ -15,6 +17,16 @@
 
     string? userId = _UserManager.GetUserId(User);
 
+    int? companyId = btUser.CompanyId;
+
+}
+
+@{
+    IEnumerable<Ticket> recentTickets = await _btTicketService.GetRecentTicketsAsync(companyId);
+
+    int numberOfRecentTickets = recentTickets.Where(t => (DateTime.Now - t.Created).TotalDays <= 7).Count();
+
+    IEnumerable<Ticket> tenRecentTickets = recentTickets.Take(7);
 }
 
  <!-- ============================================================== -->
@@ -52,11 +64,12 @@
              <img src="../../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="100">
            </div>
            <div class="ps-3">
-               @if (User.Identity.IsAuthenticated)
-               {
-                   <h3 class="font-weight-medium">@btUser!.FullName</h3>
-                   <h6 class="text-muted">@btUser!.Email</h6>
-               }
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                           <h6 class="text-muted">@btUser!.Company.Name</h6>
+                           <h3 class="font-weight-medium">@btUser!.FullName</h3>
+                           <h6 class="text-muted">@btUser!.Email</h6>
+                        }
            </div>
          </div>
          <div class="row mt-4 pt-2">
@@ -87,58 +100,49 @@
             <h2 class="fw-normal">@Model.Company.Name</h2>
             </div>
           <div class="ms-auto">
-            <h1 class="text-info mb-0 fw-light">@Model.Tickets.Count().ToString()</h1>
+            <h1 class="text-info mb-0 fw-light">@numberOfRecentTickets</h1>
           </div>
         </div>
       </div>
-      <div class="p-3" style="overflow-y:auto; max-height: 400px;">
+      <div class="dashCard p-3" style="overflow-y:auto; max-height: 400px;">
         <div class="table-responsive">
           <table class="table mb-0 no-wrap recent-table table-hover">
             <thead>
               <tr class="fs-4 font-weight-medium">
                 <th>Priority</th>
-                <th>Status</th>
-                <th style="width: 15%">Ticket Title</th>
-                <th style="width: 25%">Project Title</th>
-                <th>Created</th>
-                <th>Ticket Type</th>
+                <th style="width: 15%">Ticket Title</th>                
+                <th style="width: 15%">Project Title</th>
                 <th>Assigned Developer</th>
                 <th>Submitted By</th>
-                <th>Actions</th>
               </tr>
             </thead>
              <tbody>
-             @foreach (var item in Model.Tickets)
-             {
-                 int priorityId = item.TicketPriorityId;
-
-                          <tr> 
-                     @switch (priorityId)
-                     {
-                         default: 
-                                          <td data-order="@item.TicketPriorityId"><span class="badge bg-info text-uppercase">@item.TicketPriority.Name</span></td>
-                             break;
-                         case 2: 
-                                          <td data-order="@item.TicketPriorityId"><span class="badge bg-success text-uppercase">@item.TicketPriority.Name</span></td>
-                             break;
-                         case 3: 
-                                          <td data-order="@item.TicketPriorityId"><span class="badge bg-warning text-uppercase">@item.TicketPriority.Name</span></td>
-                             break;
-                         case 4: 
-                                          <td data-order="@item.TicketPriorityId"><span class="badge bg-danger text-uppercase">@item.TicketPriority.Name</span></td>
-                             break;
-                     }
-                              <td>@Html.DisplayFor(modelItem => item.Title)</td>
-                              <td>@Html.DisplayFor(modelItem => item.Project.Name)</td>
-                              <td>@Html.DisplayFor(modelItem => item.DeveloperUser.FullName)</td>
-                              <td>@Html.DisplayFor(modelItem => item.SubmitterUser.FullName)</td>
-                              <td>
-                             <a asp-action="Edit" asp-route-id="@item.Id" class="mdi mdi-pencil text-success"></a>
-                             <a asp-action="Details" asp-route-id="@item.Id" class="mdi mdi-note-text"></a>
-                             <a asp-action="Delete" asp-route-id="@item.Id" class="mdi mdi-delete text-danger"></a>
-                             </td>
-                          </tr> 
-             }
+               @foreach (var item in tenRecentTickets)
+               {
+                   int priorityId = item.TicketPriorityId;
+              
+                 <tr> 
+                       @switch (priorityId)
+                       {
+                           default: 
+                            <td data-order="@item.TicketPriorityId"><span class="badge bg-info text-uppercase">@item.TicketPriority.Name</span></td>
+                               break;
+                           case 2: 
+                            <td data-order="@item.TicketPriorityId"><span class="badge bg-success text-uppercase">@item.TicketPriority.Name</span></td>
+                               break;
+                           case 3: 
+                            <td data-order="@item.TicketPriorityId"><span class="badge bg-warning text-uppercase">@item.TicketPriority.Name</span></td>
+                               break;
+                           case 4: 
+                            <td data-order="@item.TicketPriorityId"><span class="badge bg-danger text-uppercase">@item.TicketPriority.Name</span></td>
+                               break;
+                       }
+                     <td><a asp-action="Edit" asp-route-id="@item.Id">@item.Title</a></td>
+                     <td>@Html.DisplayFor(modelItem => item.Project.Name)</td>
+                     <td>@Html.DisplayFor(modelItem => item.DeveloperUser.FullName)</td>
+                     <td>@Html.DisplayFor(modelItem => item.SubmitterUser.FullName)</td>
+                 </tr> 
+               }
                  </tbody>
           </table>
         </div>

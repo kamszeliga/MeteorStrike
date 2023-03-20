@@ -100,7 +100,6 @@ namespace MeteorStrike.Controllers
             return View(ticket);
         }
 
-
         [HttpGet]
         [Authorize(Roles = "Admin, ProjectManager")]
         //GET: Assign Ticket Members

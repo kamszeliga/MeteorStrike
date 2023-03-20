@@ -48,6 +48,10 @@ body {
     display: none;
 }
 
+.dashCard::-webkit-scrollbar {
+    display: none;
+}
+
 .left-sidebar {
     z-index: 80;
     background: #2F313C !important;

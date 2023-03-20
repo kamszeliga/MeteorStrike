@@ -1,0 +1,182 @@
+﻿@model IEnumerable<MeteorStrike.Models.Ticket>
+
+@using MeteorStrike.Services.Interfaces
+@using MeteorStrike.Services
+@using MeteorStrike.Models.Enums
+
+@inject IBTFileService _BTFileService
+
+@{
+    ViewData["Title"] = "Project Index";
+
+    IEnumerable<Ticket> activeTickets = Model.Where(t => t.Archived == false);
+
+}          
+<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css">
+
+ <!-- ============================================================== -->
+ <!-- Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+ <div class="page-breadcrumb border-bottom">
+     <div class="row">
+         <div class="col-lg-3 col-md-4 col-xs-12 justify-content-start d-flex align-items-center">
+             <h5 class="font-weight-medium text-uppercase mb-0">Ticket Index</h5>
+         </div>
+         <div class="col-lg-9 col-md-8 col-xs-12 d-flex justify-content-start justify-content-md-end align-self-center">
+             <nav aria-label="breadcrumb" class="mt-2">
+                 <ol class="breadcrumb mb-0 p-0">
+                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                     <li class="breadcrumb-item active" aria-current="page"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                     <li class="breadcrumb-item active" aria-current="page"><b><a asp-controller="Tickets" asp-action="Index">Tickets</a></b></li>
+                 </ol>
+             </nav>
+             <a asp-controller="Tickets" asp-action="Create" class="btn btn-danger text-white ms-3 d-none d-md-block">Create Ticket</a>
+         </div>
+     </div>
+ </div>
+ <!-- ============================================================== -->
+ <!-- End Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+
+    <!-- -------------------------------------------------------------- -->
+    <!-- Container fluid  -->
+    <!-- -------------------------------------------------------------- -->
+    <div class="container-fluid page-content">
+        <!-- -------------------------------------------------------------- -->
+        <!-- Start Page Content -->
+        <!-- -------------------------------------------------------------- -->
+        <!-- basic table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Tickets</h4>
+                        <div class="row mt-4">
+                            <!-- Column -->
+                            <div class="col-md-6 col-lg-3 col-xlg-3">
+                                <div class="card card-hover">
+                                    <div class="p-2 rounded bg-light-primary text-center">
+                                        <h1 class="fw-light text-primary">@Model.Where(t=>t.Archived==false).Count().ToString()</h1>
+                                        <h6 class="text-primary">Total Tickets</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Column -->
+                            <div class="col-md-6 col-lg-3 col-xlg-3">
+                                <div class="card card-hover">
+                                    <div class="p-2 rounded bg-light-success text-center">
+                                        <h1 class="fw-light text-success">@Model.Where(t=>t.Archived==false && t.DeveloperUserId == null && t.SubmitterUserId != null).Count().ToString()</h1>
+                                        <h6 class="text-success">Opened</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Column -->
+                            <div class="col-md-6 col-lg-3 col-xlg-3">
+                                <div class="card card-hover">
+                                    <div class="p-2 rounded bg-light-warning text-center">
+                                        <h1 class="fw-light text-warning">@Model.Where(t=>t.Archived==false && t.DeveloperUserId != null).Count().ToString()</h1>
+                                        <h6 class="text-warning">In Progress</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Column -->
+                            <div class="col-md-6 col-lg-3 col-xlg-3">
+                                <div class="card card-hover">
+                                    <div class="p-2 rounded bg-light-danger text-center">
+                                        <h1 class="fw-light text-danger">@Model.Where(t=>t.Archived==true || t.ArchivedByProject == true).Count().ToString()</h1>
+                                        <h6 class="text-danger">Closed</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Column -->
+                        </div>
+                        <div class="table-responsive mt-4">
+                            <table id="ticketTable" class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Priority</th>
+                                        <th>Status</th>
+                                        <th style="width: 15%">Ticket Title</th>
+                                        <th style="width: 25%">Project Title</th>
+                                        <th>Created</th>
+                                        <th>Ticket Type</th>
+                                        <th>Assigned Developer</th>
+                                        <th>Submitted By</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var item in activeTickets)
+                                {
+                                    int priorityId = item.TicketPriorityId;
+                                    int statusId = item.TicketStatusId;
+
+                                         <tr> 
+                                        @switch (priorityId)
+                                        {
+                                            default: 
+                                                         <td data-order="@item.TicketPriorityId"><span class="badge bg-info text-uppercase">@item.TicketPriority.Name</span></td>
+                                                break;
+                                            case 2: 
+                                                         <td data-order="@item.TicketPriorityId"><span class="badge bg-success text-uppercase">@item.TicketPriority.Name</span></td>
+                                                break;
+                                            case 3: 
+                                                         <td data-order="@item.TicketPriorityId"><span class="badge bg-warning text-uppercase">@item.TicketPriority.Name</span></td>
+                                                break;
+                                            case 4: 
+                                                         <td data-order="@item.TicketPriorityId"><span class="badge bg-danger text-uppercase">@item.TicketPriority.Name</span></td>
+                                                break;
+                                        }
+                                        @switch (statusId)
+                                        {
+                                            default: 
+                                                         <td data-order="@item.TicketStatusId"><span class="badge bg-info text-uppercase">@item.TicketStatus.Name</span></td>
+                                                break;
+                                            case 2: 
+                                                         <td data-order="@item.TicketStatusId"><span class="badge bg-success text-uppercase">@item.TicketStatus.Name</span></td>
+                                                break;
+                                            case 3: 
+                                                         <td data-order="@item.TicketStatusId"><span class="badge bg-warning text-uppercase">@item.TicketStatus.Name</span></td>
+                                                break;
+                                            case 4: 
+                                                         <td data-order="@item.TicketStatusId"><span class="badge bg-danger text-uppercase">@item.TicketStatus.Name</span></td>
+                                                break;
+                                        }
+                                             <td><a asp-action="Details" asp-route-id="@item.Id" class="font-weight-medium link" >@Html.DisplayFor(modelItem => item.Title)</a></td>
+                                             <td>@Html.DisplayFor(modelItem => item.Project.Name)</td>
+                                             <td>@Html.DisplayFor(modelItem => item.Created)</td>
+                                             <td>@Html.DisplayFor(modelItem => item.TicketType.Name)</td>
+                                             <td>@Html.DisplayFor(modelItem => item.DeveloperUser.FullName)</td>
+                                             <td>@Html.DisplayFor(modelItem => item.SubmitterUser.FullName)</td>
+                                             <td>
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="mdi mdi-pencil text-success"></a>
+                                            <a asp-action="Details" asp-route-id="@item.Id" class="mdi mdi-note-text"></a>
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="mdi mdi-delete text-danger"></a>
+                                            </td>
+                                         </tr> 
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- -------------------------------------------------------------- -->
+    <!-- End Container fluid  -->
+    <!-- -------------------------------------------------------------- -->
+@section Scripts 
+    {
+                      <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+                      <script>
+                         $(document).ready( function () {
+                         $('#ticketTable').DataTable();
+                            } );
+
+                         $('.dataTables_filter input')
+                         .attr('placeholder', 'Search...')
+                         .addClass('form-control');
+                      </script>
+
+      }

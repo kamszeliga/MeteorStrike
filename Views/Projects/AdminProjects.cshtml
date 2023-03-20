@@ -1,0 +1,89 @@
+﻿@model IEnumerable<MeteorStrike.Models.Project>
+
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@using MeteorStrike.Services.Interfaces
+@using MeteorStrike.Services
+@using MeteorStrike.Models.Enums
+
+@inject IBTFileService _BTFileService
+
+@{
+    ViewData["Title"] = "Project Index";
+}           
+ <!-- ============================================================== -->
+ <!-- Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+ <div class="page-breadcrumb border-bottom">
+     <div class="row">
+         <div class="col-lg-3 col-md-4 col-xs-12 justify-content-start d-flex align-items-center">
+             <h5 class="font-weight-medium text-uppercase mb-0">My Projects</h5>
+         </div>
+         <div class="col-lg-9 col-md-8 col-xs-12 d-flex justify-content-start justify-content-md-end align-self-center">
+             <nav aria-label="breadcrumb" class="mt-2">
+                 <ol class="breadcrumb mb-0 p-0">
+                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                     <li class="breadcrumb-item active" aria-current="page"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                     <li class="breadcrumb-item active" aria-current="page"><b><a asp-controller="Projects" asp-action="MyProjects">My Projects</a></b></li>
+                 </ol>
+             </nav>
+             <a asp-controller="Tickets" asp-action="Create" class="btn btn-danger text-white ms-3 d-none d-md-block">Create Ticket</a>
+         </div>
+     </div>
+ </div>
+ <!-- ============================================================== -->
+ <!-- End Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+
+ <!-- -------------------------------------------------------------- -->
+ <!-- Container fluid  -->
+ <!-- -------------------------------------------------------------- -->
+ <div class="container-fluid page-content">
+     <!-- -------------------------------------------------------------- -->
+     <!-- Start Page Content -->
+     <!-- -------------------------------------------------------------- -->
+     <!-- basic table -->
+     <div class="container-fluid row">
+         <div class="col-12">
+             <div class="card bordered">
+                 <div class="card-body">
+                     <h4 class="card-title">Projects</h4>
+                       <div class="row justify-content-center">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-lg-4 col-md-6">
+                               <div class="card">
+                                     <img class="cardheaderimg" src="@_BTFileService.ConvertByteArrayToFile(item.ImageFileData!, item.ImageFileType!,(int)DefaultImage.ProjectImage)" alt="Post Images" />
+                                     <div class="card-header text-truncate">
+                                      <a asp-action="Details" asp-route-id="@item.Id" class="card-title">@item.Name</a></div>
+                                       <div class="card-body">
+                                       <p class="card-text text-truncate">
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </p>
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                          <li class="list-group-item"><b>Priority:</b> @Html.DisplayFor(modelItem => item.ProjectPriority.Name)</li>
+                                          <li class="list-group-item"><b>Created:</b> @item.Created.ToString("MMM dd, yyyy")</li>
+                                          <li class="list-group-item"><b>Timeline:</b> @item.StartDate.ToString("MMM dd, yyyy") - @item.EndDate.ToString("MMM dd, yyyy")</li>
+                                        </ul>
+                                        <div class="card-footer button-group d-flex align-items-stretch">
+                                        @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+                                        {
+                                                 <a asp-action="AssignProjectMembers" asp-route-id="@item.Id" class="mdi mdi-account-plus text-warning"></a>
+                                        }
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="mdi mdi-pencil text-success"></a>
+                                            <a asp-action="Details" asp-route-id="@item.Id" class="mdi mdi-note-text"></a>
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="mdi mdi-delete text-danger"></a>
+                                        </div>
+                                      </div>
+                                    </div>
+                        }
+                       </div>                 
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+ <!-- -------------------------------------------------------------- -->
+ <!-- End Container fluid  -->
