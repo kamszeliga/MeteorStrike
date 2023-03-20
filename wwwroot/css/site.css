@@ -85,3 +85,12 @@ body {
     background-color: #5E877A;
     color: #20222a !important;
 }
+
+.page-breadcrumb {
+    margin-bottom: 2em;
+    margin-top: -2em !important;
+}
+
+.ck-editor__editable_inline {
+    min-height: 150px;
+}
