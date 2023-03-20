@@ -117,7 +117,7 @@ namespace MeteorStrike.Controllers
 
 
 // GET: Companies
-public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
               return _context.Companies != null ? 
                           View(await _context.Companies.ToListAsync()) :

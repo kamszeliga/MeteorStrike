@@ -144,7 +144,7 @@
                                      }
                                          <td><a asp-action="Details" asp-route-id="@item.Id" class="font-weight-medium link" >@Html.DisplayFor(modelItem => item.Title)</a></td>
                                          <td>@Html.DisplayFor(modelItem => item.Project.Name)</td>
-                                         <td>@Html.DisplayFor(modelItem => item.Created)</td>
+                                         <td>@item.Created.ToString("MMM dd, yyyy")</td>
                                          <td>@Html.DisplayFor(modelItem => item.TicketType.Name)</td>
                                          <td>@Html.DisplayFor(modelItem => item.DeveloperUser.FullName)</td>
                                          <td>@Html.DisplayFor(modelItem => item.SubmitterUser.FullName)</td>

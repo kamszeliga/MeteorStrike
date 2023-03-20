@@ -24,9 +24,9 @@
 @{
     IEnumerable<Ticket> recentTickets = await _btTicketService.GetRecentTicketsAsync(companyId);
 
-    int numberOfRecentTickets = recentTickets.Where(t => (DateTime.Now - t.Created).TotalDays <= 7).Count();
+    int numberOfRecentTickets = recentTickets.Where(t => (DateTime.Now - t.Created).TotalDays <= 3).Count();
 
-    IEnumerable<Ticket> tenRecentTickets = recentTickets.Take(7);
+    IEnumerable<Ticket> tenRecentTickets = recentTickets.Take(5);
 }
 
  <!-- ============================================================== -->
@@ -64,31 +64,47 @@
              <img src="../../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="100">
            </div>
            <div class="ps-3">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                           <h6 class="text-muted">@btUser!.Company.Name</h6>
-                           <h3 class="font-weight-medium">@btUser!.FullName</h3>
-                           <h6 class="text-muted">@btUser!.Email</h6>
-                        }
-           </div>
-         </div>
-         <div class="row mt-4 pt-2">
-           <div class="col text-center border-end">
-             <h2 class="fw-light">14</h2>
-             <h6 class="text-muted">Tickets</h6>
-           </div>
-           <div class="col text-center border-end">
-             <h2 class="fw-light">54</h2>
-             <h6 class="text-muted">Projects</h6>
-           </div>
-           <div class="col text-center">
-             <h2 class="fw-light">145</h2>
-             <h6 class="text-muted">Tasks</h6>
+              @if (User.Identity.IsAuthenticated)
+              {
+                 <h6 class="text-muted">@btUser!.Company.Name</h6>
+                 <h3 class="font-weight-medium">@btUser!.FullName</h3>
+                 <h6 class="text-muted">@btUser!.Email</h6>
+              }
            </div>
          </div>
        </div>
-     </div>                    
-     </div>
+     </div>    
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                <div class="col-10">
+                <h5 class="card-title"><i class="icon-people text-info"></i> Your Tickets</h5></div>
+                <div class="col-2 text-end">
+                <h3 class="card-title">@Model.Tickets.Where(t=>t.DeveloperUserId == userId).Count().ToString()</h3></div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                <div class="col-10">
+                <h5 class="card-title"><i class="icon-folder text-info"></i> Total Projects</h5></div>
+                <div class="col-2 text-end">
+                <h3 class="card-title">@Model.Company.Projects.Count().ToString()</h3></div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                <div class="col-10">
+                <h5 class="card-title"><i class="ti-bookmark text-info"></i> Total Tickets</h5></div>
+                <div class="col-2 text-end">
+                <h3 class="card-title">@Model.Tickets.Count().ToString()</h3></div>
+                </div>
+            </div>
+        </div>
+    </div>
    <div class="col-lg-8">
    <div class="card" style="max-height: 640px;">
       <div class="d-flex align-items-center p-3">
@@ -100,19 +116,20 @@
             <h2 class="fw-normal">@Model.Company.Name</h2>
             </div>
           <div class="ms-auto">
-            <h1 class="text-info mb-0 fw-light">@numberOfRecentTickets</h1>
+            <h1 class="text-info mb-0 fw-light">@numberOfRecentTickets New Tickets</h1>
           </div>
         </div>
       </div>
-      <div class="dashCard p-3" style="overflow-y:auto; max-height: 400px;">
+      <div class="dashCard p-3" style="overflow-y:auto; height: 355px;">
         <div class="table-responsive">
           <table class="table mb-0 no-wrap recent-table table-hover">
             <thead>
               <tr class="fs-4 font-weight-medium">
+                  <th>Created</th>
                 <th>Priority</th>
                 <th style="width: 15%">Ticket Title</th>                
-                <th style="width: 15%">Project Title</th>
-                <th>Assigned Developer</th>
+                <th style="width: 45%">Project Title</th>
+@*                <th>Assigned Developer</th>*@
                 <th>Submitted By</th>
               </tr>
             </thead>
@@ -122,7 +139,8 @@
                    int priorityId = item.TicketPriorityId;
               
                  <tr> 
-                       @switch (priorityId)
+                      <td>@item.Created.ToString("MMM dd, yyyy")</td>
+                     @switch (priorityId)
                        {
                            default: 
                             <td data-order="@item.TicketPriorityId"><span class="badge bg-info text-uppercase">@item.TicketPriority.Name</span></td>
@@ -139,7 +157,7 @@
                        }
                      <td><a asp-action="Edit" asp-route-id="@item.Id">@item.Title</a></td>
                      <td>@Html.DisplayFor(modelItem => item.Project.Name)</td>
-                     <td>@Html.DisplayFor(modelItem => item.DeveloperUser.FullName)</td>
+@*                     <td>@Html.DisplayFor(modelItem => item.DeveloperUser.FullName)</td>*@
                      <td>@Html.DisplayFor(modelItem => item.SubmitterUser.FullName)</td>
                  </tr> 
                }
@@ -149,65 +167,6 @@
       </div>
       </div>            
      </div>
- </div>
-
-       <!-- ============================================================== -->
-       <!-- First Cards Row  -->
-       <!-- ============================================================== -->
-       <div class="row">
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Your Tickets</h5>
-                                <div class="d-flex align-items-center mb-2 mt-4">
-                                    <h2 class="mb-0 display-5"><i class="icon-people text-info"></i></h2>
-                                    <div class="ms-auto">
-                                        <h2 class="mb-0 display-6"><span class="fw-normal">@Model.Tickets.Where(t=>t.DeveloperUserId == userId).Count().ToString()</span></h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Projects</h5>
-                                <div class="d-flex align-items-center mb-2 mt-4">
-                                    <h2 class="mb-0 display-5"><i class="icon-folder text-primary"></i></h2>
-                                    <div class="ms-auto">
-                                        <h2 class="mb-0 display-6"><span class="fw-normal">@Model.Company.Projects.Count().ToString()</span></h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Projects</h5>
-                                <div class="d-flex align-items-center mb-2 mt-4">
-                                    <h2 class="mb-0 display-5"><i class="icon-folder-alt text-danger"></i></h2>
-                                    <div class="ms-auto">
-                                        <h2 class="mb-0 display-6"><span class="fw-normal">311</span></h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Tickets</h5>
-                                <div class="d-flex align-items-center mb-2 mt-4">
-                                    <h2 class="mb-0 display-5"><i class="ti-bookmark text-success"></i></h2>
-                                    <div class="ms-auto">
-                                        <h2 class="mb-0 display-6"><span class="fw-normal">@Model.Tickets.Count().ToString()</span></h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
        <!-- ============================================================== -->
        <!-- Manage User  -->
