@@ -66,6 +66,35 @@ namespace MeteorStrike.Controllers
             return View();
         }
 
+        public async Task<IActionResult> AdminPage()
+        {
+            int companyId = User.Identity!.GetCompanyId();
+
+            //List of Tickets
+            IEnumerable<Ticket> tickets = await _btTicketService.GetTicketsAsync(companyId);
+
+            //List of Projects
+            IEnumerable<Project> projects = await _btProjectService.GetProjectsAsync(companyId);
+
+            //List of Developers
+            List<BTUser> members = await _btCompanyService.GetMembersAsync(companyId);
+
+            //Company
+            Company company = await _btCompanyService.GetCompanyInfoAsync(companyId);
+
+            DashboardViewModel viewModel = new()
+            {
+                Tickets = tickets.ToList(),
+                Projects = projects.ToList(),
+                Members = members.ToList(),
+                Company = company,
+
+            };
+
+            return View(viewModel);
+        }
+
+
         [Authorize]
         public IActionResult Privacy()
         {
