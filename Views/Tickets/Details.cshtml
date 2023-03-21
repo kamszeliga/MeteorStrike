@@ -95,7 +95,7 @@
                             </div>	
 
                         </div>
-                        <div class="card-footer mt-2">
+@*                        <div class="card-footer mt-2">
                             @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
                             {
                             <a asp-action="AssignTicketMember" asp-route-id="@Model.Id" class="mdi mdi-account-plus text-warning"></a>
@@ -103,12 +103,7 @@
                             <a asp-action="Edit" asp-route-id="@Model.Id" class="mdi mdi-pencil text-success"></a>
                             <a asp-action="Details" asp-route-id="@Model.Id" class="mdi mdi-note-text"></a>
                             <a asp-action="Delete" asp-route-id="@Model.Id" class="mdi mdi-delete text-danger"></a>
-                        </div>
-                        @*<div class="text-start">
-                       <a asp-action="Edit" asp-route-id="@Model.Id" type="button" class="mt-2 btn waves-effect waves-light btn-success">Update</a>
-					   @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
-					   {<a asp-action="AssignTicketMember" asp-route-id="@Model.Id" type="button" class="mt-2 btn waves-effect waves-light btn-info">Assign Members</a>}
-					   </div>*@
+                        </div>*@
                        </div>
                    </div>
                </div>
@@ -154,7 +149,15 @@
                <div class="card">
                   <div class="card-body">
                       <div class="card-header mb-2">
-                       <h4 class="card-title">@Html.DisplayFor(model => model.Title)</h4></div>
+                       <h4 class="card-title">@Html.DisplayFor(model => model.Title)</h4> 
+                        @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+                        {
+                                <a asp-action="AssignTicketMember" asp-route-id="@Model.Id" class="mdi mdi-account-plus text-warning"></a>
+                        }
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="mdi mdi-pencil text-success"></a>
+                            <a asp-action="Details" asp-route-id="@Model.Id" class="mdi mdi-note-text"></a>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="mdi mdi-delete text-danger"></a>
+                        </div>
                     @Html.Raw(Model.Description)
                        <div class="row">
                        <div class="col-6"> <h5 class="pt-3">Submitted By</h5>
