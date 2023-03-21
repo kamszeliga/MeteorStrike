@@ -149,7 +149,9 @@
                <div class="card">
                   <div class="card-body">
                       <div class="card-header mb-2">
-                       <h4 class="card-title">@Html.DisplayFor(model => model.Title)</h4> 
+                          <div class="row">
+                          <div class="col-10"><h4 class="card-title">@Html.DisplayFor(model => model.Title)</h4> </div>
+                        <div class="col-2 text-end">
                         @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
                         {
                                 <a asp-action="AssignTicketMember" asp-route-id="@Model.Id" class="mdi mdi-account-plus text-warning"></a>
@@ -157,6 +159,8 @@
                             <a asp-action="Edit" asp-route-id="@Model.Id" class="mdi mdi-pencil text-success"></a>
                             <a asp-action="Details" asp-route-id="@Model.Id" class="mdi mdi-note-text"></a>
                             <a asp-action="Delete" asp-route-id="@Model.Id" class="mdi mdi-delete text-danger"></a>
+                        </div>
+                        </div>
                         </div>
                     @Html.Raw(Model.Description)
                        <div class="row">

@@ -228,7 +228,7 @@ namespace MeteorStrike.Services
             try
             {
                 IEnumerable<Ticket> tickets = await _context.Tickets
-                                                                .Where(b => b.Archived == false)
+                                                                .Where(t => t.Archived == false)
                                                                 .Include(t => t.Project)
                                                                 .Where(t => t.Project!.CompanyId == companyId)
                                                                 .Include(t => t.SubmitterUser)

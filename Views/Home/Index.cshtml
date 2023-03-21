@@ -61,7 +61,7 @@
        <div class="card-body">
          <div class="d-flex flex-row">
            <div class="">
-             <img src="../../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="100">
+            <img src="@_BTFileService.ConvertByteArrayToFile(btUser!.ImageFileData!,btUser!.ImageFileType!,(int)DefaultImage.BTUserImage)" alt="user" class="rounded-circle" width="100">
            </div>
            <div class="ps-3">
               @if (User.Identity.IsAuthenticated)
@@ -90,7 +90,7 @@
                 <div class="col-10">
                 <h5 class="card-title"><i class="icon-folder text-info"></i> Total Projects</h5></div>
                 <div class="col-2 text-end">
-                <h3 class="card-title">@Model.Company.Projects.Count().ToString()</h3></div>
+                <h3 class="card-title">@Model.Company.Projects.Where(p => p.Archived == false).Count().ToString()</h3></div>
                 </div>
             </div>
         </div>

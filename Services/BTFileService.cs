@@ -6,9 +6,9 @@ namespace MeteorStrike.Services
     {
         #region Globals
         private readonly string[] suffixes = { "Bytes", "KB", "MB", "GB", "TB", "PB" };
-        private readonly string _defaultBTUserImageSrc = "~/img/DefaultContactImage.png";
-        private readonly string _defaultCompanyImageSrc = "~/img/DefaultCompanyImage.png";
-        private readonly string _defaultProjectImageSrc = "~/img/DefaultProjectImage.png";
+        private readonly string _defaultBTUserImageSrc = "/img/DefaultContactImage.png";
+        private readonly string _defaultCompanyImageSrc = "/img/DefaultCompanyImage.png";
+        private readonly string _defaultProjectImageSrc = "/img/DefaultProjectImages.png";
         #endregion
         #region Convert Byte Array to File
         public string ConvertByteArrayToFile(byte[] fileData, string extension, int imageType)
