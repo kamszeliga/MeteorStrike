@@ -4,70 +4,87 @@
     ViewData["Title"] = "Create";
 }
 
-<h4>Create Invite</h4>
-<hr />
+<!-- ============================================================== -->
+ <!-- Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+ <div class="page-breadcrumb border-bottom">
+     <div class="row">
+         <div class="col-lg-3 col-md-4 col-xs-12 justify-content-start d-flex align-items-center">
+             <h5 class="font-weight-medium text-uppercase mb-0">Create Invite</h5>
+         </div>
+         <div class="col-lg-9 col-md-8 col-xs-12 d-flex justify-content-start justify-content-md-end align-self-center">
+             <nav aria-label="breadcrumb" class="mt-2">
+                 <ol class="breadcrumb mb-0 p-0">
+                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                     <li class="breadcrumb-item active"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                     <li class="breadcrumb-item active" aria-current="page"><b><a asp-controller="Invites" asp-action="Create">Create Invite</a></b></li>
+                 </ol>
+             </nav>
+             <a asp-controller="Tickets" asp-action="Create" class="btn btn-danger text-white ms-3 d-none d-md-block">Create Ticket</a>
+         </div>
+     </div>
+ </div>
+ <!-- ============================================================== -->
+ <!-- End Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+
 <div class="col-lg-6 col-md-12">
     <div class="card custom-card">
         <div class="card-body">
             <div>
-                <h6 class="main-content-label mb-1">Company Invite</h6>
-                <p class="text-muted card-sub-title">Invite a new user to join your Bug Tracker company.</p>
+                <h4 class="main-content-label mb-1">Create a new Company Invite</h4>
+                <hr />
             </div>
             <form asp-action="Create">
+                 <div class="row row-xs align-items-center mg-b-20">
+                    <div class="col-md-4 mt-2">
+                        <label class="mg-b-0">Firstname</label>
+                    </div>
+                    <div class="col-md-8 mg-t-5 mg-md-t-0 mt-2">
+                        <input type="text" asp-for="InviteeFirstName" class="form-control" placeholder="Enter first name">
+                    </div>
+                    <div class="col-md-4 mt-2">
+                        <label class="mg-b-0 ">Lastname</label>
+                    </div>
+                    <div class="col-md-8 mg-t-5 mg-md-t-0 mt-2">
+                        <input type="text" asp-for="InviteeLastName" class="form-control" placeholder="Enter last name">
+                    </div>
+                 </div>
                 <div class="row row-xs align-items-center mg-b-20">
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-2">
                         <label class="mg-b-0">Email</label>
                     </div>
-                    <div class="col-md-8 mg-t-5 mg-md-t-0">
+                    <div class="col-md-8 mg-t-5 mg-md-t-0 mt-2">
                         <input type="email" asp-for="InviteeEmail" class="form-control" placeholder="Enter email">
                     </div>
                 </div>
                 <div class="row row-xs align-items-center mg-b-20">
-                    <div class="col-md-4">
-                        <label class="mg-b-0">Firstname</label>
-                    </div>
-                    <div class="col-md-8 mg-t-5 mg-md-t-0">
-                        <input type="text" asp-for="InviteeFirstName" class="form-control" placeholder="Enter first name">
-                    </div>
-                </div>
-                <div class="row row-xs align-items-center mg-b-20">
-                    <div class="col-md-4">
-                        <label class="mg-b-0">Lastname</label>
-                    </div>
-                    <div class="col-md-8 mg-t-5 mg-md-t-0">
-                        <input type="text" asp-for="InviteeLastName" class="form-control" placeholder="Enter last name">
-                    </div>
-                </div>
-                <div class="row row-xs align-items-center mg-b-20">
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-2">
                         <label class="mg-b-0">Select Project</label>
                     </div>
-                    <div class="col-md-8 mg-t-5 mg-md-t-0">
+                    <div class="col-md-8 mg-t-5 mg-md-t-0 mt-2">
                         <select class="form-control" asp-for="ProjectId" asp-items="@ViewBag.ProjectId">
                             <option value="">Select Project</option>
                         </select>
                     </div>
                 </div>
                 <div class="row row-xs align-items-center mg-b-20">
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-2">
                         <label class="mg-b-0">Message</label>
                     </div>
-                    <div class="col-md-8 mg-t-5 mg-md-t-0">
+                    <div class="col-md-8 mg-t-5 mg-md-t-0 mt-2">
                         <textarea asp-for="Message" multiple="multiple" class="form-control"></textarea>
                     </div>
                 </div>
                 <div class="form-group row justify-content-end mb-0">
-                    <div class="col-md-8 pl-md-2">
-                        <input type="submit" class="btn ripple btn-primary pd-x-30 mg-r-5" value="Send Invite" />
-                        <button class="btn ripple btn-secondary pd-x-30">Cancel</button>
+                    <div class="col-md-8 pl-md-2 mt-2 text-end">
+                        <input type="submit" class="btn ripple btn-primary pd-x-30 mg-r-5 mt-2" value="Send Invite" />
+                        <button class="btn ripple btn-secondary pd-x-30 mt-2">Cancel</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-</div>
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

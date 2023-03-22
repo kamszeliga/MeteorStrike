@@ -79,7 +79,7 @@ namespace MeteorStrike.Controllers
 
             return View(invite);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Invites/Create
         public async Task<IActionResult> Create()
         {
@@ -89,7 +89,7 @@ namespace MeteorStrike.Controllers
 
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Invites/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

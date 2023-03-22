@@ -1,0 +1,178 @@
+﻿@model DashboardViewModel
+
+@using MeteorStrike.Services.Interfaces;
+@using MeteorStrike.Models.Enums;
+@using Microsoft.AspNetCore.Identity;
+
+@inject IBTFileService _BTFileService
+@inject IBTTicketService _btTicketService
+@inject IBTCompanyService _btCompany
+@inject SignInManager<BTUser> SignInManager
+@inject UserManager<BTUser> _UserManager
+
+@{
+    ViewData["Title"] = "Home Page";
+
+    BTUser? btUser = await _UserManager.GetUserAsync(User);
+
+    string? userId = _UserManager.GetUserId(User);
+
+    int? companyId = btUser.CompanyId;
+}
+
+@{
+    IEnumerable<Ticket> recentTickets = await _btTicketService.GetRecentTicketsAsync(companyId);
+
+    int numberOfRecentTickets = recentTickets.Where(t => (DateTime.Now - t.Created).TotalDays <= 3).Count();
+
+    IEnumerable<Ticket> tenRecentTickets = recentTickets.Take(5);
+
+}
+
+ <!-- ============================================================== -->
+ <!-- Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+ <div class="page-breadcrumb border-bottom">
+     <div class="row">
+         <div class="col-lg-3 col-md-4 col-xs-12 justify-content-start d-flex align-items-center">
+             <h5 class="font-weight-medium text-uppercase mb-0">@Model.Company.Name</h5>
+         </div>
+         <div class="col-lg-9 col-md-8 col-xs-12 d-flex justify-content-start justify-content-md-end align-self-center">
+             <nav aria-label="breadcrumb" class="mt-2">
+                 <ol class="breadcrumb mb-0 p-0">
+                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                     <li class="breadcrumb-item active" aria-current="page"><b><a asp-controller="Home" asp-action="MyCompany">My Company</a></b></li>
+                 </ol>
+             </nav>
+             <a asp-controller="Tickets" asp-action="Create" class="btn btn-danger text-white ms-3 d-none d-md-block">Create Ticket</a>
+         </div>
+     </div>
+ </div>
+ <!-- ============================================================== -->
+ <!-- End Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+
+<!-- ============================================================== -->
+<!-- User & Tickets  -->
+<!-- ============================================================== -->
+
+<div class="row">
+   <div class="col-lg-8 order-md-first order-last">
+       <div class="row">
+       <div class="col-md-4 col-12">
+               <div class="card">
+            <div class="card-body">
+                <div class="row">
+                <div class="col-9">
+                <h5 class="card-title"><i class="icon-people text-info"></i><a class="sidebar-link" asp-controller="Home" asp-action="MyCompany"> Team Members</a></h5></div>
+                <div class="col-3 text-end">
+                <h3 class="card-title">@Model.Members.Count().ToString()</h3></div>
+                </div>
+            </div>
+        </div>
+        </div>
+       <div class="col-md-4 col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                <div class="col-8">
+                <h5 class="card-title"><a class="sidebar-link" asp-controller="Projects" asp-action="Index"><i class="icon-folder text-info"></i> Total Projects</a></h5></div>
+                <div class="col-4 text-end">
+                <h3 class="card-title">@Model.Company.Projects.Where(p => p.Archived == false).Count().ToString()</h3></div>
+                </div>
+            </div>
+        </div>
+        </div>
+       <div class="col-md-4 col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                <div class="col-8">
+                <h5 class="card-title"><a class="sidebar-link" asp-controller="Tickets" asp-action="Index"><i class="mdi mdi-tag-multiple text-info"></i> Total Tickets</a></h5></div>
+                <div class="col-4 text-end">
+                <h3 class="card-title">@Model.Tickets.Count().ToString()</h3></div>
+                </div>
+            </div>
+        </div>
+        </div>
+   </div>
+   <div class="card" style="max-height: 640px;">
+      <div class="d-flex align-items-center p-3">
+        <h5 class="card-title mb-0">@Model.Company.Name's Team Members</h5>
+      </div>
+      <div class="dashCard p-3" style="overflow-y:auto; height: 355px;">
+            <div class="table-responsive">
+                  <table class="table mb-0 no-wrap recent-table table-hover">
+                   <thead>
+                    <tr class="fs-4 font-weight-medium">
+                      <th scope="col" class="border-0 font-weight-medium">Name</th>
+                      <th scope="col" class="border-0 font-weight-medium">Position</th>
+                      <th scope="col" class="border-0 font-weight-medium">Email</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                        @foreach (BTUser bTUser in Model.Members)
+                        {
+                           <tr> 
+                               <td>@Html.DisplayFor(modelItem => bTUser.FullName)</td>
+                               <td>???</td>
+                               <td>@Html.DisplayFor(modelItem => bTUser.Email)</td>
+                           </tr> 
+                        }
+                  </tbody>
+                </table>
+            </div>
+        </div>
+     </div>
+    </div>
+   <div class="col-lg-4 order-first">
+     <div class="card">
+       <img class="cardheaderimg" src="@_BTFileService.ConvertByteArrayToFile(Model.Company.ImageFileData, Model.Company.ImageFileType,(int)DefaultImage.CompanyImage)" />
+       <div class="card-body">
+         <div class="d-flex flex-row">
+           <div class="">
+            <img src="@_BTFileService.ConvertByteArrayToFile(btUser!.ImageFileData!,btUser!.ImageFileType!,(int)DefaultImage.BTUserImage)" alt="user" class="rounded-circle" width="100">
+           </div>
+           <div class="ps-3">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                         <h6 class="text-muted">@btUser!.Company.Name</h6>
+                         <h3 class="font-weight-medium">@btUser!.FullName</h3>
+                         <h6 class="text-muted">@btUser!.Email</h6>
+                        }
+           </div>
+         </div>
+       </div>
+     </div> 
+        <div class="card" style="max-height: 640px;">
+      <div class="dashCard p-3" style="overflow-y:auto; height: 355px;">
+            <div class="table-responsive">
+                <h5 class="mt-2">Team Members</h5>
+                  <table class="table mb-0 no-wrap recent-table table-hover">
+                   <thead>
+                    <tr class="fs-4 font-weight-medium">
+                      <th scope="col" class="border-0 font-weight-medium">Name</th>
+                      <th scope="col" class="border-0 font-weight-medium">Position</th>
+                      <th scope="col" class="border-0 font-weight-medium">Email</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                            @foreach (BTUser bTUser in Model.Members)
+                            {
+                               <tr> 
+                                   <td>@Html.DisplayFor(modelItem => bTUser.FullName)</td>
+                                   <td>???</td>
+                                   <td>@Html.DisplayFor(modelItem => bTUser.Email)</td>
+                               </tr> 
+                            }
+                  </tbody>
+                </table>
+            </div>
+        </div>
+     </div>
+
+     </div>
+
+ </div>
+
