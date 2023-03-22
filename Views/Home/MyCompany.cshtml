@@ -97,35 +97,123 @@
         </div>
         </div>
    </div>
-   <div class="card" style="max-height: 640px;">
+       <div class="card" style="max-height: 500px;">
       <div class="d-flex align-items-center p-3">
-        <h5 class="card-title mb-0">@Model.Company.Name's Team Members</h5>
       </div>
-      <div class="dashCard p-3" style="overflow-y:auto; height: 355px;">
-            <div class="table-responsive">
-                  <table class="table mb-0 no-wrap recent-table table-hover">
-                   <thead>
-                    <tr class="fs-4 font-weight-medium">
-                      <th scope="col" class="border-0 font-weight-medium">Name</th>
-                      <th scope="col" class="border-0 font-weight-medium">Position</th>
-                      <th scope="col" class="border-0 font-weight-medium">Email</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                        @foreach (BTUser bTUser in Model.Members)
-                        {
-                           <tr> 
-                               <td>@Html.DisplayFor(modelItem => bTUser.FullName)</td>
-                               <td>???</td>
-                               <td>@Html.DisplayFor(modelItem => bTUser.Email)</td>
-                           </tr> 
-                        }
-                  </tbody>
-                </table>
+      <div class="p-3 bg-light">
+        <div class="d-flex align-items-center">
+          <div>
+            <h2 class="fw-normal"><a asp-controller="Projects" asp-action="Index">Recent Projects</a></h2>
             </div>
+@*          <div class="ms-auto">
+            <h1 class="text-info mb-0 fw-light">@numberOfRecentTickets New Tickets</h1>
+          </div>*@
         </div>
-     </div>
-    </div>
+      </div>
+      <div class="dashCard p-3" style="overflow-y:auto; height: 255px;">
+        <div class="table-responsive">
+          <table class="table mb-0 no-wrap recent-table table-hover">
+            <thead>
+              <tr class="fs-4 font-weight-medium">
+                  <th>Created</th>
+                <th>Priority</th>
+                <th style="width: 35%">Project Title</th>                
+                <th style="width: 15%">Tickets</th>
+                <th>Due On</th>
+                @*<th>Submitted By</th>*@
+              </tr>
+            </thead>
+             <tbody>
+                            @foreach (var item in Model.Projects)
+                            {
+                                int priorityId = item.ProjectPriorityId;
+
+                       <tr> 
+                         <td>@item.Created.ToString("MMM dd, yyyy")</td>
+                                    @switch (priorityId)
+                                    {
+                                        default: 
+                                           <td data-order="@item.ProjectPriorityId"><span class="badge bg-info text-uppercase">@item.ProjectPriority.Name</span></td>
+                                            break;
+                                        case 2: 
+                                           <td data-order="@item.ProjectPriorityId"><span class="badge bg-success text-uppercase">@item.ProjectPriority.Name</span></td>
+                                            break;
+                                        case 3: 
+                                           <td data-order="@item.ProjectPriorityId"><span class="badge bg-warning text-uppercase">@item.ProjectPriority.Name</span></td>
+                                            break;
+                                        case 4: 
+                                           <td data-order="@item.ProjectPriorityId"><span class="badge bg-danger text-uppercase">@item.ProjectPriority.Name</span></td>
+                                            break;
+                                    }
+                        <td><a asp-controller="Projects" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></td>
+                        <td>@Html.DisplayFor(modelItem => item.Tickets.Count)</td>
+                        <td>@item.EndDate.ToString("MMM dd, yyyy")</td>
+                        @*<td>@Html.DisplayFor(modelItem => item.Members)</td>*@
+                       </tr> 
+                            }
+                 </tbody>
+          </table>
+        </div>
+      </div>
+      </div>            
+       <div class="card" style="max-height: 500px;">
+      <div class="d-flex align-items-center p-3">
+      </div>
+      <div class="p-3 bg-light">
+        <div class="d-flex align-items-center">
+          <div>
+            <h2 class="fw-normal"><a asp-controller="Tickets" asp-action="Index">Recent Tickets</a></h2>
+            </div>
+@*          <div class="ms-auto">
+            <h1 class="text-info mb-0 fw-light">@numberOfRecentTickets New Tickets</h1>
+          </div>*@
+        </div>
+      </div>
+      <div class="dashCard p-3" style="overflow-y:auto; height: 255px;">
+        <div class="table-responsive">
+          <table class="table mb-0 no-wrap recent-table table-hover">
+            <thead>
+              <tr class="fs-4 font-weight-medium">
+                  <th>Created</th>
+                <th>Priority</th>
+                <th style="width: 15%">Ticket Title</th>                
+                <th style="width: 45%">Project Title</th>
+                <th>Submitted By</th>
+              </tr>
+            </thead>
+             <tbody>
+                    @foreach (var item in tenRecentTickets)
+                    {
+                                int priorityId = item.TicketPriorityId;
+
+                       <tr> 
+                         <td>@item.Created.ToString("MMM dd, yyyy")</td>
+                                    @switch (priorityId)
+                                    {
+                                        default: 
+                                               <td data-order="@item.TicketPriorityId"><span class="badge bg-info text-uppercase">@item.TicketPriority.Name</span></td>
+                                            break;
+                                        case 2: 
+                                               <td data-order="@item.TicketPriorityId"><span class="badge bg-success text-uppercase">@item.TicketPriority.Name</span></td>
+                                            break;
+                                        case 3: 
+                                               <td data-order="@item.TicketPriorityId"><span class="badge bg-warning text-uppercase">@item.TicketPriority.Name</span></td>
+                                            break;
+                                        case 4: 
+                                               <td data-order="@item.TicketPriorityId"><span class="badge bg-danger text-uppercase">@item.TicketPriority.Name</span></td>
+                                            break;
+                                    }
+                        <td><a asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">@item.Title</a></td>
+                        <td>@Html.DisplayFor(modelItem => item.Project.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.SubmitterUser.FullName)</td>
+                       </tr> 
+                            }
+                 </tbody>
+          </table>
+        </div>
+      </div>
+      </div>            
+  </div>
    <div class="col-lg-4 order-first">
      <div class="card">
        <img class="cardheaderimg" src="@_BTFileService.ConvertByteArrayToFile(Model.Company.ImageFileData, Model.Company.ImageFileType,(int)DefaultImage.CompanyImage)" />
@@ -145,15 +233,14 @@
          </div>
        </div>
      </div> 
-        <div class="card" style="max-height: 640px;">
-      <div class="dashCard p-3" style="overflow-y:auto; height: 355px;">
+        <div class="card" style="max-height: 700px;">
+      <div class="dashCard p-3" style="overflow-y:auto; height: 590px;">
             <div class="table-responsive">
-                <h5 class="mt-2">Team Members</h5>
+                <h4 class="mt-2">Team Members</h4>
                   <table class="table mb-0 no-wrap recent-table table-hover">
                    <thead>
                     <tr class="fs-4 font-weight-medium">
                       <th scope="col" class="border-0 font-weight-medium">Name</th>
-                      <th scope="col" class="border-0 font-weight-medium">Position</th>
                       <th scope="col" class="border-0 font-weight-medium">Email</th>
                     </tr>
                   </thead>
@@ -162,7 +249,6 @@
                             {
                                <tr> 
                                    <td>@Html.DisplayFor(modelItem => bTUser.FullName)</td>
-                                   <td>???</td>
                                    <td>@Html.DisplayFor(modelItem => bTUser.Email)</td>
                                </tr> 
                             }

@@ -98,3 +98,33 @@ body {
 .ck-editor__editable_inline {
     min-height: 150px;
 }
+
+.headerImage {
+    object-fit: cover !important;
+    object-position: top !important; /* Center the image within the element */
+    width: 100% !important;
+    max-height: 120px !important;
+    z-index: 10;
+}
+
+.footerImage {
+    object-fit: cover !important;
+    object-position: bottom !important; /* Center the image within the element */
+    width: 100% !important;
+    max-height: 50px !important;
+}
+
+.headerSection {
+    background: url(/img/SpaceSection.png);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+    background-color: black;
+}
+
+/*.welcomeMessage {
+    margin-top: -50px;
+    color: red;
+    z-index: 90;
+}
+*/
