@@ -721,7 +721,7 @@ welcome
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url(../images/banner-bg.png);
+  background-image: src(/img/FullSpaceBG.png);
   background-repeat: no-repeat;
 /*
 TRY IT ... with or without CENTER CENTER

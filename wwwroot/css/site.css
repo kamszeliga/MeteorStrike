@@ -151,3 +151,37 @@ body {
         width: auto;
         height: 100%;
     }
+
+/*#welcome {
+    overflow: hidden !important;
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-image: src(/img/FullSpaceBG.png) !important;
+    background-repeat: no-repeat;*/
+    /*
+TRY IT ... with or without CENTER CENTER
+  background-position: center center; 
+*/
+    /*background-size: cover !important;
+    width: 100% !important;
+    height: 105vh !important;
+    margin-top: -10vh !important;
+}*/
+
+.spaceBG {
+    background: url(/img/FullSpaceBG.png);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+    background-color: black;
+}
+
+.focalPoint {
+    margin-top: -500px;
+}
+
+.textMuted {
+    color: #c3cfcd !important;
+}
