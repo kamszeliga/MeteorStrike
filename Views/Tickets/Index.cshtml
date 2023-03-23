@@ -111,53 +111,53 @@
                                     int priorityId = item.TicketPriorityId;
                                     int statusId = item.TicketStatusId;
 
-                                     <tr> 
-                                     @switch (priorityId)
-                                     {
-                                         default: 
-                                             <td data-order="@item.TicketPriorityId"><span class="badge bg-info text-uppercase">@item.TicketPriority.Name</span></td>
-                                             break;
-                                         case 2: 
-                                             <td data-order="@item.TicketPriorityId"><span class="badge bg-success text-uppercase">@item.TicketPriority.Name</span></td>
-                                             break;
-                                         case 3: 
-                                             <td data-order="@item.TicketPriorityId"><span class="badge bg-warning text-uppercase">@item.TicketPriority.Name</span></td>
-                                             break;
-                                         case 4: 
-                                             <td data-order="@item.TicketPriorityId"><span class="badge bg-danger text-uppercase">@item.TicketPriority.Name</span></td>
-                                             break;
-                                     }
-                                     @switch (statusId)
-                                     {
-                                         default: 
-                                             <td data-order="@item.TicketStatusId"><span class="badge bg-info text-uppercase">@item.TicketStatus.Name</span></td>
-                                             break;
-                                         case 2: 
-                                             <td data-order="@item.TicketStatusId"><span class="badge bg-success text-uppercase">@item.TicketStatus.Name</span></td>
-                                             break;
-                                         case 3: 
-                                             <td data-order="@item.TicketStatusId"><span class="badge bg-warning text-uppercase">@item.TicketStatus.Name</span></td>
-                                             break;
-                                         case 4: 
-                                             <td data-order="@item.TicketStatusId"><span class="badge bg-danger text-uppercase">@item.TicketStatus.Name</span></td>
-                                             break;
-                                     }
-                                         <td><a asp-action="Details" asp-route-id="@item.Id" class="font-weight-medium link" >@Html.DisplayFor(modelItem => item.Title)</a></td>
-                                         <td>@Html.DisplayFor(modelItem => item.Project.Name)</td>
-                                         <td>@item.Created.ToString("MMM dd, yyyy")</td>
-                                         <td>@Html.DisplayFor(modelItem => item.TicketType.Name)</td>
-                                         <td>@Html.DisplayFor(modelItem => item.DeveloperUser.FullName)</td>
-                                         <td>@Html.DisplayFor(modelItem => item.SubmitterUser.FullName)</td>
-                                         <td>
-                                        @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+                                         <tr> 
+                                        @switch (priorityId)
                                         {
-                                         <a asp-action="AssignTicketMember" asp-route-id="@item.Id" class="mdi mdi-account-plus text-warning"></a>
+                                            default: 
+                                                         <td data-order="@item.TicketPriorityId"><span class="badge bg-info text-uppercase">@item.TicketPriority.Name</span></td>
+                                                break;
+                                            case 2: 
+                                                         <td data-order="@item.TicketPriorityId"><span class="badge bg-success text-uppercase">@item.TicketPriority.Name</span></td>
+                                                break;
+                                            case 3: 
+                                                         <td data-order="@item.TicketPriorityId"><span class="badge bg-warning text-uppercase">@item.TicketPriority.Name</span></td>
+                                                break;
+                                            case 4: 
+                                                         <td data-order="@item.TicketPriorityId"><span class="badge bg-danger text-uppercase">@item.TicketPriority.Name</span></td>
+                                                break;
                                         }
-                                        <a asp-action="Edit" asp-route-id="@item.Id" class="mdi mdi-pencil text-success"></a>
-                                        <a asp-action="Details" asp-route-id="@item.Id" class="mdi mdi-note-text"></a>
-                                        <a asp-action="Delete" asp-route-id="@item.Id" class="mdi mdi-delete text-danger"></a>
-                                        </td>
-                                     </tr> 
+                                        @switch (statusId)
+                                        {
+                                            default: 
+                                                         <td data-order="@item.TicketStatusId"><span class="badge bg-info text-uppercase">@item.TicketStatus.Name</span></td>
+                                                break;
+                                            case 2: 
+                                                         <td data-order="@item.TicketStatusId"><span class="badge bg-success text-uppercase">@item.TicketStatus.Name</span></td>
+                                                break;
+                                            case 3: 
+                                                         <td data-order="@item.TicketStatusId"><span class="badge bg-warning text-uppercase">@item.TicketStatus.Name</span></td>
+                                                break;
+                                            case 4: 
+                                                         <td data-order="@item.TicketStatusId"><span class="badge bg-danger text-uppercase">@item.TicketStatus.Name</span></td>
+                                                break;
+                                        }
+                                             <td><a asp-action="Details" asp-route-id="@item.Id" class="font-weight-medium link" >@Html.DisplayFor(modelItem => item.Title)</a></td>
+                                             <td>@Html.DisplayFor(modelItem => item.Project.Name)</td>
+                                             <td>@item.Created.ToString("MMM dd, yyyy")</td>
+                                             <td>@Html.DisplayFor(modelItem => item.TicketType.Name)</td>
+                                             <td>@Html.DisplayFor(modelItem => item.DeveloperUser.FullName)</td>
+                                             <td>@Html.DisplayFor(modelItem => item.SubmitterUser.FullName)</td>
+                                             <td>
+                                            @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+                                            {
+                                                         <a asp-action="AssignTicketMember" asp-route-id="@item.Id" class="mdi mdi-account-plus text-warning fs-6"></a>
+                                            }
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="mdi mdi-pencil text-success fs-6"></a>
+                                            <a asp-action="Details" asp-route-id="@item.Id" class="mdi mdi-note-text fs-6"></a>
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="mdi mdi-delete text-danger fs-6"></a>
+                                            </td>
+                                         </tr> 
                                 }
                                 </tbody>
                             </table>
@@ -172,15 +172,15 @@
     <!-- -------------------------------------------------------------- -->
 @section Scripts 
     {
-                  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
-                  <script>
-                     $(document).ready( function () {
-                     $('#ticketTable').DataTable();
-                        } );
+                      <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+                      <script>
+                         $(document).ready( function () {
+                         $('#ticketTable').DataTable();
+                            } );
 
-                     $('.dataTables_filter input')
-                     .attr('placeholder', 'Search...')
-                     .addClass('form-control');
-                  </script>
+                         $('.dataTables_filter input')
+                         .attr('placeholder', 'Search...')
+                         .addClass('form-control');
+                      </script>
 
       }

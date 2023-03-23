@@ -10,8 +10,6 @@
 @inject SignInManager<BTUser> SignInManager
 @inject UserManager<BTUser> _UserManager
 
-<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css">
-
 @{
     ViewData["Title"] = "Home Page";
 
@@ -20,7 +18,6 @@
     string? userId = _UserManager.GetUserId(User);
 
     int? companyId = btUser.CompanyId;
-
 }
 
 @{
@@ -30,7 +27,8 @@
 
     IEnumerable<Ticket> tenRecentTickets = recentTickets.Take(5);
 
-    IEnumerable<Ticket> activeTickets = Model.Tickets.Where(t => t.Archived == false);
+    IEnumerable<Project> tenRecentProjects = Model.Projects.Take(5);
+
 }
 
  <!-- ============================================================== -->
@@ -39,13 +37,14 @@
  <div class="page-breadcrumb border-bottom">
      <div class="row">
          <div class="col-lg-3 col-md-4 col-xs-12 justify-content-start d-flex align-items-center">
-             <h5 class="font-weight-medium text-uppercase mb-0">Admin Dashboard</h5>
+             <h5 class="font-weight-medium text-uppercase mb-0">Admin Dashboard for @Model.Company.Name</h5>
          </div>
          <div class="col-lg-9 col-md-8 col-xs-12 d-flex justify-content-start justify-content-md-end align-self-center">
              <nav aria-label="breadcrumb" class="mt-2">
                  <ol class="breadcrumb mb-0 p-0">
                      <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                     <li class="breadcrumb-item active" aria-current="page"><b><a asp-controller="Home" asp-action="Admin">Admin</a></b></li>
+                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                     <li class="breadcrumb-item active" aria-current="page"><b><a asp-controller="Home" asp-action="MyCompany">Admin Dashboard</a></b></li>
                  </ol>
              </nav>
              <a asp-controller="Tickets" asp-action="Create" class="btn btn-danger text-white ms-3 d-none d-md-block">Create Ticket</a>
@@ -55,461 +54,206 @@
  <!-- ============================================================== -->
  <!-- End Bread crumb and right sidebar toggle -->
  <!-- ============================================================== -->
-<div class="row">
-    <div class="col-6">
-     <div class="card">
-      <div class="card-body">
-       <div class="table-responsive mt-4">
-          <table id="ticketTable" class="table">
-              <thead>
-                  <tr>
-                    <th>Priority</th>
-                    <th>Status</th>
-                    <th style="width: 15%">Ticket Title</th>
-                    <th style="width: 25%">Project Title</th>
-                    <th>Created</th>
-                    <th>Ticket Type</th>
-                    <th>Assigned Developer</th>
-                    <th>Submitted By</th>
-                    <th>Actions</th>
-                  </tr>
-              </thead>
-              <tbody>
-            @foreach (var item in activeTickets)
-            {
-                int priorityId = item.TicketPriorityId;
-                int statusId = item.TicketStatusId;
-
-                <tr> 
-                    @switch (priorityId)
-                    {
-                        default: <td data-order="@item.TicketPriorityId"><span class="badge bg-info text-uppercase">@item.TicketPriority.Name</span></td>
-                            break;
-
-                        case 2: <td data-order="@item.TicketPriorityId"><span class="badge bg-success text-uppercase">@item.TicketPriority.Name</span></td>
-                            break;
-
-                        case 3:  <td data-order="@item.TicketPriorityId"><span class="badge bg-warning text-uppercase">@item.TicketPriority.Name</span></td>
-                            break;
-
-                        case 4: <td data-order="@item.TicketPriorityId"><span class="badge bg-danger text-uppercase">@item.TicketPriority.Name</span></td>
-                            break;
-                    }
-
-                    @switch (statusId)
-                    {
-                        default: <td data-order="@item.TicketStatusId"><span class="badge bg-info text-uppercase">@item.TicketStatus.Name</span></td>
-                            break;
-
-                        case 2: <td data-order="@item.TicketStatusId"><span class="badge bg-success text-uppercase">@item.TicketStatus.Name</span></td>
-                            break;
-
-                        case 3: <td data-order="@item.TicketStatusId"><span class="badge bg-warning text-uppercase">@item.TicketStatus.Name</span></td>
-                            break;
-
-                        case 4: <td data-order="@item.TicketStatusId"><span class="badge bg-danger text-uppercase">@item.TicketStatus.Name</span></td>
-                            break;
-                    }
-                         <td><a asp-action="Details" asp-route-id="@item.Id" class="font-weight-medium link" >@Html.DisplayFor(modelItem => item.Title)</a></td>
-                         <td>@Html.DisplayFor(modelItem => item.Project.Name)</td>
-                         <td>@item.Created.ToString("MMM dd, yyyy")</td>
-                         <td>@Html.DisplayFor(modelItem => item.TicketType.Name)</td>
-                         <td>@Html.DisplayFor(modelItem => item.DeveloperUser.FullName)</td>
-                         <td>@Html.DisplayFor(modelItem => item.SubmitterUser.FullName)</td>
-                         <td>
-
-                        @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
-                        {
-                                                         <a asp-action="AssignTicketMember" asp-route-id="@item.Id" class="mdi mdi-account-plus text-warning"></a>
-                        }
-                                                <a asp-action="Edit" asp-route-id="@item.Id" class="mdi mdi-pencil text-success"></a>
-                                                <a asp-action="Details" asp-route-id="@item.Id" class="mdi mdi-note-text"></a>
-                                                <a asp-action="Delete" asp-route-id="@item.Id" class="mdi mdi-delete text-danger"></a>
-                                                </td>
-                                             </tr> 
-            }
-                                </tbody>
-                            </table>
-                        </div>
-                       </div>
-                     </div>
-    </div>
-</div>
-
 
 <!-- ============================================================== -->
 <!-- User & Tickets  -->
 <!-- ============================================================== -->
-  <div class="row">
-   <div class="col-lg-4">
-     <div class="card">
-       <div class="card-body">
-         <div class="d-flex flex-row">
-           <div class="">
-             <img src="../../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="100">
-           </div>
-           <div class="ps-3">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                     <h6 class="text-muted">@btUser!.Company.Name</h6>
-                     <h3 class="font-weight-medium">@btUser!.FullName</h3>
-                     <h6 class="text-muted">@btUser!.Email</h6>
-                        }
-           </div>
-         </div>
-       </div>
-     </div>    
-        <div class="card">
+
+<div class="row">
+   <div class="col-lg-8 order-md-first order-last">
+      <div class="row">
+       <div class="col-md-4 col-12">
+               <div class="card">
             <div class="card-body">
                 <div class="row">
-                <div class="col-10">
-                <h5 class="card-title"><i class="icon-people text-info"></i> Your Tickets</h5></div>
-                <div class="col-2 text-end">
-                <h3 class="card-title">@Model.Tickets.Where(t=>t.DeveloperUserId == userId).Count().ToString()</h3></div>
+                <div class="col-9">
+                <h5 class="card-title"><i class="icon-people text-info"></i><a class="sidebar-link" asp-controller="Home" asp-action="MyCompany"> Team Members</a></h5></div>
+                <div class="col-3 text-end">
+                <h3 class="card-title">@Model.Members.Count().ToString()</h3></div>
                 </div>
             </div>
         </div>
+        </div>
+       <div class="col-md-4 col-12">
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                <div class="col-10">
-                <h5 class="card-title"><i class="icon-folder text-info"></i> Total Projects</h5></div>
-                <div class="col-2 text-end">
-                <h3 class="card-title">@Model.Company.Projects.Count().ToString()</h3></div>
+                <div class="col-8">
+                <h5 class="card-title"><a class="sidebar-link" asp-controller="Projects" asp-action="Index"><i class="icon-folder text-info"></i> Total Projects</a></h5></div>
+                <div class="col-4 text-end">
+                <h3 class="card-title">@Model.Company.Projects.Where(p => p.Archived == false).Count().ToString()</h3></div>
                 </div>
             </div>
         </div>
+        </div>
+       <div class="col-md-4 col-12">
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                <div class="col-10">
-                <h5 class="card-title"><i class="ti-bookmark text-info"></i> Total Tickets</h5></div>
-                <div class="col-2 text-end">
+                <div class="col-8">
+                <h5 class="card-title"><a class="sidebar-link" asp-controller="Tickets" asp-action="Index"><i class="mdi mdi-tag-multiple text-info"></i> Total Tickets</a></h5></div>
+                <div class="col-4 text-end">
                 <h3 class="card-title">@Model.Tickets.Count().ToString()</h3></div>
                 </div>
             </div>
         </div>
-    </div>
-   <div class="col-lg-8">
-   <div class="card" style="max-height: 640px;">
+        </div>
+      </div>
+      <div class="row">
+      <div class="card" style="max-height: 550px;">
       <div class="d-flex align-items-center p-3">
-        <h5 class="card-title mb-0">Recent Tickets</h5>
       </div>
       <div class="p-3 bg-light">
         <div class="d-flex align-items-center">
           <div>
-            <h2 class="fw-normal">@Model.Company.Name</h2>
+            <h2 class="fw-normal"><a asp-controller="Tickets" asp-action="Index">Archived Tickets</a></h2>
             </div>
-          <div class="ms-auto">
-            <h1 class="text-info mb-0 fw-light">@numberOfRecentTickets New Tickets</h1>
-          </div>
         </div>
       </div>
-      <div class="dashCard p-3" style="overflow-y:auto; height: 355px;">
+      <div class="dashCard p-3" style="overflow-y:auto; height: 255px;">
+        <div class="table-responsive">
+          <table class="table mb-0 no-wrap recent-table table-hover">
+            <thead>
+              <tr class="fs-4 font-weight-medium">
+                <th>Created</th>
+                <th>Priority</th>
+                <th style="width: 15%">Ticket Title</th>                
+                <th style="width: 45%">Project Title</th>
+                <th>Submitted By</th>
+              </tr>
+            </thead>
+             <tbody>
+                                @foreach (var item in Model.Tickets.Where(t => t.Archived == true || t.ArchivedByProject == true))
+                                {
+                                    int priorityId = item.TicketPriorityId;
+
+                                   <tr> 
+                                     <td>@item.Created.ToString("MMM dd, yyyy")</td>
+                                        @switch (priorityId)
+                                        {
+                                            default: 
+                                                                                   <td data-order="@item.TicketPriorityId"><span class="badge bg-info text-uppercase">@item.TicketPriority.Name</span></td>
+                                                break;
+                                            case 2: 
+                                                                                   <td data-order="@item.TicketPriorityId"><span class="badge bg-success text-uppercase">@item.TicketPriority.Name</span></td>
+                                                break;
+                                            case 3: 
+                                                                                   <td data-order="@item.TicketPriorityId"><span class="badge bg-warning text-uppercase">@item.TicketPriority.Name</span></td>
+                                                break;
+                                            case 4: 
+                                                                                   <td data-order="@item.TicketPriorityId"><span class="badge bg-danger text-uppercase">@item.TicketPriority.Name</span></td>
+                                                break;
+                                        }
+                                    <td><a asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">@item.Title</a></td>
+                                    <td>@Html.DisplayFor(modelItem => item.Project.Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.SubmitterUser.FullName)</td>
+                                   </tr> 
+                                }
+                 </tbody>
+          </table>
+        </div>
+      </div>
+      </div>            
+      <div class="card" style="max-height: 550px;">
+    <div class="d-flex align-items-center p-3">
+      </div>
+      <div class="p-3 bg-light">
+        <div class="d-flex align-items-center">
+          <div>
+            <h2 class="fw-normal"><a asp-controller="Projects" asp-action="Index">Archived Projects</a></h2>
+            </div>
+        </div>
+      </div>
+      <div class="dashCard p-3" style="overflow-y:auto; height: 255px;">
         <div class="table-responsive">
           <table class="table mb-0 no-wrap recent-table table-hover">
             <thead>
               <tr class="fs-4 font-weight-medium">
                   <th>Created</th>
                 <th>Priority</th>
-                <th style="width: 15%">Ticket Title</th>                
-                <th style="width: 45%">Project Title</th>
-                                @*                <th>Assigned Developer</th>*@
-                <th>Submitted By</th>
+                <th style="width: 35%">Project Title</th>                
+                <th style="width: 15%">Tickets</th>
+                <th>Due On</th>
               </tr>
             </thead>
              <tbody>
-                            @foreach (var item in tenRecentTickets)
-                            {
-                                int priorityId = item.TicketPriorityId;
+                                @foreach (var item in Model.Projects.Where(p => p.Archived == true))
+                                {
+                                    int priorityId = item.ProjectPriorityId;
 
-                     <tr> 
+                        <tr> 
                           <td>@item.Created.ToString("MMM dd, yyyy")</td>
-                                    @switch (priorityId)
-                                    {
-                                        default: 
-                                        <td data-order="@item.TicketPriorityId"><span class="badge bg-info text-uppercase">@item.TicketPriority.Name</span></td>
-                                            break;
-                                        case 2: 
-                                        <td data-order="@item.TicketPriorityId"><span class="badge bg-success text-uppercase">@item.TicketPriority.Name</span></td>
-                                            break;
-                                        case 3: 
-                                        <td data-order="@item.TicketPriorityId"><span class="badge bg-warning text-uppercase">@item.TicketPriority.Name</span></td>
-                                            break;
-                                        case 4: 
-                                        <td data-order="@item.TicketPriorityId"><span class="badge bg-danger text-uppercase">@item.TicketPriority.Name</span></td>
-                                            break;
-                                    }
-                         <td><a asp-action="Edit" asp-route-id="@item.Id">@item.Title</a></td>
-                         <td>@Html.DisplayFor(modelItem => item.Project.Name)</td>
-                                    @*                     <td>@Html.DisplayFor(modelItem => item.DeveloperUser.FullName)</td>*@
-                         <td>@Html.DisplayFor(modelItem => item.SubmitterUser.FullName)</td>
-                     </tr> 
-                            }
+                                        @switch (priorityId)
+                                        {
+                                            default: 
+                                                            <td data-order="@item.ProjectPriorityId"><span class="badge bg-info text-uppercase">@item.ProjectPriority.Name</span></td>
+                                                break;
+                                            case 2: 
+                                                            <td data-order="@item.ProjectPriorityId"><span class="badge bg-success text-uppercase">@item.ProjectPriority.Name</span></td>
+                                                break;
+                                            case 3: 
+                                                            <td data-order="@item.ProjectPriorityId"><span class="badge bg-warning text-uppercase">@item.ProjectPriority.Name</span></td>
+                                                break;
+                                            case 4: 
+                                                            <td data-order="@item.ProjectPriorityId"><span class="badge bg-danger text-uppercase">@item.ProjectPriority.Name</span></td>
+                                                break;
+                                        }
+                         <td><a asp-controller="Projects" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></td>
+                         <td>@Html.DisplayFor(modelItem => item.Tickets.Count)</td>
+                         <td>@item.EndDate.ToString("MMM dd, yyyy")</td>
+                        </tr> 
+                                }
                  </tbody>
           </table>
         </div>
-      </div>
-      </div>            
+     </div>
+  </div>            
+</div>
+  </div>
+   <div class="col-lg-4 order-first">
+     <div class="card">
+       <img class="cardheaderimg" src="@_BTFileService.ConvertByteArrayToFile(Model.Company.ImageFileData, Model.Company.ImageFileType,(int)DefaultImage.CompanyImage)" />
+       <div class="card-body">
+         <div class="d-flex flex-row">
+           <div class="">
+            <img src="@_BTFileService.ConvertByteArrayToFile(btUser!.ImageFileData!,btUser!.ImageFileType!,(int)DefaultImage.BTUserImage)" alt="user" class="userIcon" width="100">
+           </div>
+           <div class="ps-3">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                         <h6 class="text-muted">@btUser!.Company.Name</h6>
+                         <h3 class="font-weight-medium">@btUser!.FullName</h3>
+                         <h6 class="text-muted">@btUser!.Email</h6>
+                        }
+           </div>
+         </div>
+       </div>
+     </div> 
+        <div class="card" style="max-height: 700px;">
+      <div class="dashCard p-3" style="overflow-y:auto; height: 590px;">
+            <div class="table-responsive">
+                <h4 class="mt-2">Employees of @Model.Company.Name</h4>
+                  <table class="table mb-0 no-wrap recent-table table-hover">
+                   <thead>
+                    <tr class="fs-4 font-weight-medium">
+                      <th scope="col" class="border-0 font-weight-medium">Name</th>
+                      <th scope="col" class="border-0 font-weight-medium">Email</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                            @foreach (BTUser bTUser in Model.Members)
+                            {
+                               <tr> 
+                                   <td>@Html.DisplayFor(modelItem => bTUser.FullName)</td>
+                                   <td>@Html.DisplayFor(modelItem => bTUser.Email)</td>
+                               </tr> 
+                            }
+                  </tbody>
+                </table>
+            </div>
+        </div>
      </div>
 
- <!-- ============================================================== -->
- <!-- Manage User  -->
- <!-- ============================================================== -->
- <div class="row">
-           <div class="col-md-12">
-               <div class="card">
-                   <div class="card-body">
-                       <h5 class="card-title mb-0">Team Members</h5>
-                   </div>
-                   <div class="table-responsive">
-                       <table class="table no-wrap user-table mb-0">
-                         <thead class="table-light">
-                           <tr>
-                             <th scope="col" class="border-0 font-weight-medium ps-4">#</th>
-                             <th scope="col" class="border-0 font-weight-medium">Name</th>
-                             <th scope="col" class="border-0 font-weight-medium">Occupation</th>
-                             <th scope="col" class="border-0 font-weight-medium">Email</th>
-                             <th scope="col" class="border-0 font-weight-medium">Added</th>
-                             <th scope="col" class="border-0 font-weight-medium">Category</th>
-                             <th scope="col" class="border-0 font-weight-medium">Manage</th>
-                           </tr>
-                         </thead>
-                         <tbody>
-                           <tr>
-                             <td class="ps-4">1</td>
-                             <td>
-                               <div class="d-flex align-items-start">
-                                   <img src="../assets/images/users/1.jpg" class="rounded-circle" width="35">
-                                   <div class="ms-2">
-                                     <h5 class="font-weight-medium mb-0">Daniel Kristeen</h5>
-                                     <span class="text-muted">Texas, Unitedd states</span>
-                                   </div>
-                               </div>
-                             </td>
-                             <td>
-                                 <span>Visual Designer</span><br>
-                                 <span>Past : teacher</span>
-                             </td>
-                             <td>
-                                 <span>daniel@website.com</span><br>
-                                 <span>999 - 444 - 555</span>
-                             </td>
-                             <td>
-                                 <span>15 Mar 1988</span><br>
-                                 <span>10: 55 AM</span>
-                             </td>
-                             <td>
-                               <select class="form-select category-select" id="exampleFormControlSelect1">
-                                 <option>Modulator</option>
-                                 <option>Admin</option>
-                                 <option>User</option>
-                                 <option>Subscriber</option>
-                               </select>
-                             </td>
-                             <td>
-                               <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                       <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                             </td>
-                           </tr>
-                           <tr>
-                             <td class="ps-4">2</td>
-                             <td>
-                               <div class="d-flex align-items-start">
-                                   <img src="../assets/images/users/2.jpg" class="rounded-circle" width="35">
-                                   <div class="ms-2">
-                                     <h5 class="font-weight-medium mb-0">Emma Smith</h5>
-                                     <span class="text-muted">Texas, Unitedd states</span>
-                                   </div>
-                               </div>
-                             </td>
-                             <td>
-                                 <span>Visual Designer</span><br>
-                                 <span>Past : teacher</span>
-                             </td>
-                             <td>
-                                 <span>daniel@website.com</span><br>
-                                 <span>999 - 444 - 555</span>
-                             </td>
-                             <td>
-                                 <span>15 Mar 1855</span><br>
-                                 <span>10: 00 AM</span>
-                             </td>
-                             <td>
-                               <select class="form-select category-select" id="exampleFormControlSelect1">
-                                 <option>Modulator</option>
-                                 <option>Admin</option>
-                                 <option>User</option>
-                                 <option>Subscriber</option>
-                               </select>
-                             </td>
-                             <td>
-                               <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                       <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                             </td>
-                           </tr>
-                           <tr>
-                             <td class="ps-4">3</td>
-                             <td>
-                               <div class="d-flex align-items-start">
-                                   <img src="../assets/images/users/3.jpg" class="rounded-circle" width="35">
-                                   <div class="ms-2">
-                                     <h5 class="font-weight-medium mb-0">Olivia Johnson</h5>
-                                     <span class="text-muted">Texas, Unitedd states</span>
-                                   </div>
-                               </div>
-                             </td>
-                             <td>
-                                 <span>Visual Designer</span><br>
-                                 <span>Past : teacher</span>
-                             </td>
-                             <td>
-                                 <span>daniel@website.com</span><br>
-                                 <span>999 - 444 - 555</span>
-                             </td>
-                             <td>
-                                 <span>17 Aug 1988</span><br>
-                                 <span>12: 55 AM</span>
-                             </td>
-                             <td>
-                               <select class="form-select category-select" id="exampleFormControlSelect1">
-                                 <option>Modulator</option>
-                                 <option>Admin</option>
-                                 <option>User</option>
-                                 <option>Subscriber</option>
-                               </select>
-                             </td>
-                             <td>
-                               <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                       <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                             </td>
-                           </tr>
-                           <tr>
-                             <td class="ps-4">4</td>
-                             <td>
-                               <div class="d-flex align-items-start">
-                                   <img src="../assets/images/users/4.jpg" class="rounded-circle" width="35">
-                                   <div class="ms-2">
-                                     <h5 class="font-weight-medium mb-0">Isabella Williams</h5>
-                                     <span class="text-muted">Texas, Unitedd states</span>
-                                   </div>
-                               </div>
-                             </td>
-                             <td>
-                                 <span>Visual Designer</span><br>
-                                 <span>Past : teacher</span>
-                             </td>
-                             <td>
-                                 <span>daniel@website.com</span><br>
-                                 <span>999 - 444 - 555</span>
-                             </td>
-                             <td>
-                                 <span>26 Mar 1999</span><br>
-                                 <span>10: 55 AM</span>
-                             </td>
-                             <td>
-                               <select class="form-select category-select" id="exampleFormControlSelect1">
-                                 <option>Modulator</option>
-                                 <option>Admin</option>
-                                 <option>User</option>
-                                 <option>Subscriber</option>
-                               </select>
-                             </td>
-                             <td>
-                               <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                       <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                             </td>
-                           </tr>
-                           <tr>
-                             <td class="ps-4">5</td>
-                             <td>
-                               <div class="d-flex align-items-start">
-                                   <img src="../assets/images/users/5.jpg" class="rounded-circle" width="35">
-                                   <div class="ms-2">
-                                     <h5 class="font-weight-medium mb-0">Sophia Jones</h5>
-                                     <span class="text-muted">Texas, Unitedd states</span>
-                                   </div>
-                               </div>
-                             </td>
-                             <td>
-                                 <span>Visual Designer</span><br>
-                                 <span>Past : teacher</span>
-                             </td>
-                             <td>
-                                 <span>daniel@website.com</span><br>
-                                 <span>999 - 444 - 555</span>
-                             </td>
-                             <td>
-                                 <span>16 Aug 2001</span><br>
-                                 <span>10: 55 AM</span>
-                             </td>
-                             <td>
-                               <select class="form-select category-select" id="exampleFormControlSelect1">
-                                 <option>Modulator</option>
-                                 <option>Admin</option>
-                                 <option>User</option>
-                                 <option>Subscriber</option>
-                               </select>
-                             </td>
-                             <td>
-                               <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                       <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                             </td>
-                           </tr>
-                           <tr>
-                             <td class="ps-4">6</td>
-                             <td>
-                               <div class="d-flex align-items-start">
-                                   <img src="../assets/images/users/6.jpg" class="rounded-circle" width="35">
-                                   <div class="ms-2">
-                                         <h5 class="font-weight-medium mb-0">Charlotte Brown</h5>
-                                         <span class="text-muted">Texas, Unitedd states</span>
-                                   </div>
-                               </div>
-                             </td>
-                             <td>
-                                 <span>Visual Designer</span><br>
-                                 <span>Past : teacher</span>
-                             </td>
-                             <td>
-                                 <span>daniel@website.com</span><br>
-                                 <span>999 - 444 - 555</span>
-                             </td>
-                             <td>
-                                 <span>15 Mar 1988</span><br>
-                                 <span>10: 55 AM</span>
-                             </td>
-                             <td>
-                               <select class="form-select category-select" id="exampleFormControlSelect1">
-                                 <option>Modulator</option>
-                                 <option>Admin</option>
-                                 <option>User</option>
-                                 <option>Subscriber</option>
-                               </select>
-                             </td>
-                             <td>
-                               <a href="javascript:void(0)" class="text-info edit"><i data-feather="eye" class="feather-sm fill-white"></i></a>
-                                       <a href="javascript:void(0)" class="text-dark delete ms-2"><i data-feather="trash-2" class="feather-sm fill-white"></i></a>
-                             </td>
-                           </tr>
-                         </tbody>
-                       </table>
-                   </div>
-               </div>
-           </div>
-       </div>
+     </div>
+ </div>
 
-    @section Scripts 
-        {
-          <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
-          <script>
-             $(document).ready( function () {
-             $('#ticketTable').DataTable();
-                } );
-
-             $('.dataTables_filter input')
-             .attr('placeholder', 'Search...')
-             .addClass('form-control');
-          </script>
-
-      }

@@ -71,7 +71,7 @@
                 <div class="navbar-header border-end">
                     <!-- This is for the sidebar toggle which is visible on mobile only -->
                     <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
-                    <a class="navbar-brand" href="index.html">
+                    <a class="navbar-brand"  asp-controller="Home" asp-action="Index">
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <img src="~/img/MeteorLogo.png" alt="homepage" style="max-height: 50px;" class="dark-logo;" />
@@ -121,12 +121,12 @@
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="@_BTFileService.ConvertByteArrayToFile(btUser!.ImageFileData!,btUser!.ImageFileType!,(int)DefaultImage.BTUserImage)" class="rounded-circle" width="36">
+                                            <img src="@_BTFileService.ConvertByteArrayToFile(btUser!.ImageFileData!,btUser!.ImageFileType!,(int)DefaultImage.BTUserImage)" class="rounded-circle userNavIcon" width="36">
                                         <span class="ms-2 font-weight-medium">@btUser!.FirstName</span><span class="fas fa-angle-down ms-2"></span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end user-dd animated flipInY">
                                     <div class="d-flex no-block align-items-center p-3 bg-info text-white mb-2">
-                                    <div class=""><img src="@_BTFileService.ConvertByteArrayToFile(btUser!.ImageFileData!,btUser!.ImageFileType!,(int)DefaultImage.BTUserImage)" class="rounded-circle" width="36">
+                                        <div class=""><img src="@_BTFileService.ConvertByteArrayToFile(btUser!.ImageFileData!,btUser!.ImageFileType!,(int)DefaultImage.BTUserImage)" class="rounded-circle userNavIcon" width="36">
     </div>
                                         <div class="ms-2">
                                                 <h4 class="mb-0 text-white">@btUser!.FullName</h4>
@@ -200,8 +200,8 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
                         <li class="sidebar-item">
-                            <a class="sidebar-link has-arrow waves-effect waves-dark profile-dd" href="javascript:void(0)" aria-expanded="false">
-                                <img src="@_BTFileService.ConvertByteArrayToFile(btUser!.ImageFileData!,btUser!.ImageFileType!,(int)DefaultImage.BTUserImage)" class="rounded-circle ms-2" width="30">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark profile-dd" aria-expanded="false">
+                                <img src="@_BTFileService.ConvertByteArrayToFile(btUser.ImageFileData,btUser.ImageFileType,(int)DefaultImage.BTUserImage)" class="rounded-circle userNavIcon" width="30">
                                 <span class="hide-menu">@btUser?.FullName</span>
                             </a>
                             <ul aria-expanded="false" class="collapse  first-level">
@@ -286,13 +286,7 @@
                                                 <i class="mdi mdi-archive"></i>
                                                 <span class="hide-menu">Admin Dashboard</span>
                                             </a>
-                                        </li>                                        
-                                        <li class="sidebar-item">
-                                            <a class="sidebar-link" asp-controller="Home" asp-action="Archives">
-                                                <i class="mdi mdi-archive"></i>
-                                                <span class="hide-menu">Archives</span>
-                                            </a>
-                                        </li>                                        
+                                        </li>                                                                              
                                         <li class="sidebar-item">
                                             <a class="sidebar-link" asp-controller="Invites" asp-action="Create">
                                                 <i class="mdi mdi-email"></i>

@@ -31,7 +31,7 @@ namespace MeteorStrike.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Ticket> GetTicketAsync(int? ticketId)
+        public async Task<Ticket> GetTicketAsync(int? ticketId, int? companyId)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace MeteorStrike.Services
                                                .Include(t => t.TicketType)
                                                .Include(t => t.History)
                                                .Include(t => t.Attachments)
-                                               .FirstOrDefaultAsync(m => m.Id == ticketId);
+                                               .FirstOrDefaultAsync(m => m.Id == ticketId && m.SubmitterUser.CompanyId == companyId);
                 return ticket;
 
 

@@ -122,9 +122,32 @@ body {
     background-color: black;
 }
 
-/*.welcomeMessage {
-    margin-top: -50px;
-    color: red;
-    z-index: 90;
+.userIcon {
+    display: inline-block;
+    object-fit: cover;
+    position: center;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 50%;
 }
-*/
+
+    .userIcon img {
+        width: auto;
+        height: 100%;
+    }
+
+.userNavIcon {
+    display: inline-block;
+    object-fit: cover;
+    position: center;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+    .userIcon img {
+        width: auto;
+        height: 100%;
+    }

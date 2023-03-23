@@ -138,7 +138,8 @@ namespace MeteorStrike.Services
 
         public async Task<IEnumerable<Project>> GetCompanyProjectsAsync(int companyId)
         {
-            IEnumerable<Project> projects = await _context.Projects.Where(p => p.CompanyId == companyId)
+            IEnumerable<Project> projects = await _context.Projects.Where(p => p.CompanyId == companyId && p.Archived == false)
+                                                                   .Include(p => p.Members)
                                                                    .Include(p => p.ProjectPriority)
                                                                    .Include(p => p.Tickets)
                                                                    .Include(p => p.Company)

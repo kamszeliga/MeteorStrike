@@ -22,7 +22,7 @@
  <div class="page-breadcrumb border-bottom">
      <div class="row">
          <div class="col-lg-3 col-md-4 col-xs-12 justify-content-start d-flex align-items-center">
-             <h5 class="font-weight-medium text-uppercase mb-0">Ticket: @Model.Title</h5>
+             <h5 class="font-weight-medium text-uppercase mb-0">Ticket: @Model?.Title</h5>
          </div>
          <div class="col-lg-9 col-md-8 col-xs-12 d-flex justify-content-start justify-content-md-end align-self-center">
              <nav aria-label="breadcrumb" class="mt-2">
@@ -30,7 +30,7 @@
                      <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
                      <li class="breadcrumb-item active" aria-current="page"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
                      <li class="breadcrumb-item active" aria-current="page"><a asp-controller="Tickets" asp-action="Index">Tickets</a></li>
-                     <li class="breadcrumb-item active" aria-current="page"><b><a asp-action="Details" asp-route-id="@Model.Id">@Model.Title</a></b></li>
+                     <li class="breadcrumb-item active" aria-current="page"><b><a asp-action="Details" asp-route-id="@Model?.Id">@Model?.Title</a></b></li>
                  </ol>
              </nav>
              <a asp-controller="Tickets" asp-action="Create" class="btn btn-danger text-white ms-3 d-none d-md-block">Create Ticket</a>
@@ -44,200 +44,200 @@
 <!-- Container fluid  -->
    <!-- -------------------------------------------------------------- -->
    <div class="container-fluid page-content">
-       <!-- -------------------------------------------------------------- -->
-       <!-- Start Page Content -->
-       <!-- -------------------------------------------------------------- -->
-       <!-- basic table -->
-       <div class="row">
-         <div class="col-lg-4">
-               <div class="card">
-                   <div class="card-body" style="overflow-y:auto; height: 400px;">
-                       <div class="card-header">
-                           <div class="row">
-                           <div class="col-10">
-                       <h4 class="card-title mb-0">Project Details</h4></div>
-                       <div class="col-2">
-                          @{
-                              int statusId = Model.TicketStatusId;
-                          }
-                          @switch (statusId)
-                          {
-                              default: 
-                                      <td data-order="@Model.TicketStatusId"><span class="badge bg-info text-uppercase">@Model.TicketStatus.Name</span></td>
-                                  break;
-                              case 2: 
-                                      <td data-order="@Model.TicketStatusId"><span class="badge bg-success text-uppercase">@Model.TicketStatus.Name</span></td>
-                                  break;
-                              case 3: 
-                                      <td data-order="@Model.TicketStatusId"><span class="badge bg-warning text-uppercase">@Model.TicketStatus.Name</span></td>
-                                  break;
-                              case 4: 
-                                      <td data-order="@Model.TicketStatusId"><span class="badge bg-danger text-uppercase">@Model.TicketStatus.Name</span></td>
-                                  break;
-                          }
-                        </div>	
-                        </div>
-                       </div>
-                       <div class="row">
-                            <div class="col">
-                        <h5 class="mt-4">Project Description</h5>
-                        <div style="overflow-y:auto; height: 190px;">@Html.DisplayFor(model => model.Project.Description)</div>
-                            </div>
-                            <br/>
-                            <div class="row">
-                            <div class="col col-6">
-                                <h5 class="pt-3">Ticket Created</h5>
-                                    <span>@Model.Created.ToString("MMM dd, yyyy")</span>
-                            </div>
-                            <div class="col col-6">
-                                <h5 class="pt-3">Ticket Last Updated</h5>
-                                    <span>@Model.Updated.ToString("MMM dd 'at' H:mm tt")</span>
-                            </div>	
-
-                        </div>
-@*                        <div class="card-footer mt-2">
-                            @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
-                            {
-                            <a asp-action="AssignTicketMember" asp-route-id="@Model.Id" class="mdi mdi-account-plus text-warning"></a>
-                            }
-                            <a asp-action="Edit" asp-route-id="@Model.Id" class="mdi mdi-pencil text-success"></a>
-                            <a asp-action="Details" asp-route-id="@Model.Id" class="mdi mdi-note-text"></a>
-                            <a asp-action="Delete" asp-route-id="@Model.Id" class="mdi mdi-delete text-danger"></a>
-                        </div>*@
-                       </div>
-                   </div>
-               </div>
-
-               <div class="card">
-                   <div class="card-body">
-                       <div class="row clearfix">
-                           <div class="card-header">
-                                <h4>Ticket History</h4>
-                            </div>
-                            <div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body" style="overflow-y:auto; max-height: 400px;">
-                                <ul class="timeline timeline-left">
-                                      @foreach (TicketHistory history in Model.History.OrderByDescending(h => h.Created))
-                                      {
-                                        <li class="timeline-inverted timeline-item">
-                                            <div class="timeline-badge info"><i class="fa fa-clock"></i> </div>
-                                            <div class="timeline-panel">
-                                                <div class="timeline-heading">
-                                                            <h4 class="timeline-title">@history.Created.ToString("MMM dd, yyyy 'at' H:mm tt")</h4>
-                                                </div>
-                                                <div class="timeline-body">
-                                                            <p>@Html.Raw(history.Description)</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                      }
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                            </div>
-                        </div>
-                   </div>
-               </div>
-           </div>
-
-         <div class="col-lg-8">
-               <div class="card">
-                  <div class="card-body" style="overflow-y:auto; height: 300px;">
-                      <div class="card-header mb-2">
-                          <div class="row">
-                          <div class="col-10"><h4 class="card-title">@Html.DisplayFor(model => model.Title)</h4> </div>
-                        <div class="col-2 text-end">
-                        @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
-                        {
-                                <a asp-action="AssignTicketMember" asp-route-id="@Model.Id" class="mdi mdi-account-plus text-warning"></a>
+     <!-- -------------------------------------------------------------- -->
+     <!-- Start Page Content -->
+     <!-- -------------------------------------------------------------- -->
+     <!-- basic table -->
+     <div class="row">
+       <div class="col-lg-4">
+             <div class="card">
+                 <div class="card-body" style="overflow-y:auto; height: 400px;">
+                     <div class="card-header">
+                         <div class="row">
+                         <div class="col-10">
+                     <h4 class="card-title mb-0">Project Details</h4></div>
+                     <div class="col-2">
+                        @{
+                            int statusId = Model.TicketStatusId;
                         }
-                            <a asp-action="Edit" asp-route-id="@Model.Id" class="mdi mdi-pencil text-success"></a>
-                            <a asp-action="Details" asp-route-id="@Model.Id" class="mdi mdi-note-text"></a>
-                            <a asp-action="Delete" asp-route-id="@Model.Id" class="mdi mdi-delete text-danger"></a>
-                        </div>
-                        </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-8">
-                              <h5 class="mt-4">Ticket Description</h5>
-                              <div clas="mt-4" style="overflow-y:auto; height: 100px;">
-                                @Html.Raw(Model.Description)
-                            </div>
-
-                            </div>
-                            <div class="col-4">
-                                <div class="col-6"> <h5 class="pt-3">Submitted By</h5>
-                                <span>@Html.DisplayFor(model => model.SubmitterUser.FullName)</span>
-                                </div>
-                                <div class="col-6"> <h5 class="pt-3">Developer</h5>
-                                <span>@Html.DisplayFor(model => model.DeveloperUser.FullName)</span>
-                                </div>
-                            </div>
-                        </div>
-@*                       <div class="row">
-                       <div class="col-6"> <h5 class="pt-3">Submitted By</h5>
-                       <span>@Html.DisplayFor(model => model.SubmitterUser.FullName)</span>
-                       </div>
-                           <div class="col-6">
-                       <div class="col-6"> <h5 class="pt-3">Developer</h5>
-                       <span>@Html.DisplayFor(model => model.DeveloperUser.FullName)</span>
-                        </div>
-                       </div>
+                        @switch (statusId)
+                        {
+                            default: 
+                                    <td data-order="@Model.TicketStatusId"><span class="badge bg-info text-uppercase">@Model.TicketStatus.Name</span></td>
+                                break;
+                            case 2: 
+                                    <td data-order="@Model.TicketStatusId"><span class="badge bg-success text-uppercase">@Model.TicketStatus.Name</span></td>
+                                break;
+                            case 3: 
+                                    <td data-order="@Model.TicketStatusId"><span class="badge bg-warning text-uppercase">@Model.TicketStatus.Name</span></td>
+                                break;
+                            case 4: 
+                                    <td data-order="@Model.TicketStatusId"><span class="badge bg-danger text-uppercase">@Model.TicketStatus.Name</span></td>
+                                break;
+                        }
+                      </div>	
+                      </div>
                      </div>
-*@                     </div>
-                    </div>
+                     <div class="row">
+                          <div class="col">
+                      <h5 class="mt-4">Project Description</h5>
+                      <div style="overflow-y:auto; height: 190px;">@Html.DisplayFor(model => model.Project.Description)</div>
+                          </div>
+                          <br/>
+                          <div class="row">
+                          <div class="col col-6">
+                              <h5 class="pt-3">Ticket Created</h5>
+                                  <span>@Model.Created.ToString("MMM dd, yyyy")</span>
+                          </div>
+                          <div class="col col-6">
+                              <h5 class="pt-3">Ticket Last Updated</h5>
+                                  <span>@Model.Updated.ToString("MMM dd 'at' H:mm tt")</span>
+                          </div>	
 
-               <div class="card">
-                   <div class="card-body">
-                          <!-- Start Comment Area  -->
-                    <div class="axil-comment-area" style="overflow-y:auto; height: 300px;">
+                      </div>
+@*                      <div class="card-footer mt-2">
+                          @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+                          {
+                          <a asp-action="AssignTicketMember" asp-route-id="@Model.Id" class="mdi mdi-account-plus text-warning"></a>
+                          }
+                          <a asp-action="Edit" asp-route-id="@Model.Id" class="mdi mdi-pencil text-success fs-6"></a>
+                          <a asp-action="Details" asp-route-id="@Model.Id" class="mdi mdi-note-text fs-6"></a>
+                          <a asp-action="Delete" asp-route-id="@Model.Id" class="mdi mdi-delete text-danger fs-6"></a>
+                      </div>*@
+                     </div>
+                 </div>
+             </div>
 
-                          <h4 class="title">@Model.Comments.Count comments</h4>
-                             <hr />
-                          <ul class="comment-list">
-                            @foreach (TicketComment comment in Model.Comments)
-                            {
-                                     <!-- Start Single Comment  -->
-                                     <li class="comment">
-                                         <h5 class="commenter">
-                                        @comment.BTUser?.FullName - <b>@comment.Created.ToString("MMM dd, yyyy 'at' H:mm tt")</b></h5>
-                                         <div class="">
-                                             <p class="">@Html.Raw(comment.Comment)</p>
-                                         </div>
-                                       <hr/>
-                                     </li>
-                                  <!-- End Single Comment  -->
-                            }
-                            </ul>
+             <div class="card">
+                 <div class="card-body">
+                     <div class="row clearfix">
+                         <div class="card-header">
+                              <h4>Ticket History</h4>
+                          </div>
+                          <div>
+              <div class="row">
+                  <div class="col-12">
+                      <div class="card">
+                          <div class="card-body" style="overflow-y:auto; max-height: 400px;">
+                              <ul class="timeline timeline-left">
+                                    @foreach (TicketHistory history in Model.History.OrderByDescending(h => h.Created))
+                                    {
+                                      <li class="timeline-inverted timeline-item">
+                                          <div class="timeline-badge info"><i class="fa fa-clock"></i> </div>
+                                          <div class="timeline-panel">
+                                              <div class="timeline-heading">
+                                                          <h4 class="timeline-title">@history.Created.ToString("MMM dd, yyyy 'at' H:mm tt")</h4>
+                                              </div>
+                                              <div class="timeline-body">
+                                                          <p>@Html.Raw(history.Description)</p>
+                                              </div>
+                                          </div>
+                                      </li>
+                                    }
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+                          </div>
+                      </div>
+                 </div>
+             </div>
+         </div>
+
+       <div class="col-lg-8">
+          <div class="card">
+             <div class="card-body" style="overflow-y:auto; height: 300px;">
+                 <div class="card-header mb-2">
+                     <div class="row">
+                     <div class="col-10"><h4 class="card-title">@Html.DisplayFor(model => model.Title)</h4> </div>
+                   <div class="col-2 text-end">
+                   @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+                   {
+                       <a asp-action="AssignTicketMember" asp-route-id="@Model.Id" class="mdi mdi-account-plus text-warning fs-6"></a>
+                   }
+                       <a asp-action="Edit" asp-route-id="@Model.Id" class="mdi mdi-pencil text-success fs-6"></a>
+                       <a asp-action="Details" asp-route-id="@Model.Id" class="mdi mdi-note-text fs-6"></a>
+                       <a asp-action="Delete" asp-route-id="@Model.Id" class="mdi mdi-delete text-danger fs-6"></a>
+                   </div>
+                   </div>
+                   </div>
+                   <div class="row">
+                       <div class="col-8">
+                         <h5 class="mt-4">Ticket Description</h5>
+                         <div clas="mt-4" style="overflow-y:auto; height: 100px;">
+                           @Html.Raw(Model.Description)
+                       </div>
+
+                       </div>
+                       <div class="col-4">
+                           <div class="col-6"> <h5 class="pt-3">Submitted By</h5>
+                           <span>@Html.DisplayFor(model => model.SubmitterUser.FullName)</span>
                            </div>
-                          <!-- End Comment Area  -->
+                           <div class="col-6"> <h5 class="pt-3">Developer</h5>
+                           <span>@Html.DisplayFor(model => model.DeveloperUser.FullName)</span>
+                           </div>
+                       </div>
+                   </div>
+@*                  <div class="row">
+                  <div class="col-6"> <h5 class="pt-3">Submitted By</h5>
+                  <span>@Html.DisplayFor(model => model.SubmitterUser.FullName)</span>
+                  </div>
+                      <div class="col-6">
+                  <div class="col-6"> <h5 class="pt-3">Developer</h5>
+                  <span>@Html.DisplayFor(model => model.DeveloperUser.FullName)</span>
+                   </div>
+                  </div>
+                </div>
+*@                </div>
+               </div>
 
-                          <!-- Start Comment Respond  -->
-                    <div class="comment-respond">
-                            <h4 class="title">Post a comment</h4>
-                             <form asp-action="AddTicketComment" asp-controller="Tickets" method="post">
-                                <input type="hidden" asp-for="Id" name="TicketId"/>
-                                   <div class="form-group">
-                                       <textarea class="w-100" id="message" name="Comment"></textarea>
-                                   </div>
-                                <div class="col-lg-12">
-                                   <div class="form-submit cerchio text-end">
-                                       <button type="submit" class="mt-1 btn waves-effect waves-light btn-info" value="Post Comment">Post Comment</button>
-                                   </div>
-                                  </div>
-                             </form>
-                          </div>
-                          <!-- End Comment Respond  -->
+          <div class="card">
+              <div class="card-body">
+                     <!-- Start Comment Area  -->
+               <div class="axil-comment-area" style="overflow-y:auto; height: 300px;">
 
-                          </div>
-                          </div>
+                     <h4 class="title">@Model.Comments.Count comments</h4>
+                        <hr />
+                     <ul class="comment-list">
+                       @foreach (TicketComment comment in Model.Comments)
+                       {
+                                <!-- Start Single Comment  -->
+                                <li class="comment">
+                                    <h5 class="commenter">
+                                   @comment.BTUser?.FullName - <b>@comment.Created.ToString("MMM dd, yyyy 'at' H:mm tt")</b></h5>
+                                    <div class="">
+                                        <p class="">@Html.Raw(comment.Comment)</p>
+                                    </div>
+                                  <hr/>
+                                </li>
+                             <!-- End Single Comment  -->
+                       }
+                       </ul>
+                      </div>
+                     <!-- End Comment Area  -->
 
-               <div class="card">
+                     <!-- Start Comment Respond  -->
+               <div class="comment-respond">
+                       <h4 class="title">Post a comment</h4>
+                        <form asp-action="AddTicketComment" asp-controller="Tickets" method="post">
+                           <input type="hidden" asp-for="Id" name="TicketId"/>
+                              <div class="form-group">
+                                  <textarea class="w-100" id="message" name="Comment"></textarea>
+                              </div>
+                           <div class="col-lg-12">
+                              <div class="form-submit cerchio text-end">
+                                  <button type="submit" class="mt-1 btn waves-effect waves-light btn-info" value="Post Comment">Post Comment</button>
+                              </div>
+                             </div>
+                        </form>
+                     </div>
+                     <!-- End Comment Respond  -->
+
+                     </div>
+                     </div>
+
+          <div class="card">
                    <div class="card-body">
                     <div class="card-header">
                                 <h4>Attachments</h4>
@@ -290,11 +290,11 @@
                  </div>
                 </div>
 
-                          </div>
-                          <!-- -------------------------------------------------------------- -->
-                          <!-- End Container fluid  -->
-                          <!-- -------------------------------------------------------------- -->
-            </div>
+                        </div>
+                        <!-- -------------------------------------------------------------- -->
+                        <!-- End Container fluid  -->
+                        <!-- -------------------------------------------------------------- -->
+          </div>
 </div>
 
 

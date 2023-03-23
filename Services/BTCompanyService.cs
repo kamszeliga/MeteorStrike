@@ -10,14 +10,15 @@ namespace MeteorStrike.Services
 
 		private readonly ApplicationDbContext _context;
 		private readonly IBTRolesService _btRolesService;
+		private readonly IBTFileService _btFileService;
 
 		public BTCompanyService(ApplicationDbContext context,
-								IBTRolesService btRolesService)
+								IBTRolesService btRolesService, IBTFileService btFileService)
 		{
 			_context = context;
 			_btRolesService = btRolesService;
+			_btFileService = btFileService;
 		}
-
 
 		public async Task<Company> GetCompanyInfoAsync(int? companyId)
 		{
@@ -60,5 +61,25 @@ namespace MeteorStrike.Services
 				throw;
 			}
 		}
-	}
+
+        public async Task<BTUser> GetMemberAsync(string? userId, int? companyId)
+        {
+            BTUser? member = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == userId && u.CompanyId == companyId);
+
+            return member;
+        }
+
+        public async Task UpdateMemberAsync(IFormFile imageFile, BTUser member)
+        {
+            if (imageFile != null)
+            {
+                member.ImageFileData = await _btFileService.ConvertFileToByteArrayAsync(imageFile);
+                member.ImageFileType = member.ImageFormFile?.ContentType;
+            }
+
+            _context.Users.Update(member);
+            await _context.SaveChangesAsync();
+        }
+    }
 }
