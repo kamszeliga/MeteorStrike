@@ -50,35 +50,46 @@
                  <div class="card-body">
                      <h4 class="card-title">Projects</h4>
                        <div class="row justify-content-center">
-                        @foreach (var item in Model)
-                        {
-                            <div class="col-lg-4 col-md-6">
-                               <div class="card">
-                                     <img class="cardheaderimg" src="@_BTFileService.ConvertByteArrayToFile(item.ImageFileData!, item.ImageFileType!,(int)DefaultImage.ProjectImage)" alt="Post Images" />
-                                     <div class="card-header text-truncate">
-                                      <a asp-action="Details" asp-route-id="@item.Id" class="card-title">@item.Name</a></div>
-                                       <div class="card-body">
-                                       <p class="card-text text-truncate">
-                                            @Html.DisplayFor(modelItem => item.Description)
-                                        </p>
-                                        </div>
-                                        <ul class="list-group list-group-flush">
-                                          <li class="list-group-item"><b>Priority:</b> @Html.DisplayFor(modelItem => item.ProjectPriority.Name)</li>
-                                          <li class="list-group-item"><b>Created:</b> @item.Created.ToString("MMM dd, yyyy")</li>
-                                          <li class="list-group-item"><b>Timeline:</b> @item.StartDate.ToString("MMM dd, yyyy") - @item.EndDate.ToString("MMM dd, yyyy")</li>
-                                        </ul>
-                                        <div class="card-footer button-group d-flex align-items-stretch">
-                                        @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
-                                        {
-                                                 <a asp-action="AssignProjectMembers" asp-route-id="@item.Id" class="mdi mdi-account-plus text-warning"></a>
-                                        }
-                                            <a asp-action="Edit" asp-route-id="@item.Id" class="mdi mdi-pencil text-success fs-6"></a>
-                                            <a asp-action="Details" asp-route-id="@item.Id" class="mdi mdi-note-text fs-6"></a>
-                                            <a asp-action="Delete" asp-route-id="@item.Id" class="mdi mdi-delete text-danger fs-6"></a>
-                                        </div>
-                                      </div>
-                                    </div>
-                        }
+                           @if(Model.Count() != 0)
+                           {
+                               @foreach (var item in Model)
+                               {
+                                       <div class="col-lg-4 col-md-6">
+                                          <div class="card">
+                                                <img class="cardheaderimg" src="@_BTFileService.ConvertByteArrayToFile(item.ImageFileData!, item.ImageFileType!,(int)DefaultImage.ProjectImage)" alt="Post Images" />
+                                                <div class="card-header text-truncate">
+                                                 <a asp-action="Details" asp-route-id="@item.Id" class="card-title">@item.Name</a></div>
+                                                  <div class="card-body">
+                                                  <p class="card-text text-truncate">
+                                                   @Html.DisplayFor(modelItem => item.Description)
+                                                   </p>
+                                                   </div>
+                                                   <ul class="list-group list-group-flush">
+                                                     <li class="list-group-item"><b>Priority:</b> @Html.DisplayFor(modelItem => item.ProjectPriority.Name)</li>
+                                                     <li class="list-group-item"><b>Created:</b> @item.Created.ToString("MMM dd, yyyy")</li>
+                                                     <li class="list-group-item"><b>Timeline:</b> @item.StartDate.ToString("MMM dd, yyyy") - @item.EndDate.ToString("MMM dd, yyyy")</li>
+                                                   </ul>
+                                                   <div class="card-footer button-group d-flex align-items-stretch">
+                                                     @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+                                                     {
+                                                       <a asp-action="AssignProjectMembers" asp-route-id="@item.Id" class="mdi mdi-account-plus text-warning"></a>
+                                                     }
+                                                       <a asp-action="Edit" asp-route-id="@item.Id" class="mdi mdi-pencil text-success fs-6"></a>
+                                                       <a asp-action="Details" asp-route-id="@item.Id" class="mdi mdi-note-text fs-6"></a>
+                                                       <a asp-action="Delete" asp-route-id="@item.Id" class="mdi mdi-delete text-danger fs-6"></a>
+                                                   </div>
+                                                 </div>
+                                               </div>
+                               }
+
+                           }
+                           else{
+                                 <div class="col-12 justify-content-center">
+                                     <div class="card mt-2 justify-content-center text-center">
+                                      <p>You currently do not have any projects assigned to you.</p>
+                                   </div>
+                                </div>
+                           }
                        </div>                 
                  </div>
              </div>

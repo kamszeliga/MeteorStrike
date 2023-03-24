@@ -189,3 +189,9 @@ TRY IT ... with or without CENTER CENTER
 .spaceBtn: hover {
     background-color: #659d8e;
 }
+
+.landingpageArrow {
+    margin-top: -90px !important;
+    margin-bottom: 10px !important;
+    font-size: 100px !important;
+}
