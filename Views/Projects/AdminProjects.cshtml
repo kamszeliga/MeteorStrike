@@ -59,7 +59,7 @@
                                       <a asp-action="Details" asp-route-id="@item.Id" class="card-title">@item.Name</a></div>
                                        <div class="card-body">
                                        <p class="card-text text-truncate">
-                                            @Html.DisplayFor(modelItem => item.Description)
+                                            @Html.Raw(item.Description)
                                         </p>
                                         </div>
                                         <ul class="list-group list-group-flush">
