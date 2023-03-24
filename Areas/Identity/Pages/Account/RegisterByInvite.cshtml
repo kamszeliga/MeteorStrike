@@ -7,6 +7,7 @@
 <h1>@ViewData["Title"]</h1>
 
 <div class="row">
+    <div class="card">
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <input hidden asp-for="Input.CompanyId" />
@@ -46,6 +47,7 @@
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
+</div>
 </div>
 
 

@@ -66,7 +66,7 @@
                                     <div class="card-footer button-group d-flex align-items-stretch">
                                         @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
                                         {
-                                         <a asp-action="AssignProjectMembers" asp-route-id="@item.Id" class="mdi mdi-account-plus text-warning"></a>
+                                        <a asp-action="AssignProjectMembers" asp-route-id="@item.Id" class="mdi mdi-account-plus text-warning fs-6"></a>
                                         }
                                         <a asp-action="Edit" asp-route-id="@item.Id" class="mdi mdi-pencil text-success fs-6"></a>
                                         <a asp-action="Details" asp-route-id="@item.Id" class="mdi mdi-note-text fs-6"></a>

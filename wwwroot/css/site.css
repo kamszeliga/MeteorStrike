@@ -185,3 +185,7 @@ TRY IT ... with or without CENTER CENTER
 .textMuted {
     color: #c3cfcd !important;
 }
+
+.spaceBtn: hover {
+    background-color: #659d8e;
+}

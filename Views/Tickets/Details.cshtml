@@ -150,8 +150,8 @@
              <div class="card-body" style="overflow-y:auto; height: 300px;">
                  <div class="card-header mb-2">
                      <div class="row">
-                     <div class="col-10"><h4 class="card-title">@Html.DisplayFor(model => model.Title)</h4> </div>
-                   <div class="col-2 text-end">
+                     <div class="col-md-10 col-sm-12"><h4 class="card-title">@Html.DisplayFor(model => model.Title)</h4> </div>
+                   <div class="col-md-2 col-sm-12 text-end">
                    @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
                    {
                        <a asp-action="AssignTicketMember" asp-route-id="@Model.Id" class="mdi mdi-account-plus text-warning fs-6"></a>
@@ -163,7 +163,7 @@
                    </div>
                    </div>
                    <div class="row">
-                       <div class="col-8">
+                       <div class="col-md-8 col-sm-12">
                          <h5 class="mt-4">Ticket Description</h5>
                          <div clas="mt-4" style="overflow-y:auto; height: 100px;">
                            @Html.Raw(Model.Description)
@@ -171,10 +171,10 @@
 
                        </div>
                        <div class="col-4">
-                           <div class="col-6"> <h5 class="pt-3">Submitted By</h5>
+                           <div class="col-md-6 col-sm-12"> <h5 class="pt-3">Submitted By</h5>
                            <span>@Html.DisplayFor(model => model.SubmitterUser.FullName)</span>
                            </div>
-                           <div class="col-6"> <h5 class="pt-3">Developer</h5>
+                           <div class="col-md-6 col-sm-12"> <h5 class="pt-3">Developer</h5>
                            <span>@Html.DisplayFor(model => model.DeveloperUser.FullName)</span>
                            </div>
                        </div>
@@ -223,7 +223,10 @@
                         <form asp-action="AddTicketComment" asp-controller="Tickets" method="post">
                            <input type="hidden" asp-for="Id" name="TicketId"/>
                               <div class="form-group">
-                                  <textarea class="w-100" id="message" name="Comment"></textarea>
+                                  <textarea class="editor w-100" id="message" name="Comment">
+
+
+                                  </textarea>
                               </div>
                            <div class="col-lg-12">
                               <div class="form-submit cerchio text-end">
@@ -247,7 +250,7 @@
                         <div class="row">
                             @foreach (TicketAttachment item in Model.Attachments)
                             {
-                                    <div class="col col-sm-2">
+                                    <div class="col-12 col-sm-2">
                                         <a asp-action="ShowFile" asp-controller="Tickets" asp-route-Id="@item.Id">
                                          <div class="icon">
                                                  <img src="@_BTFileService.GetFileIcon(item.FileName)" style="height:50px;width:50px" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="@item.FileName" />
@@ -266,19 +269,19 @@
                               <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                               <input type="hidden" asp-for="@Model.Id" name="TicketId">     
                               <div class="row">
-                                  <div class="col-5">
+                                  <div class="col-sm-5 col-12">
                                      <h5 class="pt-3">File</h5>
                                      <label class="btn btn-outline-primary btn-sm">
                                           <input asp-for="@Model.Attachments.FirstOrDefault().FormFile" type="file" class="form-control-file" />
                                      </label>
                                    </div>
-                                   <div class="col-5">
+                                   <div class="col-sm-5 col-12">
                                       <h5 class="pt-3">Description</h5>
                                       <label>
                                            <input asp-for="@Model.Attachments.FirstOrDefault().Description" type="text" class="form-control" />
                                       </label>
                                    </div>
-                                   <div class="col-2">
+                                   <div class="col-sm-2 col-12">
                                    <div class="form-submit cerchio text-end">
                                    <button type="submit" class="mt-5 btn waves-effect waves-light btn-info">Add</button>
                                    </div>
@@ -296,5 +299,22 @@
                         <!-- -------------------------------------------------------------- -->
           </div>
 </div>
+@section Scripts {
+            <script src="~/ckeditor5/build/ckeditor.js"></script>
 
-
+            <script>
+                ClassicEditor
+                    .create(document.querySelector('.editor'), {
+                        licenseKey: '',
+                    })
+                    .then(editor => {
+                        window.editor = editor;
+                    })
+                    .catch(error => {
+                        console.error('Oops, something went wrong!');
+                        console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                        console.warn('Build id: xx09iayzufkn-lkt434h3lx2z');
+                        console.error(error);
+                    });
+            </script>
+            }

@@ -907,47 +907,16 @@ services
 --------------------------------------------- 
 */
 #services {
-  position: relative;
-  padding: 120px 0px 90px 0px;
-  background: rgba(0, 136, 232, 1);
-  background: -moz-linear-gradient(
-    -45deg,
-    rgba(0, 136, 232, 1) 0%,
-    rgba(0, 182, 198, 1) 0%,
-    rgba(0, 136, 232, 1) 100%
-  );
-  background: -webkit-gradient(
-    left top,
-    right bottom,
-    color-stop(0%, rgba(0, 136, 232, 1)),
-    color-stop(0%, rgba(0, 182, 198, 1)),
-    color-stop(100%, rgba(0, 136, 232, 1))
-  );
-  background: -webkit-linear-gradient(
-    -45deg,
-    rgba(0, 136, 232, 1) 0%,
-    rgba(0, 182, 198, 1) 0%,
-    rgba(0, 136, 232, 1) 100%
-  );
-  background: -o-linear-gradient(
-    -45deg,
-    rgba(0, 136, 232, 1) 0%,
-    rgba(0, 182, 198, 1) 0%,
-    rgba(0, 136, 232, 1) 100%
-  );
-  background: -ms-linear-gradient(
-    -45deg,
-    rgba(0, 136, 232, 1) 0%,
-    rgba(0, 182, 198, 1) 0%,
-    rgba(0, 136, 232, 1) 100%
-  );
-  background: linear-gradient(
-    135deg,
-    rgba(0, 136, 232, 1) 0%,
-    rgba(0, 182, 198, 1) 0%,
-    rgba(0, 136, 232, 1) 100%
-  );
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0088e8', endColorstr='#0088e8', GradientType=1 );
+    position: relative;
+    padding: 120px 0px 90px 0px;
+    background: rgba(0, 136, 232, 1);
+    background: -moz-linear-gradient( -45deg, rgba(0, 136, 232, 1) 0%, rgba(0, 182, 198, 1) 0%, rgba(0, 136, 232, 1) 100% );
+    background: -webkit-gradient( left top, right bottom, color-stop(0%, rgba(0, 136, 232, 1)), color-stop(0%, rgba(0, 182, 198, 1)), color-stop(100%, rgba(0, 136, 232, 1)) );
+    background: -webkit-linear-gradient( -45deg, rgba(0, 136, 232, 1) 0%, rgba(0, 182, 198, 1) 0%, rgba(0, 136, 232, 1) 100% );
+    background: -o-linear-gradient( -45deg, rgba(0, 136, 232, 1) 0%, rgba(0, 182, 198, 1) 0%, rgba(0, 136, 232, 1) 100% );
+    background: -ms-linear-gradient( -45deg, rgba(0, 136, 232, 1) 0%, rgba(0, 182, 198, 1) 0%, rgba(0, 136, 232, 1) 100% );
+    background: linear-gradient( 135deg, rgba(0, 136, 232, 1) 0%, rgba(0, 182, 198, 1) 0%, rgba(0, 136, 232, 1) 100% );
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#010E0D', endColorstr='#rgb(3,28,26)', GradientType=1 );
 }
 
 .service-item {
@@ -1375,15 +1344,15 @@ preloader
 --------------------------------------------- 
 */
 #preloader {
-  overflow: hidden;
-  background-image: linear-gradient(145deg, #00b4c6 0%, #0088e8 100%);
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  position: fixed;
-  z-index: 9999;
-  color: #fff;
+    overflow: hidden;
+    background-image: linear-gradient(145deg, #011413 0%, #1F3635 100%);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: fixed;
+    z-index: 9999;
+    color: #011413;
 }
 
 #preloader .jumper {
@@ -1398,20 +1367,20 @@ preloader
   height: 50px;
 }
 
-#preloader .jumper > div {
-  background-color: #fff;
-  width: 10px;
-  height: 10px;
-  border-radius: 100%;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-  position: absolute;
-  opacity: 0;
-  width: 50px;
-  height: 50px;
-  -webkit-animation: jumper 1s 0s linear infinite;
-  animation: jumper 1s 0s linear infinite;
-}
+    #preloader .jumper > div {
+        background-color: #011413;
+        width: 10px;
+        height: 10px;
+        border-radius: 100%;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+        position: absolute;
+        opacity: 0;
+        width: 50px;
+        height: 50px;
+        -webkit-animation: jumper 1s 0s linear infinite;
+        animation: jumper 1s 0s linear infinite;
+    }
 
 #preloader .jumper > div:nth-child(2) {
   -webkit-animation-delay: 0.33333s;
