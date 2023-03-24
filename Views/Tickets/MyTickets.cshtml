@@ -20,14 +20,14 @@
  <div class="page-breadcrumb border-bottom">
      <div class="row">
          <div class="col-lg-3 col-md-4 col-xs-12 justify-content-start d-flex align-items-center">
-             <h5 class="font-weight-medium text-uppercase mb-0">Ticket Index</h5>
+             <h5 class="font-weight-medium text-uppercase mb-0">My Ticket Index</h5>
          </div>
          <div class="col-lg-9 col-md-8 col-xs-12 d-flex justify-content-start justify-content-md-end align-self-center">
              <nav aria-label="breadcrumb" class="mt-2">
                  <ol class="breadcrumb mb-0 p-0">
                      <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
                      <li class="breadcrumb-item active" aria-current="page"><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
-                     <li class="breadcrumb-item active" aria-current="page"><b><a asp-controller="Tickets" asp-action="Index">Tickets</a></b></li>
+                     <li class="breadcrumb-item active" aria-current="page"><b><a asp-controller="Tickets" asp-action="Index">My Tickets</a></b></li>
                  </ol>
              </nav>
              <a asp-controller="Tickets" asp-action="Create" class="btn btn-danger text-white ms-3 d-none d-md-block">Create Ticket</a>
@@ -102,7 +102,7 @@
                                         <th>Ticket Type</th>
                                         <th>Assigned Developer</th>
                                         <th>Submitted By</th>
-                                        <th>Actions</th>
+                                        <th style="width: 10%">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
