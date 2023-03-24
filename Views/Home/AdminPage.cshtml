@@ -91,15 +91,19 @@
             <div class="card-body">
                 <div class="row">
                 <div class="col-8">
-                <h5 class="card-title"><a class="sidebar-link" asp-controller="Tickets" asp-action="Index"><i class="mdi mdi-tag-multiple text-info"></i> Total Tickets</a></h5></div>
+                <h5 class="card-title"><a class="sidebar-link" asp-controller="Tickets" asp-action="Index"><i class="mdi mdi-tag-multiple text-info"></i> Total Tickets</a></h5>
+   @*             <h6 class="text-muted"> Unassigned Tickets</h6>*@
+                </div>
                 <div class="col-4 text-end">
-                <h3 class="card-title">@Model.Tickets.Count().ToString()</h3></div>
+                <h3 class="card-title">@Model.Tickets.Count().ToString()</h3>
+@*                <h6 class="text-muted">@Model.Tickets.Where(t=>t.DeveloperUserId == null).Count().ToString()</h6>*@
+                </div>
+
                 </div>
             </div>
         </div>
         </div>
       </div>
-      <div class="row">
       <div class="card" style="max-height: 550px;">
       <div class="d-flex align-items-center p-3">
       </div>
@@ -208,7 +212,6 @@
         </div>
      </div>
   </div>            
-</div>
   </div>
    <div class="col-lg-4 order-first">
      <div class="card">

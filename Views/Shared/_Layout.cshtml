@@ -207,7 +207,7 @@
                             <ul aria-expanded="false" class="collapse  first-level">
                                 <li class="sidebar-item">
                                     <a class="sidebar-link" asp-controller="Home" asp-action="Index">
-                                        <i class="mdi mdi-av-timer"></i>
+                                        <i class="mdi mdi-laptop"></i>
                                         <span class="hide-menu"> My Dashboard</span>
                                     </a>
                                 </li>
@@ -217,18 +217,6 @@
                                         <span class="hide-menu"> My Company </span>
                                     </a>
                                 </li>
-                                <li class="sidebar-item">
-                                    <a class="sidebar-link" asp-controller="Projects" asp-action="MyProjects">
-                                        <i class="mdi mdi-folder"></i>
-                                        <span class="hide-menu"> My Projects </span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a class="sidebar-link" asp-controller="Tickets" asp-action="MyTickets">
-                                        <i class="mdi mdi-tag-multiple"></i>
-                                        <span class="hide-menu"> My Tickets </span>
-                                    </a>
-                                </li>                                
                             </ul>
                         </li>
                         <li class="sidebar-item">
@@ -244,9 +232,15 @@
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-controller="Projects" asp-action="MyProjects">
+                                        <i class="mdi mdi-folder"></i>
+                                        <span class="hide-menu"> My Projects </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
                                     <a class="sidebar-link" asp-controller="Projects" asp-action="Index">
                                         <i class="mdi mdi-book"></i>
-                                        <span class="hide-menu">View Projects</span>
+                                        <span class="hide-menu">All Projects</span>
                                     </a>
                                 </li>
                             </ul>
@@ -265,9 +259,15 @@
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-controller="Tickets" asp-action="MyTickets">
+                                        <i class="mdi mdi-tag-multiple"></i>
+                                        <span class="hide-menu"> My Tickets </span>
+                                    </a>
+                                </li>                                
+                                <li class="sidebar-item">
                                     <a class="sidebar-link" asp-controller="Tickets" asp-action="Index">
                                         <i class="mdi mdi-tag-multiple"></i>
-                                        <span class="hide-menu">View Tickets</span>
+                                        <span class="hide-menu">All Tickets</span>
                                     </a>
                                 </li>
                             </ul>
@@ -283,8 +283,14 @@
                                     <ul aria-expanded="false" class="collapse first-level">
                                         <li class="sidebar-item">
                                             <a class="sidebar-link" asp-controller="Home" asp-action="AdminPage">
-                                                <i class="mdi mdi-archive"></i>
+                                                <i class="mdi mdi-laptop"></i>
                                                 <span class="hide-menu">Admin Dashboard</span>
+                                            </a>
+                                        </li>                                          
+                                        <li class="sidebar-item">
+                                                <a class="sidebar-link" asp-controller="Companies" asp-action="ManageUserRoles">
+                                                <i class="mdi mdi-account-box"></i>
+                                                <span class="hide-menu">Manage User Roles</span>
                                             </a>
                                         </li>                                                                              
                                         <li class="sidebar-item">
