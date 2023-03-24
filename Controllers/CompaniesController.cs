@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MeteorStrike.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;
