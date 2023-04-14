@@ -116,6 +116,8 @@
       <div class="dashCard p-3" style="overflow-y:auto; height: 255px;">
         <div class="table-responsive">
           <table class="table mb-0 no-wrap recent-table table-hover">
+               @if (Model.Tickets.Count() != 0)
+                 {
             <thead>
               <tr class="fs-4 font-weight-medium">
                 <th>Created</th>
@@ -126,33 +128,43 @@
               </tr>
             </thead>
              <tbody>
-                                @foreach (var item in Model.Tickets.Where(t => t.Archived == true || t.ArchivedByProject == true))
-                                {
-                                    int priorityId = item.TicketPriorityId;
+                
+                     @foreach (var item in Model.Tickets.Where(t => t.Archived == true || t.ArchivedByProject == true))
+                     {
+                         int priorityId = item.TicketPriorityId;
 
-                                   <tr> 
-                                     <td>@item.Created.ToString("MMM dd, yyyy")</td>
-                                        @switch (priorityId)
-                                        {
-                                            default: 
-                                                                                   <td data-order="@item.TicketPriorityId"><span class="badge bg-info text-uppercase">@item.TicketPriority.Name</span></td>
-                                                break;
-                                            case 2: 
-                                                                                   <td data-order="@item.TicketPriorityId"><span class="badge bg-success text-uppercase">@item.TicketPriority.Name</span></td>
-                                                break;
-                                            case 3: 
-                                                                                   <td data-order="@item.TicketPriorityId"><span class="badge bg-warning text-uppercase">@item.TicketPriority.Name</span></td>
-                                                break;
-                                            case 4: 
-                                                                                   <td data-order="@item.TicketPriorityId"><span class="badge bg-danger text-uppercase">@item.TicketPriority.Name</span></td>
-                                                break;
-                                        }
-                                    <td><a asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">@item.Title</a></td>
-                                    <td>@Html.DisplayFor(modelItem => item.Project.Name)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.SubmitterUser.FullName)</td>
-                                   </tr> 
-                                }
-                 </tbody>
+                         <tr> 
+                             <td>@item.Created.ToString("MMM dd, yyyy")</td>
+                             @switch (priorityId)
+                             {
+                                 default:
+                                     <td data-order="@item.TicketPriorityId"><span class="badge bg-info text-uppercase">@item.TicketPriority.Name</span></td>
+                                     break;
+                                 case 2:
+                                     <td data-order="@item.TicketPriorityId"><span class="badge bg-success text-uppercase">@item.TicketPriority.Name</span></td>
+                                     break;
+                                 case 3:
+                                     <td data-order="@item.TicketPriorityId"><span class="badge bg-warning text-uppercase">@item.TicketPriority.Name</span></td>
+                                     break;
+                                 case 4:
+                                     <td data-order="@item.TicketPriorityId"><span class="badge bg-danger text-uppercase">@item.TicketPriority.Name</span></td>
+                                     break;
+                             }
+                             <td><a asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">@item.Title</a></td>
+                             <td>@Html.DisplayFor(modelItem => item.Project.Name)</td>
+                             <td>@Html.DisplayFor(modelItem => item.SubmitterUser.FullName)</td>
+                         </tr>
+                     }
+                  </tbody>
+                  }
+                  else
+                  {
+                        <div class="col-12 justify-content-center">
+                            <div class="card mt-2 justify-content-center text-center">
+                             <p>You currently do not have any projects assigned to you.</p>
+                          </div>
+                       </div>
+                  }
           </table>
         </div>
       </div>
@@ -170,6 +182,8 @@
       <div class="dashCard p-3" style="overflow-y:auto; height: 255px;">
         <div class="table-responsive">
           <table class="table mb-0 no-wrap recent-table table-hover">
+              @if (Model.Projects.Count() != 0)
+                    {
             <thead>
               <tr class="fs-4 font-weight-medium">
                   <th>Created</th>
@@ -180,33 +194,42 @@
               </tr>
             </thead>
              <tbody>
-                                @foreach (var item in Model.Projects.Where(p => p.Archived == true))
+                @foreach (var item in Model.Projects.Where(p => p.Archived == true))
                                 {
                                     int priorityId = item.ProjectPriorityId;
 
-                        <tr> 
-                          <td>@item.Created.ToString("MMM dd, yyyy")</td>
+                                    <tr> 
+                                        <td>@item.Created.ToString("MMM dd, yyyy")</td>
                                         @switch (priorityId)
                                         {
-                                            default: 
-                                                            <td data-order="@item.ProjectPriorityId"><span class="badge bg-info text-uppercase">@item.ProjectPriority.Name</span></td>
+                                            default:
+                                                <td data-order="@item.ProjectPriorityId"><span class="badge bg-info text-uppercase">@item.ProjectPriority.Name</span></td>
                                                 break;
-                                            case 2: 
-                                                            <td data-order="@item.ProjectPriorityId"><span class="badge bg-success text-uppercase">@item.ProjectPriority.Name</span></td>
+                                            case 2:
+                                                <td data-order="@item.ProjectPriorityId"><span class="badge bg-success text-uppercase">@item.ProjectPriority.Name</span></td>
                                                 break;
-                                            case 3: 
-                                                            <td data-order="@item.ProjectPriorityId"><span class="badge bg-warning text-uppercase">@item.ProjectPriority.Name</span></td>
+                                            case 3:
+                                                <td data-order="@item.ProjectPriorityId"><span class="badge bg-warning text-uppercase">@item.ProjectPriority.Name</span></td>
                                                 break;
-                                            case 4: 
-                                                            <td data-order="@item.ProjectPriorityId"><span class="badge bg-danger text-uppercase">@item.ProjectPriority.Name</span></td>
+                                            case 4:
+                                                <td data-order="@item.ProjectPriorityId"><span class="badge bg-danger text-uppercase">@item.ProjectPriority.Name</span></td>
                                                 break;
                                         }
-                         <td><a asp-controller="Projects" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></td>
-                         <td>@Html.DisplayFor(modelItem => item.Tickets.Count)</td>
-                         <td>@item.EndDate.ToString("MMM dd, yyyy")</td>
-                        </tr> 
+                                        <td><a asp-controller="Projects" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></td>
+                                        <td>@Html.DisplayFor(modelItem => item.Tickets.Count)</td>
+                                        <td>@item.EndDate.ToString("MMM dd, yyyy")</td>
+                                    </tr>
                                 }
-                 </tbody>
+                </tbody>
+                        }
+                        else
+                        {
+                            <div class="col-12 justify-content-center">
+                                <div class="card mt-2 justify-content-center text-center">
+                                 <p>There are currently no archived projects.</p>
+                              </div>
+                           </div>
+                        }
           </table>
         </div>
      </div>

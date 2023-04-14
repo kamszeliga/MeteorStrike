@@ -156,7 +156,7 @@
                    {
                        <a asp-action="AssignTicketMember" asp-route-id="@Model.Id" class="mdi mdi-account-plus text-warning fs-6"></a>
                    }
-                   @if (User. )
+                   @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin") || User.IsInRole("Developer"))
                    {
                        <a asp-action="Edit" asp-route-id="@Model.Id" class="mdi mdi-pencil text-success fs-6"></a>
                    }
